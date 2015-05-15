@@ -4,7 +4,8 @@
 ##Index
 -   [About this Archive.](#About this Archive)
 -   [System Requirements](#System Requirements)
--   [Release Notes](#Release Notes)
+-   [Support](#Support)
+-   [Notes](#Notes)
 
 ###About this Archive
 This archive contains the ARToolKit for Unity project, plugins, utilities and examples, version 5.2.
@@ -23,6 +24,9 @@ In addition to any base requirements for Unity, the ARToolKit for Unity plugin(s
 ###Support
 Please check out [documentation][documentation] for more information on [getting started][starting] and how to use ARToolKit for Unity. Specifically have a look at our [Unity documentation][unity], and our platform-specific documentation for [iOS][ios] and [Android][android], if using those platforms. If you have a specific question that the documentation doesn't address, please post on our [forums][forums], and a member of the community with help you. If you find a bug, please note it on our [bug tracker], and / or, fix it yourself and submit a [pull request][pull]!
 
+###Notes
+ARToolKit v5.2 is the first major release under an open source license in several years, and represents several years of commercial development of ARToolKit by ARToolworks during this time. It will appear to be a significant change to previous users of ARToolKit v2.x. See the [feature comparison][features] for more information. Also, see the CHANGELOG.txt for details of changes in this and earlier releases.
+
 
 This archive was assembled by:
     Philip Lamb and Wally Young
@@ -40,3 +44,4 @@ Copyright 2011-2015 ARToolworks, Inc.
 [ios]: http://artoolkit.org/documentation/doku.php?id=5_iOS:ios_about
 [unity]: http://artoolkit.org/documentation/doku.php?id=6_Unity:unity_about
 [starting]: http://artoolkit.org/documentation/doku.php?id=6_Unity:unity_getting_started
+[features]: http://www.artoolkit.org/documentation/ARToolKit_feature_comparison
