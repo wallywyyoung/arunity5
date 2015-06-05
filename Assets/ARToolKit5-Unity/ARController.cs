@@ -80,7 +80,8 @@ public class ARController : MonoBehaviour
     private const string LogTag = "ARController: ";
 
 	// Application preferences.
-	public bool UseNativeGLTexturingIfAvailable = true; 
+	public bool UseNativeGLTexturingIfAvailable = true;
+	public bool AllowNonRGBVideo = false;
 	public bool QuitOnEscOrBack = true;
 	public bool AutoStartAR = true;
 
@@ -468,28 +469,35 @@ public class ARController : MonoBehaviour
         CreateClearCamera();
         
 		// Retrieve video configuration, and append any required per-platform overrides.
+		// For native GL texturing we need monoplanar video; iOS and Android default to biplanar format. 
         string videoConfiguration0;
 		string videoConfiguration1;
 		switch (Application.platform) {
-            case RuntimePlatform.OSXEditor:
+			case RuntimePlatform.OSXEditor:
             case RuntimePlatform.OSXPlayer:
-                videoConfiguration0 = videoConfigurationMacOSX0;
+				videoConfiguration0 = videoConfigurationMacOSX0;
 				videoConfiguration1 = videoConfigurationMacOSX1;
+				if (_useNativeGLTexturing || !AllowNonRGBVideo) {
+					if (videoConfiguration0.IndexOf("-device=QuickTime7") != -1 || videoConfiguration0.IndexOf("-device=QUICKTIME") != -1) videoConfiguration0 += " -pixelformat=BGRA";
+					if (videoConfiguration1.IndexOf("-device=QuickTime7") != -1 || videoConfiguration1.IndexOf("-device=QUICKTIME") != -1) videoConfiguration1 += " -pixelformat=BGRA";
+				}
 				break;
             case RuntimePlatform.WindowsEditor:
             case RuntimePlatform.WindowsPlayer:
                 videoConfiguration0 = videoConfigurationWindows0;
 				videoConfiguration1 = videoConfigurationWindows1;
+				if (_useNativeGLTexturing || !AllowNonRGBVideo) {
+					if (videoConfiguration0.IndexOf("-device=WinMF") != -1) videoConfiguration0 += " -format=BGRA";
+					if (videoConfiguration1.IndexOf("-device=WinMF") != -1) videoConfiguration1 += " -format=BGRA";
+				}
 				break;
             case RuntimePlatform.Android:
-				// Android defaults to biplanar format. We need monoplanar. Also, Unity doesn't support changing working directory, so supply full path to cachedir.
-				videoConfiguration0 = videoConfigurationAndroid0 + " -format=RGBA -cachedir=\"" + Application.temporaryCachePath + "\"";
-				videoConfiguration1 = videoConfigurationAndroid1 + " -format=RGBA -cachedir=\"" + Application.temporaryCachePath + "\"";
+				videoConfiguration0 = videoConfigurationAndroid0 + " -cachedir=\"" + Application.temporaryCachePath + "\""  + (_useNativeGLTexturing || !AllowNonRGBVideo ? " -format=RGBA" : "");
+				videoConfiguration1 = videoConfigurationAndroid1 + " -cachedir=\"" + Application.temporaryCachePath + "\""  + (_useNativeGLTexturing || !AllowNonRGBVideo ? " -format=RGBA" : "");
 				break;
             case RuntimePlatform.IPhonePlayer:
-				// iOS defaults to biplanar format. We need monoplanar.
-                videoConfiguration0 = videoConfigurationiOS0 + " -format=BGRA";
-				videoConfiguration1 = videoConfigurationiOS1 + " -format=BGRA";
+				videoConfiguration0 = videoConfigurationiOS0 + (_useNativeGLTexturing || !AllowNonRGBVideo ? " -format=BGRA" : "");
+				videoConfiguration1 = videoConfigurationiOS1 + (_useNativeGLTexturing || !AllowNonRGBVideo ? " -format=BGRA" : "");
 				break;
 			default:
                 videoConfiguration0 = "";			

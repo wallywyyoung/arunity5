@@ -87,6 +87,14 @@ public class ARControllerEditor : Editor
 			}
 
 			arcontroller.UseNativeGLTexturingIfAvailable = EditorGUILayout.Toggle("Use native GL texturing (if available)", arcontroller.UseNativeGLTexturingIfAvailable);
+			if (arcontroller.UseNativeGLTexturingIfAvailable) {
+				EditorGUI.BeginDisabledGroup(true);
+				EditorGUILayout.Toggle("Allow non-RGB video internally.", false);
+				EditorGUI.EndDisabledGroup();
+			} else {
+				arcontroller.AllowNonRGBVideo = EditorGUILayout.Toggle("Allow non-RGB video internally.", arcontroller.AllowNonRGBVideo);
+			}
+
 
 			ContentMode currentContentMode = arcontroller.ContentMode;
 			ContentMode newContentMode = (ContentMode)EditorGUILayout.EnumPopup("Content mode", currentContentMode);
