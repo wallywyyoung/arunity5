@@ -79,7 +79,7 @@ fi
 #OS=`uname -s`
 OS="OSX"
 ARCH=`uname -m`
-VERSION=`sed -En -e 's/This archive contains the ARToolKit for Unity project, plugins, utilities and examples, version[[:space:]]+([0-9]+\.[0-9]+(\.[0-9]+)*).*/\1/p' ARToolKit\ for\ Unity\ Readme.txt`
+VERSION=`sed -En -e 's/This archive contains the ARToolKit for Unity project, plugins, utilities and examples, version[[:space:]]+([0-9]+\.[0-9]+(\.[0-9]+)*).*/\1/p' README.md`
 #
 # Build the archive.
 # Exclude: build files and directories, version control info,

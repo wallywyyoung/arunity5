@@ -1,6 +1,11 @@
 Release Notes
 -------------
 
+== ARToolKit for Unity v5.2.1 ==
+
+Enhancements:
+- Added a new option "Allow non-RGB video internally" on ARController. This allows platforms where bi-planar YUV video offers higher-performance (including iOS and Android) to be used. Note that this option cannot be used if native OpenGL texturing is used. Additionally, with this method, a conversion to RGB for Unity's use is necessary. Profiling of performance is recommended if you use this option.
+
 == ARToolKit for Unity v5.2 ==
 
 New features:

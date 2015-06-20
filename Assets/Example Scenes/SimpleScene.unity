@@ -550,6 +550,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UseNativeGLTexturingIfAvailable: 1
+  AllowNonRGBVideo: 0
   QuitOnEscOrBack: 1
   AutoStartAR: 1
   videoCParamName0: camera_para

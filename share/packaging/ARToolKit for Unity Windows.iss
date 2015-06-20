@@ -1,7 +1,7 @@
 [Setup]
 AppName="ARToolKit for Unity"
-AppVerName="ARToolKit for Unity v5.2"
-AppVersion=5.2
+AppVerName="ARToolKit for Unity v5.2.1"
+AppVersion=5.2.1
 AppPublisher="DAQRI LLC"
 AppPublisherURL=http://www.artoolkit.org/
 AppSupportURL=http://www.artoolkit.org/documentation
@@ -12,7 +12,7 @@ DefaultGroupName=ARToolKit for Unity
 Compression=lzma
 SolidCompression=yes
 SourceDir=../..
-OutputBaseFilename="ARToolKit for Unity v5.2 Setup"
+OutputBaseFilename="ARToolKit for Unity v5.2.1 Setup"
 OutputDir=..
 ChangesEnvironment=no
 
@@ -76,7 +76,9 @@ Type: files; Name: "{pf32}\Unity\Editor\opencv_flann220.dll";
 
 [Files]
 ; Plugins
-Source: "ARToolKit for Unity Readme.txt"; Components: plugins; DestDir: "{app}"; Flags: ignoreversion isreadme
+Source: "README.md"; Components: plugins; DestDir: "{app}"; Flags: ignoreversion isreadme
+Source: "ChangeLog.txt"; Components: plugins; DestDir: "{app}"; Flags: ignoreversion
+Source: "LICENSE.txt"; Components: plugins; DestDir: "{app}"; Flags: ignoreversion
 Source: "Assets\*"; Components: plugins; DestDir: "{app}\Assets"; Flags: recursesubdirs ignoreversion
 ;Source: "Library\*"; Components: plugins; DestDir: "{app}\Library"; Flags: recursesubdirs ignoreversion
 Source: "ProjectSettings\*"; Components: plugins; DestDir: "{app}\ProjectSettings"; Flags: recursesubdirs ignoreversion
