@@ -34,5 +34,8 @@ ExportedObj/
 # Unity3D Generated File On Crash Reports
 sysinfo.txt
 
+# Visual Studio Tools for Unity
+/Assets/UnityVS*
+
 #### Other VCS
 .svn/
