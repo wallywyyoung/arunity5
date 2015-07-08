@@ -51,7 +51,7 @@ class ARTrackedCameraGizmo
 
 
     //[DrawGizmo(GizmoType.SelectedOrChild)]
-	[DrawGizmo(GizmoType.NotSelected | GizmoType.Pickable)] // Draw the gizmo if it is not selected and also no parent/ancestor object is selected. The gizmo can be picked in the editor. First argument of method is the type for which the Gizmo will be drawn.
+	[DrawGizmo(GizmoType.NotInSelectionHierarchy | GizmoType.Pickable)] // Draw the gizmo if it is not selected and also no parent/ancestor object is selected. The gizmo can be picked in the editor. First argument of method is the type for which the Gizmo will be drawn.
     static void RenderARTrackedCameraGizmo(ARTrackedCamera mc, GizmoType gizmoType)
     {
         DrawMarker(mc, (gizmoType & GizmoType.Active) != 0);

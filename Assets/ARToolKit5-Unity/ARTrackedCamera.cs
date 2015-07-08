@@ -104,7 +104,7 @@ public class ARTrackedCamera : ARCamera
 		// so that the virtual objects are rendered. When tracking is lost, 0 will be used, so that no 
 		// objects are displayed.
 		if (cullingMask == -1) {
-			cullingMask = this.gameObject.camera.cullingMask;
+			cullingMask = this.gameObject.GetComponent<Camera>().cullingMask;
 		}
 	}
 
@@ -112,7 +112,7 @@ public class ARTrackedCamera : ARCamera
 	{
 		if (arVisible || (timeLastUpdate - timeTrackingLost < secondsToRemainVisible)) {
 			if (arVisible != lastArVisible) {
-				this.gameObject.camera.cullingMask = cullingMask;
+				this.gameObject.GetComponent<Camera>().cullingMask = cullingMask;
 				if (eventReceiver != null) eventReceiver.BroadcastMessage("OnMarkerFound", GetMarker(), SendMessageOptions.DontRequireReceiver);
 			}
 			transform.localPosition = arPosition; // TODO: Change to transform.position = PositionFromMatrix(origin.transform.localToWorldMatrix * pose) etc;
@@ -120,7 +120,7 @@ public class ARTrackedCamera : ARCamera
 			if (eventReceiver != null) eventReceiver.BroadcastMessage("OnMarkerTracked", GetMarker(), SendMessageOptions.DontRequireReceiver);
 		} else {
 			if (arVisible != lastArVisible) {
-				this.gameObject.camera.cullingMask = 0;
+				this.gameObject.GetComponent<Camera>().cullingMask = 0;
 				if (eventReceiver != null) eventReceiver.BroadcastMessage("OnMarkerLost", GetMarker(), SendMessageOptions.DontRequireReceiver);
 			}
 		}
