@@ -1,7 +1,7 @@
 [Setup]
 AppName="ARToolKit for Unity"
-AppVerName="ARToolKit for Unity v5.2.1"
-AppVersion=5.2.1
+AppVerName="ARToolKit for Unity v5.2.2"
+AppVersion=5.2.2
 AppPublisher="DAQRI LLC"
 AppPublisherURL=http://www.artoolkit.org/
 AppSupportURL=http://www.artoolkit.org/documentation
@@ -12,7 +12,7 @@ DefaultGroupName=ARToolKit for Unity
 Compression=lzma
 SolidCompression=yes
 SourceDir=../..
-OutputBaseFilename="ARToolKit for Unity v5.2.1 Setup"
+OutputBaseFilename="ARToolKit for Unity v5.2.2 Setup"
 OutputDir=..
 ChangesEnvironment=no
 
@@ -45,7 +45,7 @@ Name: runtime; Description: "Install required DLLs for using the plugin in the U
 ; Type: filesandordirs; Name: "{app}\somefolder\*"
 ; Type: files; Name: "{app}\somefile";
 ; Removed from v5.1.7
-Type: files; Name: "{app}\ARToolKit5-Unity.unitypackage";
+; Type: files; Name: "{app}\ARToolKit5-Unity.unitypackage";
 Type: files; Name: "{app}\bin\opencv_core246.dll";
 Type: files; Name: "{app}\bin\opencv_calib3d246.dll";
 Type: files; Name: "{app}\bin\opencv_imgproc246.dll";
@@ -79,6 +79,7 @@ Type: files; Name: "{pf32}\Unity\Editor\opencv_flann220.dll";
 Source: "README.md"; Components: plugins; DestDir: "{app}"; Flags: ignoreversion isreadme
 Source: "ChangeLog.txt"; Components: plugins; DestDir: "{app}"; Flags: ignoreversion
 Source: "LICENSE.txt"; Components: plugins; DestDir: "{app}"; Flags: ignoreversion
+Source: "ARToolKit5-Unity.unitypackage"; Components: plugins; DestDir: "{app}"; Flags: ignoreversion
 Source: "Assets\*"; Components: plugins; DestDir: "{app}\Assets"; Flags: recursesubdirs ignoreversion
 ;Source: "Library\*"; Components: plugins; DestDir: "{app}\Library"; Flags: recursesubdirs ignoreversion
 Source: "ProjectSettings\*"; Components: plugins; DestDir: "{app}\ProjectSettings"; Flags: recursesubdirs ignoreversion

@@ -1,6 +1,9 @@
 Release Notes
 -------------
 
+== ARToolKit for Unity v5.2.2 ==
+- Re-added .unitypackage for easier usage.
+
 == ARToolKit for Unity v5.2.1 ==
 
 Enhancements:
