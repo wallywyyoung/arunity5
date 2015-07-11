@@ -90,7 +90,11 @@ public class ARToolKitPostProcessor {
     [PostProcessBuild(int.MaxValue)]
     public static void OnPostProcessBuild(BuildTarget target, string path) {
         string logPath = Path.Combine(path, LOGFILE_NAME);
+#if UNITY_4_5 || UNITY_4_6
+        if (target != BuildTarget.iPhone) {
+#else
         if (target != BuildTarget.iOS) {
+#endif
             Debug.LogError("ARToolKitPostProcessor::OnIosPostProcess - Called on non iOS build target!");
             return;
         } else if (File.Exists(logPath)) {
