@@ -1271,7 +1271,7 @@ public class ARController : MonoBehaviour
 		MeshRenderer meshRenderer = vbmgo.AddComponent<MeshRenderer>();
 		meshRenderer.castShadows = false;
 		meshRenderer.receiveShadows = false;
-		vbmgo.renderer.material = vbm;
+		vbmgo.GetComponent<Renderer>().material = vbm;
 		
 		return vbmgo;
 	}
@@ -1505,14 +1505,14 @@ public class ARController : MonoBehaviour
 		foreach (ARCamera arc in arCameras) {
 			if (!arc.Stereo) {
 				// A mono display.
-				arc.gameObject.camera.pixelRect = getViewport(_videoWidth0, _videoHeight0, false, ARCamera.ViewEye.Left);
+				arc.gameObject.GetComponent<Camera>().pixelRect = getViewport(_videoWidth0, _videoHeight0, false, ARCamera.ViewEye.Left);
 			} else {
 				// One eye of a stereo display.
 				haveStereoARCamera = true;
 				if (arc.StereoEye == ARCamera.ViewEye.Left) {
-					arc.gameObject.camera.pixelRect = getViewport(_videoWidth0, _videoHeight0, true, ARCamera.ViewEye.Left);
+					arc.gameObject.GetComponent<Camera>().pixelRect = getViewport(_videoWidth0, _videoHeight0, true, ARCamera.ViewEye.Left);
 				} else {
-					arc.gameObject.camera.pixelRect = getViewport((VideoIsStereo ? _videoWidth1 : _videoWidth0), (VideoIsStereo ? _videoHeight1 : _videoHeight0), true, ARCamera.ViewEye.Right);
+					arc.gameObject.GetComponent<Camera>().pixelRect = getViewport((VideoIsStereo ? _videoWidth1 : _videoWidth0), (VideoIsStereo ? _videoHeight1 : _videoHeight0), true, ARCamera.ViewEye.Right);
 				}
 			}
 		}

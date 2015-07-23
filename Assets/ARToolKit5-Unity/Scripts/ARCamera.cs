@@ -113,7 +113,7 @@ public class ARCamera : MonoBehaviour
 
 	public bool SetupCamera(float nearClipPlane, float farClipPlane, Matrix4x4 projectionMatrix, ref bool opticalOut)
 	{
-		Camera c = this.gameObject.camera;
+		Camera c = this.gameObject.GetComponent<Camera>();
 		
 		// A perspective projection matrix from the tracker
 		c.orthographic = false;
