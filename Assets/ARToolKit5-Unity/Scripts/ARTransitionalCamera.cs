@@ -94,7 +94,7 @@ public class ARTransitionalCamera : ARTrackedCamera
         StopCoroutine("DoTransition");
         StartCoroutine("DoTransition", true);
 
-        this.audio.Play();
+        this.GetComponent<AudioSource>().Play();
     }
 
     public void transitionOut()
@@ -102,7 +102,7 @@ public class ARTransitionalCamera : ARTrackedCamera
         StopCoroutine("DoTransition");
         StartCoroutine("DoTransition", false);
 
-        this.audio.Play();
+        this.GetComponent<AudioSource>().Play();
     }
 
     public override void Start()
@@ -110,7 +110,7 @@ public class ARTransitionalCamera : ARTrackedCamera
 		base.Start();
 
 		Matrix4x4 targetInWorldFrame = targetObject.transform.localToWorldMatrix;
-		Matrix4x4 targetInCameraFrame = this.gameObject.camera.transform.parent.worldToLocalMatrix * targetInWorldFrame;
+		Matrix4x4 targetInCameraFrame = this.gameObject.GetComponent<Camera>().transform.parent.worldToLocalMatrix * targetInWorldFrame;
 		vrTargetPosition = ARUtilityFunctions.PositionFromMatrix(targetInCameraFrame);
 		vrTargetRotation = ARUtilityFunctions.QuaternionFromMatrix(targetInCameraFrame);
 
@@ -143,7 +143,7 @@ public class ARTransitionalCamera : ARTrackedCamera
 
     public void OnPreRender()
     {
-        GL.ClearWithSkybox(false, this.gameObject.camera);
+        GL.ClearWithSkybox(false, this.gameObject.GetComponent<Camera>());
 
         this.GetComponent<Skybox>().material.SetColor("_Tint", new Color(1, 1, 1, transitionAmount));
     }
@@ -191,12 +191,12 @@ public class ARTransitionalCamera : ARTrackedCamera
             if (arVisible) {
 				transform.localPosition = Vector3.Lerp(arPosition, vrPosition, transitionAmount);
 				transform.localRotation = Quaternion.Slerp(arRotation, vrRotation, transitionAmount);
-                this.gameObject.camera.cullingMask = cullingMask;
+                this.gameObject.GetComponent<Camera>().cullingMask = cullingMask;
             } else {
-                this.gameObject.camera.cullingMask = 0;
+                this.gameObject.GetComponent<Camera>().cullingMask = 0;
             }
         } else {
-            this.gameObject.camera.cullingMask = cullingMask;
+            this.gameObject.GetComponent<Camera>().cullingMask = cullingMask;
 			transform.localPosition = vrPosition;
 			transform.localRotation = vrRotation;
 		}
