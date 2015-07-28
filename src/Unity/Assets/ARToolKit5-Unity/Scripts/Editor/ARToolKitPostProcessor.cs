@@ -40,10 +40,37 @@ using UnityEditor.Callbacks;
 using System.IO;
 
 public class ARToolKitPostProcessor {
-#if !UNITY_IPHONE
-    [PostProcessBuild(1500)]
-    public static void OnPostProcessBuild(BuildTarget target, string path) { }
-#else
+#if UNITY_STANDALONE_WIN
+	private const  string   EXE           = ".exe";
+	private const  string   RELATIVE_PATH = "{0}_Data/Plugins/";
+	private static string[] REDIST_FILES  = { "ARvideo.dll", "DSVL.dll", "opencv_core2410.dll",
+		                                      "opencv_flann2410.dll", "pthreadVC2.dll", "vcredist.exe" };
+	private const string FILE_NAME_STATUS = "ARToolKit Post Process Build Player: Operating of file {0}.";
+	[PostProcessBuild(int.MaxValue)]
+    public static void OnPostProcessBuild(BuildTarget target, string appPath) {
+		string[] pathSplit     = appPath.Split('/');
+		string   fileName      = pathSplit[pathSplit.Length - 1];
+		string   pathDirectory = appPath.TrimEnd(fileName.ToCharArray());
+		Debug.Log(string.Format(FILE_NAME_STATUS, fileName));
+		fileName = fileName.Trim(EXE.ToCharArray());
+		
+		string fromPath = Path.Combine(pathDirectory, string.Format(RELATIVE_PATH, fileName));
+		if (Directory.Exists(string.Format(RELATIVE_PATH, fileName))) {
+			Debug.LogError("ARTOOLKIT BUILD ERROR: Couldn't data directory!");
+			Debug.LogError("Please move DLLs from [appname]_data/Plugins to the same directory as the exe!");
+			return;
+		}
+
+		// Error when copying to remote drives.
+		if (fromPath.StartsWith ("//")) {
+			fromPath = fromPath.Remove(0, 1);
+		}
+
+		foreach (string redistFile in REDIST_FILES) {
+			File.Move(Path.Combine(fromPath, redistFile), Path.Combine(pathDirectory, redistFile));
+		}
+	}
+#elif UNITY_IPHONE
     private class IosFramework {
         public  string Name, Id, RefId, LastKnownFileType, FormattedName, Path, SourceTree;
 
