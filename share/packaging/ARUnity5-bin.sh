@@ -92,10 +92,10 @@ then
         $DIR_WIN/bin/mk_patt.exe \
         bin/
     cp -vp \
-        /Volumes/C/Projects/ARToolKit5/bin/ARvideo.dll \
+        $DIR_WIN/bin/ARvideo.dll \
         redist/
     cp -vp \
-        /Volumes/C/Projects/ARToolKit5/bin64/ARvideo.dll \
+        $DIR_WIN/bin64/ARvideo.dll \
         redist64/
 fi
 
@@ -106,6 +106,7 @@ sed -Ei "" "s/ARToolKit for Unity Version [0-9]+\.[0-9]+\.[0-9]+/ARToolKit\/ARTo
 # Build the archives.
 # Exclude: build files and directories, version control info,
 # ARToolKitNFTiOS settings files which don't carry over.
+
 
 tar czvf "../ARUnity5-${VERSION}-tools-osx.tar.gz" \
     -T share/packaging/ARUnity5-tools-osx-bom \
