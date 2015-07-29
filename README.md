@@ -8,9 +8,9 @@
 -   [Notes](#Notes)
 
 ###About this Archive
-This archive contains the ARToolKit for Unity project, plugins, utilities and examples, version 5.2.2.
+This archive contains the ARToolKit for Unity project, plugins, utilities and examples, version 5.2.3.
 
-ARToolKit for Unity version 5.2.2 is released under the GNU Lesser General Public License version 3, with some additional permissions. Example code is generally released under a more permissive disclaimer; please read the file LICENSE.txt for more information.
+ARToolKit for Unity version 5.2.3 is released under the GNU Lesser General Public License version 3, with some additional permissions. Example code is generally released under a more permissive disclaimer; please read the file LICENSE.txt for more information.
 
 ARToolKit for Unity is designed to build on Windows, Macintosh OS X, iOS and Android platforms.
 

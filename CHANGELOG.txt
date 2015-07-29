@@ -1,6 +1,14 @@
 Release Notes
 -------------
 
+== ARToolKit for Unity v5.2.3 ==
+- src directory for Unity plugin and Android player source.
+- Updated packaging scripts. Bundling is done through shell.
+- Prepared ARToolKit for Unity for Asset Store distribution.
+- Modified post process build script for Windows to move DLLs to correct directory.
+- Added menu to top bar of Unity to download ARToolKit tools.
+- Added warning to first run on Windows for VS2013 runtimes.
+
 == ARToolKit for Unity v5.2.2 ==
 - Re-added .unitypackage for easier usage.
 

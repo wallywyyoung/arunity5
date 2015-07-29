@@ -102,7 +102,7 @@ fi
 # Rename version, where appropriate.
 ARTOOLKIT_ROOT='src/Unity/Assets/ARToolKit5-Unity'
 sed -Ei "" "s/version [0-9]+\.[0-9]+\.[0-9]+/version $VERSION/" README.md
-sed -Ei "" "s/ARToolKit for Unity Version [0-9]+\.[0-9]+\.[0-9]+/ARToolKit\/ARToolKit for Unity Version $VERSION/" $ARTOOLKIT_ROOT/Scripts/Editor/ARToolKitMenuEditor.cs
+sed -Ei "" "s/ARToolKit for Unity Version [0-9]+\.[0-9]+\.[0-9]+/ARToolKit for Unity Version $VERSION/" $ARTOOLKIT_ROOT/Scripts/Editor/ARToolKitMenuEditor.cs
 # Build the archives.
 # Exclude: build files and directories, version control info,
 # ARToolKitNFTiOS settings files which don't carry over.
@@ -119,7 +119,7 @@ tar czvf "../ARUnity5-${VERSION}-tools-osx.tar.gz" \
     --exclude ".DS_Store" \
     --exclude "desktop.ini" \
 
-cat share/packaging/ARUnity5-tools-win-bom | zip "../ARUnity5-${VERSION}-tools-win" -@
+cat share/packaging/ARUnity5-tools-win-bom | zip "../ARUnity5-${VERSION}-tools-win.zip" -@
 
 cp ./README.md $ARTOOLKIT_ROOT
 cp ./CHANGELOG.txt $ARTOOLKIT_ROOT
