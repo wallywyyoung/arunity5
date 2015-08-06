@@ -58,11 +58,11 @@ public class ARToolKitMenuEditor : MonoBehaviour {
 #else
 	private const  string TOOLS_URL             = "http://www.artoolkit.org/download-artoolkit-sdk";
 #endif
-    private const  string VERSION               = "ARToolKit/ARToolKit for Unity Version 5.2.3";
+    private const  string VERSION               = "ARToolKit/ARToolKit for Unity Version 5.2.2r2";
     private const  string WINDOWS_UNITY_MESSAGE = "Thank you for choosing ARToolKit for Unity! " +
             "<b>ARToolKit requires the Microsoft C++ Redistributables to be installed on your system.</b>\n" +
             "Please select \"{0}\" from the menu above, and install the required packages.";
-    private const  string GET_TOOLS_MESSAGE     = "ARToolKit for Unity Version 5.2.3! <b>To make your own markers, you'll need to download our tools.</b>\n" +
+    private const  string GET_TOOLS_MESSAGE     = "ARToolKit for Unity Version 5.2.2r2! <b>To make your own markers, you'll need to download our tools.</b>\n" +
 		"Please select {0} from menu above to download them.";
 
     static ARToolKitMenuEditor() {

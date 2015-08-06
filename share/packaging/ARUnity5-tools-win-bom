@@ -14,7 +14,6 @@ README.md
 ./bin/genMarkerSet.exe
 ./bin/genTexData.exe
 ./bin/glut32.dll
-./bin/mk_patt
 ./bin/mk_patt.exe
 ./bin/opencv_calib3d2410.dll
 ./bin/opencv_core2410.dll
