@@ -51,13 +51,7 @@ public class ARToolKitMenuEditor : MonoBehaviour {
     private const  string COMMUNITY_URL         = "http://www.artoolkit.org/community/forums/";
     private const  string SOURCE_URL            = "https://github.com/artoolkit/artoolkit5";
     private const  string PLUGIN_SOURCE_URL     = "https://github.com/artoolkit/arunity5";
-#if UNITY_EDITOR_WIN
-	private const  string TOOLS_URL             = "http://www.artoolkit.org/dist/arunity5/5.2/ARUnity5-5.2.3-tools-win.zip";
-#elif UNITY_EDITOR_OSX
-	private const  string TOOLS_URL             = "http://www.artoolkit.org/dist/arunity5/5.2/ARUnity5-5.2.3-tools-osx.tar.gz";
-#else
-	private const  string TOOLS_URL             = "http://www.artoolkit.org/download-artoolkit-sdk";
-#endif
+	private const  string TOOLS_URL             = "http://artoolkit.org/download-artoolkit-sdk#unity";
     private const  string VERSION               = "ARToolKit/ARToolKit for Unity Version 5.2.2r2";
     private const  string WINDOWS_UNITY_MESSAGE = "Thank you for choosing ARToolKit for Unity! " +
             "<b>ARToolKit requires the Microsoft C++ Redistributables to be installed on your system.</b>\n" +
