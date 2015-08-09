@@ -107,6 +107,7 @@ public class ARController : MonoBehaviour
 	public string videoConfigurationMacOSX0 = "-width=640 -height=480";
 	public string videoConfigurationiOS0 = "";
 	public string videoConfigurationAndroid0 = "";
+	public string videoConfigurationWindowsStore0 = "-device=WinMC -format=BGRA -position=rear";
 	public int BackgroundLayer0 = 8;
 
 	// Config. out.
@@ -137,6 +138,7 @@ public class ARController : MonoBehaviour
 	public string videoConfigurationMacOSX1 = "-source=1 -width=640 -height=480";
 	public string videoConfigurationiOS1 = "";
 	public string videoConfigurationAndroid1 = "";
+	public string videoConfigurationWindowsStore1 = "-device=WinMC -format=BGRA";
 	public int BackgroundLayer1 = 9;
 
 	// Config. out.
@@ -326,7 +328,12 @@ public class ARController : MonoBehaviour
 				break;
 			case RuntimePlatform.IPhonePlayer:					// Unity Player on iOS.
 				break;
-            default:
+			case RuntimePlatform.MetroPlayerX86:				// Unity Player on Windows Store X86.
+			case RuntimePlatform.MetroPlayerX64:				// Unity Player on Windows Store X64.
+			case RuntimePlatform.MetroPlayerARM:				// Unity Player on Windows Store ARM.
+				PluginFunctions.arwRegisterLogCallback(Log);
+				break;
+			default:
                 break;
         }
 	}
@@ -419,6 +426,11 @@ public class ARController : MonoBehaviour
 				break;
             case RuntimePlatform.IPhonePlayer:
 				break;
+			case RuntimePlatform.MetroPlayerX86:
+			case RuntimePlatform.MetroPlayerX64:
+			case RuntimePlatform.MetroPlayerARM:
+				PluginFunctions.arwRegisterLogCallback(null);
+				break;
 			default:
                 break;
         }
@@ -498,6 +510,12 @@ public class ARController : MonoBehaviour
             case RuntimePlatform.IPhonePlayer:
 				videoConfiguration0 = videoConfigurationiOS0 + (_useNativeGLTexturing || !AllowNonRGBVideo ? " -format=BGRA" : "");
 				videoConfiguration1 = videoConfigurationiOS1 + (_useNativeGLTexturing || !AllowNonRGBVideo ? " -format=BGRA" : "");
+				break;
+			case RuntimePlatform.MetroPlayerX86:
+			case RuntimePlatform.MetroPlayerX64:
+			case RuntimePlatform.MetroPlayerARM:
+				videoConfiguration0 = videoConfigurationWindowsStore0;
+				videoConfiguration1 = videoConfigurationWindowsStore1;
 				break;
 			default:
                 videoConfiguration0 = "";			

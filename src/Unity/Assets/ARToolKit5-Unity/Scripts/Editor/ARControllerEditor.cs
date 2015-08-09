@@ -73,6 +73,7 @@ public class ARControllerEditor : Editor
             arcontroller.videoConfigurationMacOSX0 = EditorGUILayout.TextField("Video config. (Mac OS X)", arcontroller.videoConfigurationMacOSX0);
             arcontroller.videoConfigurationiOS0 = EditorGUILayout.TextField("Video config. (iOS)", arcontroller.videoConfigurationiOS0);
             arcontroller.videoConfigurationAndroid0 = EditorGUILayout.TextField("Video config. (Android)", arcontroller.videoConfigurationAndroid0);
+			arcontroller.videoConfigurationWindowsStore0 = EditorGUILayout.TextField("Video config. (Windows Store)", arcontroller.videoConfigurationWindowsStore0);
 			arcontroller.BackgroundLayer0 = EditorGUILayout.LayerField("Layer", arcontroller.BackgroundLayer0);
 
 			arcontroller.VideoIsStereo = EditorGUILayout.Toggle("Video source is stereo", arcontroller.VideoIsStereo);
@@ -82,6 +83,7 @@ public class ARControllerEditor : Editor
 				arcontroller.videoConfigurationMacOSX1 = EditorGUILayout.TextField("Video config.(R) (Mac OS X)", arcontroller.videoConfigurationMacOSX1);
 				arcontroller.videoConfigurationiOS1 = EditorGUILayout.TextField("Video config.(R) (iOS)", arcontroller.videoConfigurationiOS1);
 				arcontroller.videoConfigurationAndroid1 = EditorGUILayout.TextField("Video config.(R) (Android)", arcontroller.videoConfigurationAndroid1);
+				arcontroller.videoConfigurationWindowsStore1 = EditorGUILayout.TextField("Video config.(R) (Windows Store)", arcontroller.videoConfigurationWindowsStore1);
 				arcontroller.BackgroundLayer1 = EditorGUILayout.LayerField("Layer (R)", arcontroller.BackgroundLayer1);
 				arcontroller.transL2RName = EditorGUILayout.TextField("Stereo parameters", arcontroller.transL2RName);
 			}
