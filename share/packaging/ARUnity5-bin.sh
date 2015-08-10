@@ -6,9 +6,10 @@ OURDIR=$(cd "$(dirname "$0")"; pwd)
 cd "${OURDIR}/../../"
 echo "Building archive from directory \"$PWD\"."
 
-echo "Enter the version number of this build (in format [0-9]+.[0-9]+.[0-9]+) : "
+echo "Enter the version number of this build (in format ([0-9]+.[0-9]+)(.[0-9]+)?(r[0-9]+)?) : "
 read VERSION
-if ([[ $VERSION =~ ^(([0-9]+.[0-9]+.[0-9]+)(r[0-9]+))?$ ]] && echo matched)
+
+if ([[ $VERSION =~ ^(([0-9]+.[0-9]+)(.[0-9]+)?(r[0-9]+)?)$ ]] && echo matched)
 then
     echo "Setting version to $VERSION"
 else
@@ -101,8 +102,8 @@ fi
 
 # Rename version, where appropriate.
 ARTOOLKIT_ROOT='src/Unity/Assets/ARToolKit5-Unity'
-sed -Ei "" "s/version [0-9]+\.[0-9]+\.[0-9]+(r[0-9]+)?/version $VERSION/" README.md
-sed -Ei "" "s/ARToolKit for Unity Version [0-9]+\.[0-9]+\.[0-9]+(r[0-9]+)?/ARToolKit for Unity Version $VERSION/" $ARTOOLKIT_ROOT/Scripts/Editor/ARToolKitMenuEditor.cs
+sed -Ei "" "s/version (([0-9]+\.[0-9]+)(\.[0-9]+)?(r[0-9]+)?)/version $VERSION/" README.md
+sed -Ei "" "s/ARToolKit for Unity Version (([0-9]+\.[0-9]+)(\.[0-9]+)?(r[0-9]+)?)/ARToolKit for Unity Version $VERSION/" $ARTOOLKIT_ROOT/Scripts/Editor/ARToolKitMenuEditor.cs
 # Build the archives.
 # Exclude: build files and directories, version control info,
 # settings files which don't carry over.
