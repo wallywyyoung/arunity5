@@ -43,8 +43,7 @@ public class ARToolKitPostProcessor {
 #if UNITY_STANDALONE_WIN
 	private const  string   EXE           = ".exe";
 	private const  string   RELATIVE_PATH = "{0}_Data/Plugins/";
-	private static string[] REDIST_FILES  = { "ARvideo.dll", "DSVL.dll", "opencv_core2410.dll",
-		                                      "opencv_flann2410.dll", "pthreadVC2.dll", "vcredist.exe" };
+	private static string[] REDIST_FILES  = { "ARvideo.dll", "DSVL.dll", "pthreadVC2.dll", "vcredist.exe" };
 	private const string FILE_NAME_STATUS = "ARToolKit Post Process Build Player: Operating of file {0}.";
 	[PostProcessBuild(int.MaxValue)]
     public static void OnPostProcessBuild(BuildTarget target, string appPath) {

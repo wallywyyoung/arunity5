@@ -105,7 +105,7 @@ sed -Ei "" "s/version [0-9]+\.[0-9]+\.[0-9]+(r[0-9]+)?/version $VERSION/" README
 sed -Ei "" "s/ARToolKit for Unity Version [0-9]+\.[0-9]+\.[0-9]+(r[0-9]+)?/ARToolKit for Unity Version $VERSION/" $ARTOOLKIT_ROOT/Scripts/Editor/ARToolKitMenuEditor.cs
 # Build the archives.
 # Exclude: build files and directories, version control info,
-# ARToolKitNFTiOS settings files which don't carry over.
+# settings files which don't carry over.
 
 
 tar czvf "../ARUnity5-${VERSION}-tools-osx.tar.gz" \
