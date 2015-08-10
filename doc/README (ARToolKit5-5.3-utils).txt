@@ -12,9 +12,9 @@ Usage information.
 About this archive.
 -------------------
 
-This archive contains the ARToolKit utilities, version 5.2.
+This archive contains the ARToolKit utilities, version 5.3.
 
-ARToolKit v5.2 utilities are made available to you under the GNU Lesser General Public License, version 3 (LGPLv3).
+ARToolKit v5.3 utilities are made available to you under the GNU Lesser General Public License, version 3 (LGPLv3).
 
 ARToolKit utilities package is designed to run on Windows and Macintosh OS X platforms.
 
@@ -22,7 +22,7 @@ This archive was assembled by:
     Philip Lamb
     ARToolworks, Inc.
     http://www.artoolworks.com
-    2015-03-13
+    2015-xx-xx
 
 
 Running the utilities

@@ -149,8 +149,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe4ec33cee90c844ea1bcc2cd642033e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UseNativeGLTexturingIfAvailable: 1
-  AllowNonRGBVideo: 0
+  UseNativeGLTexturingIfAvailable: 0
+  AllowNonRGBVideo: 1
   QuitOnEscOrBack: 1
   AutoStartAR: 1
   videoCParamName0: camera_para
@@ -158,6 +158,7 @@ MonoBehaviour:
   videoConfigurationMacOSX0: -device=QUICKTIME
   videoConfigurationiOS0: 
   videoConfigurationAndroid0: 
+  videoConfigurationWindowsStore0: -device=WinMC -format=BGRA -position=rear
   BackgroundLayer0: 8
   VideoIsStereo: 0
   transL2RName: transL2R
@@ -166,6 +167,7 @@ MonoBehaviour:
   videoConfigurationMacOSX1: -device=QUICKTIME
   videoConfigurationiOS1: 
   videoConfigurationAndroid1: 
+  videoConfigurationWindowsStore1: -device=WinMC -format=BGRA
   BackgroundLayer1: 9
   NearPlane: .00999999978
   FarPlane: 5

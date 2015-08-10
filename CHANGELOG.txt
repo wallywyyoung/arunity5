@@ -1,6 +1,14 @@
 Release Notes
 -------------
 
+== ARToolKit for Unity v5.3 ==
+- Based on ARToolKit v5.3.
+- The NFT dataset format has changed due to the changeover in ARToolKit's libKPM from SURF to FREAK features. A new file format with extension '.fset3' replaces the  previous '.fset2' format. Datasets will need to be regenerated using the genTexData tool from ARToolKit v5.3 utilities.
+- The native plugin no longer depends on OpenCV, and for those platforms that previously required libopencv-flann and libopencv-core DLLs to be deployed alongside the app, this requirement is removed.
+- On Android, the C++ runtime has changed to libc++_shared.
+- Windows Phone 8.1 and Windows Store 8.1 support has been added. When deploying, choose "Metro" as the deployment target. 
+
+
 == ARToolKit for Unity v5.2.2r2 ==
 - src directory for Unity plugin and Android player source.
 - Updated packaging scripts. Bundling is done through shell.

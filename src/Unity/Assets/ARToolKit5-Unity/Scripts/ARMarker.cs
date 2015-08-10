@@ -111,7 +111,7 @@ public class ARMarker : MonoBehaviour
 	// Also, we need a list of the file extensions that make up an NFT dataset.
 	public string NFTDataName = "";
 	#if !UNITY_METRO
-	private readonly string[] NFTDataExts = {"iset", "fset", "fset2"};
+	private readonly string[] NFTDataExts = {"iset", "fset", "fset3"};
 	#endif
 	[NonSerialized]
 	public float NFTWidth; // Once marker is loaded, this holds the width of the marker in Unity units.
