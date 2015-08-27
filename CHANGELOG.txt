@@ -1,6 +1,10 @@
 Release Notes
 -------------
 
+== ARToolKit for Unity v5.3r1 ==
+- Copied missing utilities from ARToolKit 5.3 release.
+- Added camera request dialog and access time delay to beginning of ARController for iOS.
+
 == ARToolKit for Unity v5.3 ==
 - Based on ARToolKit v5.3.
 - The NFT dataset format has changed due to the changeover in ARToolKit's libKPM from SURF to FREAK features. A new file format with extension '.fset3' replaces the  previous '.fset2' format. Datasets will need to be regenerated using the genTexData tool from ARToolKit v5.3 utilities.
