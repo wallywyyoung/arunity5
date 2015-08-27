@@ -42,6 +42,7 @@ using System.Text;
 using UnityEngine;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Threading;
 
 public enum ContentMode
 {
@@ -301,7 +302,10 @@ public class ARController : MonoBehaviour
     void Awake()
     {
 		//Log(LogTag + "ARController.Awake())");
-		
+		#if UNITY_IOS && !UNITY_EDITOR
+		ARNativePluginStatic.aruRequestCamera();
+		Thread.Sleep(2000);
+		#endif
         if (PluginFunctions.arwInitialiseAR(TemplateSize, TemplateCountMax)) {
 			// ARToolKit version number
 			_version = PluginFunctions.arwGetARToolKitVersion();

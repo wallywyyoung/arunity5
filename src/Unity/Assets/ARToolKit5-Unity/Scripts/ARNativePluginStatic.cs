@@ -44,6 +44,12 @@ using UnityEngine;
 
 public static class ARNativePluginStatic
 {
+	
+	#if UNITY_IOS
+	[DllImport("__Internal")]
+	public static extern void aruRequestCamera();
+	#endif
+
 	[DllImport("__Internal")]
 	public static extern void arwRegisterLogCallback(PluginFunctions.LogCallback callback);
 
