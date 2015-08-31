@@ -203,8 +203,9 @@ public class ARController : MonoBehaviour
         Manual = 0,
         Median = 1,
         Otsu = 2,
-        Adaptive = 3
-    }
+        Adaptive = 3,
+		Bracketing = 4
+	}
 
     public enum ARToolKitLabelingMode
     {
@@ -217,8 +218,9 @@ public class ARController : MonoBehaviour
         {ARToolKitThresholdMode.Manual, "Uses a fixed threshold value"},
         {ARToolKitThresholdMode.Median, "Automatically adjusts threshold to whole-image median"},
         {ARToolKitThresholdMode.Otsu, "Automatically adjusts threshold using Otsu's method for foreground/background determination"},
-        {ARToolKitThresholdMode.Adaptive, "Uses adaptive dynamic thresholding (warning: computationally expensive)"}
-    };
+        {ARToolKitThresholdMode.Adaptive, "Uses adaptive dynamic thresholding (warning: computationally expensive)"},
+		{ARToolKitThresholdMode.Bracketing, "Automatically adjusts threshold using bracketed threshold values"}
+	};
 	
 	public enum ARToolKitPatternDetectionMode {
 		AR_TEMPLATE_MATCHING_COLOR = 0,
@@ -1673,13 +1675,13 @@ public class ARController : MonoBehaviour
 		}
 		
         if (showGUIDebug) {
-            if (GUI.Button(new Rect(550, 250, 150, 50), "Info")) showGUIDebugInfo = !showGUIDebugInfo;
+            if (GUI.Button(new Rect(570, 250, 150, 50), "Info")) showGUIDebugInfo = !showGUIDebugInfo;
             if (showGUIDebugInfo) DrawInfoGUI();
 
-            if (GUI.Button(new Rect(550, 320, 150, 50), "Log")) showGUIDebugLogConsole = !showGUIDebugLogConsole;
+            if (GUI.Button(new Rect(570, 320, 150, 50), "Log")) showGUIDebugLogConsole = !showGUIDebugLogConsole;
             if (showGUIDebugLogConsole) DrawLogConsole();
 
-			if (GUI.Button(new Rect(550, 390, 150, 50), "Content mode: " + ContentModeNames[ContentMode])) CycleContentMode();
+			if (GUI.Button(new Rect(570, 390, 150, 50), "Content mode: " + ContentModeNames[ContentMode])) CycleContentMode();
 #if UNITY_ANDROID
 			if (Application.platform == RuntimePlatform.Android) {
 				if (GUI.Button(new Rect(400, 250, 150, 50), "Camera preferences")) {
@@ -1690,7 +1692,19 @@ public class ARController : MonoBehaviour
 				}
 			}
 #endif
-			if (GUI.Button(new Rect(400, 390, 150, 50), "Video background: " + UseVideoBackground)) UseVideoBackground = !UseVideoBackground;
+			if (GUI.Button(new Rect(400, 320, 150, 50), "Video background: " + UseVideoBackground)) UseVideoBackground = !UseVideoBackground;
+			if (GUI.Button(new Rect(400, 390, 150, 50), "Debug mode: " + DebugVideo)) DebugVideo = !DebugVideo;
+		
+			ARToolKitThresholdMode currentThresholdMode = VideoThresholdMode;
+	        GUI.Label(new Rect(400, 460, 320, 25), "Threshold Mode: " + currentThresholdMode);
+			if (currentThresholdMode == ARToolKitThresholdMode.Manual) {
+		        float currentThreshold = VideoThreshold;
+		        float newThreshold = GUI.HorizontalSlider(new Rect(400, 495, 270, 25), currentThreshold, 0, 255);
+		        if (newThreshold != currentThreshold) {
+		            VideoThreshold = (int)newThreshold;
+		        }
+				GUI.Label(new Rect(680, 495, 50, 25), VideoThreshold.ToString());
+			}
 
             GUI.Label(new Rect(700, 20, 100, 25), "FPS: " + lastFramerate);
         }
@@ -1725,52 +1739,6 @@ public class ARController : MonoBehaviour
         GUI.Label(new Rect(10, 210, 500, 25), "Viewport : " + _videoBackgroundCamera0.pixelRect.xMin + "," + _videoBackgroundCamera0.pixelRect.yMin + ", " + _videoBackgroundCamera0.pixelRect.xMax + ", " + _videoBackgroundCamera0.pixelRect.yMax);
         //GUI.Label(new Rect(10, 250, 800, 100), "Base Data Path : " + BaseDataPath);
 		
-		//
-        // Debug image            
-		//
-		
-		// Like the main video texture, the debug image uses only a portion of a power-of-two
-        // texture, so need some calculations to determine how large to draw the entire texture
-        // in order to get the interesting portion an exact size. The rest has an alpha of 0 so
-        // won't show up.
-
-//        float desiredX = 450;
-//        float desiredY = 10;
-//        float desiredWidth = 200;
-//
-//        float aspect = (float)_videoHeight0 / (float)_videoWidth0;
-//        float desiredHeight = (float)desiredWidth * aspect;
-//
-//        float debugImageWidth = desiredWidth * ((float)TextureWidth / (float)_videoWidth0);
-//        float debugImageHeight = desiredHeight * ((float)TextureHeight / (float)_videoHeight0);
-//
-//        float debugImageInfoX = desiredX;
-//        float debugImageInfoY = desiredY + desiredHeight - debugImageHeight;
-//
-//        Rect debugImageRect = new Rect(debugImageInfoX, debugImageInfoY, debugImageWidth, debugImageHeight);
-//
-//        if (DebugVideo && videoDebugTexture != null) {
-//            float b = 3;
-//            GUI.Box(new Rect(desiredX - b, desiredY - b, desiredWidth + b * 2, desiredHeight + b * 2), "");
-//            GUI.DrawTexture(debugImageRect, videoDebugTexture, ScaleMode.ScaleToFit, true);
-//        }
-//		
-//		ARToolKitThresholdMode currentThresholdMode = VideoThresholdMode;
-//        GUI.Label(new Rect(debugImageRect.x, debugImageRect.yMax + 30, 200, 25), "Threshold Mode: " + ThresholdModeDescriptions[currentThresholdMode]);
-//		if (currentThresholdMode == ARToolKitThresholdMode.Manual) {
-//	        float currentThreshold = VideoThreshold;
-//	        float newThreshold = GUI.HorizontalSlider(new Rect(debugImageRect.x, debugImageRect.yMax + 10, desiredWidth, 25), currentThreshold, 0, 255);
-//	        if (newThreshold != currentThreshold) {
-//	            VideoThreshold = (int)newThreshold;
-//	        }
-//        	GUI.Label(new Rect(debugImageRect.x, debugImageRect.yMax + 60, 200, 25), "Threshold: " + VideoThreshold.ToString());
-//		}
-//
-//        bool t = GUI.Toggle(new Rect(debugImageRect.x, debugImageRect.yMax + 80, 100, 25), toggle, "Debug Mode");
-//        if (t != toggle) {
-//            toggle = t;
-//            DebugVideo = toggle;
-//        }
 
         int y = 350;
 

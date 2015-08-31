@@ -128,8 +128,8 @@ public class ARControllerEditor : Editor
             // Info about the selected mode
             EditorGUILayout.LabelField("", ARController.ThresholdModeDescriptions[newThreshMode]);
 
-            // Show threshold slider only in manual mode
-            if (newThreshMode == ARController.ARToolKitThresholdMode.Manual) {
+            // Show threshold slider only in manual or bracketing modes.
+			if (newThreshMode == ARController.ARToolKitThresholdMode.Manual || newThreshMode == ARController.ARToolKitThresholdMode.Bracketing) {
 
                 int currentThreshold = arcontroller.VideoThreshold;
                 //int newThreshold = UnityEngine.Mathf.Clamp(EditorGUILayout.IntField("Threshold: ", currentThreshold), 0, 255);

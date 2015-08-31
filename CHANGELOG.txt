@@ -1,6 +1,9 @@
 Release Notes
 -------------
 
+== ARToolKit for Unity v5.3.1 ==
+- Updated to ARToolKit v5.3.1, including addition of new threshold mode, "Bracketing".
+
 == ARToolKit for Unity v5.3r1 ==
 - Copied missing utilities from ARToolKit 5.3 release.
 - Added camera request dialog and access time delay to beginning of ARController for iOS.
