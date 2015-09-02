@@ -109,6 +109,7 @@ public class ARController : MonoBehaviour
 	public string videoConfigurationiOS0 = "";
 	public string videoConfigurationAndroid0 = "";
 	public string videoConfigurationWindowsStore0 = "-device=WinMC -format=BGRA -position=rear";
+	public string videoConfigurationLinux0="";
 	public int BackgroundLayer0 = 8;
 
 	// Config. out.
@@ -140,6 +141,7 @@ public class ARController : MonoBehaviour
 	public string videoConfigurationiOS1 = "";
 	public string videoConfigurationAndroid1 = "";
 	public string videoConfigurationWindowsStore1 = "-device=WinMC -format=BGRA";
+	public string videoConfigurationLinux1="";
 	public int BackgroundLayer1 = 9;
 
 	// Config. out.
@@ -328,7 +330,9 @@ public class ARController : MonoBehaviour
 				goto case RuntimePlatform.WindowsPlayer;
 			case RuntimePlatform.WindowsEditor:					// Unity Editor on Windows.
 			case RuntimePlatform.WindowsPlayer:					// Unity Player on Windows.
-                PluginFunctions.arwRegisterLogCallback(Log);
+	case RuntimePlatform.LinuxEditor:
+	case RuntimePlatform.LinuxPlayer:
+		PluginFunctions.arwRegisterLogCallback(Log);
                 break;
 			case RuntimePlatform.Android:						// Unity Player on Android.
 				break;
@@ -426,6 +430,8 @@ public class ARController : MonoBehaviour
 				goto case RuntimePlatform.WindowsPlayer;
             case RuntimePlatform.WindowsEditor:
             case RuntimePlatform.WindowsPlayer:
+            case RuntimePlatform.LinuxEditor:
+            case RuntimePlatform.LinuxPlayer:
                 PluginFunctions.arwRegisterLogCallback(null);
                 break;
             case RuntimePlatform.Android:
@@ -522,6 +528,11 @@ public class ARController : MonoBehaviour
 			case RuntimePlatform.MetroPlayerARM:
 				videoConfiguration0 = videoConfigurationWindowsStore0;
 				videoConfiguration1 = videoConfigurationWindowsStore1;
+				break;
+			case RuntimePlatform.LinuxEditor:
+			case RuntimePlatform.LinuxPlayer:
+				videoConfiguration0 = videoConfigurationLinux0;
+				videoConfiguration1 = videoConfigurationLinux1;
 				break;
 			default:
                 videoConfiguration0 = "";			
