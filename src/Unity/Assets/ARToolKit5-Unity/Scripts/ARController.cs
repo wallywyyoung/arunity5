@@ -330,8 +330,8 @@ public class ARController : MonoBehaviour
 				goto case RuntimePlatform.WindowsPlayer;
 			case RuntimePlatform.WindowsEditor:					// Unity Editor on Windows.
 			case RuntimePlatform.WindowsPlayer:					// Unity Player on Windows.
-	case RuntimePlatform.LinuxEditor:
-	case RuntimePlatform.LinuxPlayer:
+			//case RuntimePlatform.LinuxEditor:
+			case RuntimePlatform.LinuxPlayer:
 		PluginFunctions.arwRegisterLogCallback(Log);
                 break;
 			case RuntimePlatform.Android:						// Unity Player on Android.
@@ -430,7 +430,7 @@ public class ARController : MonoBehaviour
 				goto case RuntimePlatform.WindowsPlayer;
             case RuntimePlatform.WindowsEditor:
             case RuntimePlatform.WindowsPlayer:
-            case RuntimePlatform.LinuxEditor:
+            //case RuntimePlatform.LinuxEditor:
             case RuntimePlatform.LinuxPlayer:
                 PluginFunctions.arwRegisterLogCallback(null);
                 break;
@@ -529,7 +529,7 @@ public class ARController : MonoBehaviour
 				videoConfiguration0 = videoConfigurationWindowsStore0;
 				videoConfiguration1 = videoConfigurationWindowsStore1;
 				break;
-			case RuntimePlatform.LinuxEditor:
+			//case RuntimePlatform.LinuxEditor:
 			case RuntimePlatform.LinuxPlayer:
 				videoConfiguration0 = videoConfigurationLinux0;
 				videoConfiguration1 = videoConfigurationLinux1;
