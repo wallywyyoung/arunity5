@@ -80,7 +80,6 @@ fi
 if [ "$COPYUTILS_WIN" = "y" ]
 then
     cp -vp \
-        $DIR_WIN/bin/ARvideo.dll \
         $DIR_WIN/bin/calib_camera.exe \
         $DIR_WIN/bin/calib_optical.exe \
         $DIR_WIN/bin/calib_stereo.exe \
@@ -91,12 +90,21 @@ then
         $DIR_WIN/bin/genMarkerSet.exe \
         $DIR_WIN/bin/genTexData.exe \
         $DIR_WIN/bin/mk_patt.exe \
+        $DIR_WIN/bin/ARvideo.dll \
+        $DIR_WIN/bin/DSVL.dll \
+        $DIR_WIN/bin/glut32.dll \
+        $DIR_WIN/bin/pthreadVC2.dll \
+        $DIR_WIN/bin/opencv_calib3d2410.dll \
+        $DIR_WIN/bin/opencv_core2410.dll \
+        $DIR_WIN/bin/opencv_features2d2410.dll \
+        $DIR_WIN/bin/opencv_flann2410.dll \
+        $DIR_WIN/bin/opencv_imgproc2410.dll \
         bin/
     cp -vp \
-        $DIR_WIN/bin/ARvideo.dll \
+        $DIR_WIN/bin/vcredist_x86.exe \
         redist/
     cp -vp \
-        $DIR_WIN/bin64/ARvideo.dll \
+        $DIR_WIN/bin64/vcredist_x64.exe \
         redist64/
 fi
 
