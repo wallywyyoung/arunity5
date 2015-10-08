@@ -1271,28 +1271,7 @@ public class ARController : MonoBehaviour
 		arr = null;
 
 		// Create a material tied to the texture.
-		string shaderSource = 
-			    "Shader \"VideoPlaneNoLight\" {"+
-				"  Properties {"+
-				"    _Color (\"Main Color\", Color) = (1,1,1,1)"+
-				"    _MainTex (\"Base (RGB)\", 2D) = \"white\" { }"+
-				"  }"+
-				"  SubShader {"+
-				"    Pass {"+
-				"      Material {"+
-				"        Diffuse [_Color]"+
-				"      }"+
-				"      Lighting Off"+
-				"      ZWrite Off"+
-				"      Blend SrcAlpha OneMinusSrcAlpha"+
-				"      SeparateSpecular Off"+
-				"      SetTexture [_MainTex] {"+
-				"        constantColor [_Color]"+
-				"        Combine texture * constant, texture * constant"+
-				"      }"+
-				"    }"+
-				"  }"+
-				"} ";
+        Shader shaderSource = Shader.Find("VideoPlaneNoLight");
 		vbm = new Material(shaderSource); //ARToolKit5-Unity.Properties.Resources.VideoPlaneShader;
 		vbm.shader.hideFlags = HideFlags.HideAndDontSave;
 		vbm.hideFlags = HideFlags.HideAndDontSave;
