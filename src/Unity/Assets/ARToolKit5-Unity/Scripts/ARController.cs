@@ -1273,7 +1273,6 @@ public class ARController : MonoBehaviour
 		// Create a material tied to the texture.
         Shader shaderSource = Shader.Find("VideoPlaneNoLight");
 		vbm = new Material(shaderSource); //ARToolKit5-Unity.Properties.Resources.VideoPlaneShader;
-		vbm.shader.hideFlags = HideFlags.HideAndDontSave;
 		vbm.hideFlags = HideFlags.HideAndDontSave;
 		vbm.mainTexture = vbt;
 		//Log(LogTag + "Created video background material");
