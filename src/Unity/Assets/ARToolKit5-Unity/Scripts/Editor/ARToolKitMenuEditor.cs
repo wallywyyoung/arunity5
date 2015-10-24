@@ -91,8 +91,11 @@ public class ARToolKitMenuEditor : MonoBehaviour {
 	private static void Documentation() {
         Application.OpenURL(DOCUMENTATION_URL);
     }
-    
-    [MenuItem ("ARToolKit/Support/Community Forums", false, 52)]
+	[MenuItem ("ARToolKit/Build", false, 41)]
+	private static void Documentdation() {
+		ARToolKitPackager.CreatePackage();
+	}
+	[MenuItem ("ARToolKit/Support/Community Forums", false, 52)]
 	private static void Community() {
         Application.OpenURL(COMMUNITY_URL);
     }

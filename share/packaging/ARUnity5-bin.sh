@@ -109,13 +109,28 @@ then
 fi
 
 # Rename version, where appropriate.
+
 ARTOOLKIT_ROOT='src/Unity/Assets/ARToolKit5-Unity'
 sed -Ei "" "s/version (([0-9]+\.[0-9]+)(\.[0-9]+)?(r[0-9]+)?)/version $VERSION/" README.md
 sed -Ei "" "s/ARToolKit for Unity Version (([0-9]+\.[0-9]+)(\.[0-9]+)?(r[0-9]+)?)/ARToolKit for Unity Version $VERSION/" $ARTOOLKIT_ROOT/Scripts/Editor/ARToolKitMenuEditor.cs
+
+# Build the unitypackage.
+
+cp ./README.md $ARTOOLKIT_ROOT
+cp ./CHANGELOG.txt $ARTOOLKIT_ROOT
+
+/Applications/Unity/Unity.app/Contents/MacOS/Unity -quit -batchmode -nographics -executeMethod ARToolKitPackager.CreatePackage -projectPath $(pwd)/src/Unity ARUnity5.unitypackage
+
+rm $ARTOOLKIT_ROOT/README.md
+rm $ARTOOLKIT_ROOT/CHANGELOG.txt
+rm $ARTOOLKIT_ROOT/README.md.meta
+rm $ARTOOLKIT_ROOT/CHANGELOG.txt.meta
+
+mv ./src/Unity/ARUnity5.unitypackage .
+
 # Build the archives.
 # Exclude: build files and directories, version control info,
 # settings files which don't carry over.
-
 
 tar czvf "../ARUnity5-${VERSION}-tools-osx.tar.gz" \
     -T share/packaging/ARUnity5-tools-osx-bom \
@@ -130,22 +145,3 @@ tar czvf "../ARUnity5-${VERSION}-tools-osx.tar.gz" \
 
 cat share/packaging/ARUnity5-tools-win-bom | zip "../ARUnity5-${VERSION}-tools-win.zip" -@
 
-cp ./README.md $ARTOOLKIT_ROOT
-cp ./CHANGELOG.txt $ARTOOLKIT_ROOT
-cd src/Unity
-
-tar czvf "../../../ARUnity5-${VERSION}.tar.gz" \
-    -T ../../share/packaging/ARUnity5-bin-bom \
-    --exclude "*/.svn" \
-    --exclude "*.o" \
-    --exclude "Makefile" \
-    --exclude "build" \
-    --exclude "*.mode1*" \
-    --exclude "*.pbxuser" \
-    --exclude ".DS_Store" \
-    --exclude "xcuserdata" \
-    --exclude "desktop.ini" \
-
-cd ../..
-rm $ARTOOLKIT_ROOT/README.md
-rm $ARTOOLKIT_ROOT/CHANGELOG.txt

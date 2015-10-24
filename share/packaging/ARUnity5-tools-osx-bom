@@ -1,6 +1,7 @@
 README.md
 ChangeLog.txt
 LICENSE.txt
+ARUnity5.unitypackage
 
 bin/calib_camera
 bin/calib_optical
