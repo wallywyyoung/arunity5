@@ -12,10 +12,8 @@
       - A ".tar.gz" package of the ARToolKit tools, sutible for OS X release.
    -   "ARUnity5-${VERSION}-tools-win.zip"
       - A ".zip" package of the ARToolKit tools, sutible for Windows release.
-   -   "ARUnity5-${VERSION}.tar.gz"
-      - A ".tar.gz" package of the ARToolKit for Unity project itself, which requires manual manipulation.
-5.   Decompress "ARUnity5-${VERSION}.tar.gz" and open the output project in the latest supported release of Unity 3D.
-6.   Select all folders within the project and select "Export Package". For filename, we recommend "ARUnity5-${VERSION}.unitypackage" (same name as the archive which you decompressed earlier).
+   -   "ARUnity5.unitypackage"
+      - The Unity package on its own, which is already bundled with the tools.
 
 ##Deliverables
    -   "ARUnity5-${VERSION}-tools-osx.tar.gz"
