@@ -102,12 +102,39 @@ public class ARCamera : MonoBehaviour {
 	// Optical settings.
 	public bool Optical = false;
 	private bool opticalSetupOK = false;
-	public int OpticalParamsFilenameIndex = 0;
-	public string OpticalParamsFilename = "";
-	public byte[] OpticalParamsFileContents = new byte[0]; // Set by the Editor.
+
+	public int OpticalParamsFilenameIndex {
+		get {
+			return opticalParamsFilenameIndex;
+		}
+	}
+
+	public string OpticalParamsFilename {
+		get {
+			return opticalParamsFilename;
+		}
+	}
+
+	public byte[] OpticalParamsFileContents {
+		get {
+			return opticalParamsFileContents;
+		}
+	}
+
 	public float OpticalEyeLateralOffsetRight = 0.0f;
 	private Matrix4x4 opticalViewMatrix; // This transform expresses the position and orientation of the physical camera in eye coordinates.
 	
+	private int    opticalParamsFilenameIndex = 0;
+	private string opticalParamsFilename      = string.Empty;
+	private byte[] opticalParamsFileContents  = new byte[0]; // Set by the Editor.
+	
+	public void SetOpticalParameters(string filename, byte[] contents, int filenameIndex) {
+		if (null != filename && filename != opticalParamsFilename) {
+			opticalParamsFilename      = filename;
+			opticalParamsFileContents  = contents;
+			opticalParamsFilenameIndex = filenameIndex;
+		}
+	}
 
 	public bool SetupCamera(float nearClipPlane, float farClipPlane, Matrix4x4 projectionMatrix, ref bool opticalOut)
 	{

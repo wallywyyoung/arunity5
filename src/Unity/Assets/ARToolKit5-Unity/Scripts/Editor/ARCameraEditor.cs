@@ -59,40 +59,33 @@ public class ARCameraEditor : Editor
 		}
 	}
 
-		ARCamera arc = (ARCamera)target;
-		if (arc == null) return;
-		
-		//
-		// Stereo parameters.
-		//
-		EditorGUILayout.Separator();
-		arc.Stereo = EditorGUILayout.Toggle("Part of a stereo pair", arc.Stereo);
-		if (arc.Stereo) {
-			arc.StereoEye = (ARCamera.ViewEye)EditorGUILayout.EnumPopup("Stereo eye:", arc.StereoEye);
     public override void OnInspectorGUI() {
+		ARCamera arCamera = (ARCamera)target;
+		if (null == arCamera) {
+			return;
 		}
 
+		arCamera.Stereo = EditorGUILayout.Toggle("Stereo Rendering", arCamera.Stereo);
+		if (arCamera.Stereo) {
+			arCamera.StereoEye = (ARCamera.ViewEye)EditorGUILayout.EnumPopup("Eye Perspective", arCamera.StereoEye);
+		}
 
-		arc.Optical = EditorGUILayout.Toggle("Optical see-through mode.", arc.Optical);
+		EditorGUILayout.Separator();
 
-		if (arc.Optical) {
-			// Offer a popup with optical params file names.
-			RefreshOpticalParamsFilenames(); // Update the list of available optical params from the resources dir
+		arCamera.Optical = EditorGUILayout.Toggle("Optical See-Through", arCamera.Optical);
+		if (arCamera.Optical) {
+			RefreshOpticalParamsFilenames();
 			if (OpticalParamsFilenames.Length > 0) {
-				int opticalParamsFilenameIndex = EditorGUILayout.Popup("Optical parameters file", arc.OpticalParamsFilenameIndex, OpticalParamsFilenames);
+				int opticalParamsFilenameIndex = EditorGUILayout.Popup("Optical parameters file", arCamera.OpticalParamsFilenameIndex, OpticalParamsFilenames);
 				string opticalParamsFilename = OpticalParamsAssets[opticalParamsFilenameIndex].name;
-				if (opticalParamsFilename != arc.OpticalParamsFilename) {
-					arc.OpticalParamsFilenameIndex = opticalParamsFilenameIndex;
-					arc.OpticalParamsFilename = opticalParamsFilename;
-					arc.OpticalParamsFileContents = OpticalParamsAssets[arc.OpticalParamsFilenameIndex].bytes;
+				if (opticalParamsFilename != arCamera.OpticalParamsFilename) {
+					arCamera.SetOpticalParameters(opticalParamsFilename, OpticalParamsAssets[arCamera.OpticalParamsFilenameIndex].bytes, opticalParamsFilenameIndex);
 				}
-				arc.OpticalEyeLateralOffsetRight = EditorGUILayout.FloatField("Lateral offset right:", arc.OpticalEyeLateralOffsetRight);
+				arCamera.OpticalEyeLateralOffsetRight = EditorGUILayout.FloatField("Lateral Offset Right (m)", arCamera.OpticalEyeLateralOffsetRight);
 				EditorGUILayout.HelpBox("Enter an amount by which this eye should be moved to the right, relative to the video camera lens. E.g. if this is the right eye, but you're using calibrated optical paramters for the left eye, enter 0.065 (65mm).", MessageType.Info);
 			} else {
-				arc.OpticalParamsFilenameIndex = 0;
 				EditorGUILayout.LabelField("Optical parameters file", "No parameters files available");
-				arc.OpticalParamsFilename = "";
-				arc.OpticalParamsFileContents = new byte[0];
+				arCamera.SetOpticalParameters(string.Empty, new byte[0], 0);
 			}
 		}
     }
