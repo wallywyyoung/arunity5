@@ -3,6 +3,10 @@ Release Notes
 
 == ARToolKit for Unity v5.3.1 ==
 - Updated to ARToolKit v5.3.1, including addition of new threshold mode, "Bracketing".
+- Inclusion of new demo "Fisticuffs"
+    - Uses 4 barcode markers (0-3).
+    - Any two figures will fight, swipe down on them to duck.
+    - Special thanks to: Michael French, Creator, Designer, & Modeler; Dan Creech, Sound Designer; Steven Schkolne, Update Engineering
 
 == ARToolKit for Unity v5.3r1 ==
 - Copied missing utilities from ARToolKit 5.3 release.

@@ -894,9 +894,9 @@ MonoBehaviour:
   pop: {fileID: 8300000, guid: 1440ee4f9800a44e1aae0e214d7e6850, type: 3}
   punchHit: {fileID: 8300000, guid: 2a8be4eabdf9e48e1b846d6ccf53fb9f, type: 3}
   punchMiss: {fileID: 8300000, guid: 706547a2eef664e1f9cd31348d3aade8, type: 3}
-  tada: {fileID: 8300000, guid: e589f893ac6b1492fac7c0b2e8dfe6ad, type: 3}
+  tada: {fileID: 8300000, guid: cb0cd5bdd1692492ab5d9bfe0168d864, type: 3}
   crash: {fileID: 8300000, guid: 99fade09e5e864f6ebda7ce150116593, type: 3}
-  victory: {fileID: 8300000, guid: 8c6f72dda22b74218815bb0b8ac1ec0f, type: 3}
+  victory: {fileID: 8300000, guid: a7e8569fd63d54851a85c5ee83306709, type: 3}
   hitExplosion: {fileID: 8300000, guid: 65db4e99002d6421d9cd1912a9e666bd, type: 3}
   cardsInPlay: []
   timeAllowedBeforeReset: 5
@@ -3734,7 +3734,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: a5120283f4cdc4a30a8eab1fa3bb4856, type: 3}
+  m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: .582000017
   m_Pitch: 1
