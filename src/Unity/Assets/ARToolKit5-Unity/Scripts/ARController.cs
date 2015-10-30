@@ -822,16 +822,15 @@ public class ARController : MonoBehaviour
 	}
 
 
-    public bool DebugVideo
-    {
-        get
-        {
-			return (PluginFunctions.arwGetVideoDebugMode());
+    public bool DebugVideo {
+        get {
+			return PluginFunctions.arwGetVideoDebugMode();
         }
 
-        set
-        {
-            PluginFunctions.arwSetVideoDebugMode(value);
+        set {
+			if (value != PluginFunctions.arwGetVideoDebugMode()) {
+            	PluginFunctions.arwSetVideoDebugMode(value);
+			}
         }
     }
 
@@ -843,10 +842,8 @@ public class ARController : MonoBehaviour
 		}
 	}
 
-    public ARController.ARToolKitThresholdMode VideoThresholdMode
-    {
-        get
-        {
+    public ARController.ARToolKitThresholdMode VideoThresholdMode {
+        get {
 			int ret;
             if (_running) {
 				ret = PluginFunctions.arwGetVideoThresholdMode();
@@ -855,40 +852,36 @@ public class ARController : MonoBehaviour
             }
             return currentThresholdMode;
         }
-
-        set
-        {
-            currentThresholdMode = value;
-            if (_running) {
-				PluginFunctions.arwSetVideoThresholdMode((int)currentThresholdMode);
+        set {
+			if (value != currentThresholdMode) {
+            	currentThresholdMode = value;
+            	if (_running) {
+					PluginFunctions.arwSetVideoThresholdMode((int)currentThresholdMode);
+				}
             }
         }
     }
 
-    public int VideoThreshold
-    {
-        get
-        {
+    public int VideoThreshold {
+        get {
             if (_running) {
 				currentThreshold = PluginFunctions.arwGetVideoThreshold();
             	if (currentThreshold < 0 || currentThreshold > 255) currentThreshold = 100;
 			}
             return currentThreshold;
         }
-
-        set
-        {
-            currentThreshold = value;
-            if (_running) {
-                PluginFunctions.arwSetVideoThreshold(value);
-            }
+		set {
+			if (value != currentThreshold) {
+            	currentThreshold = value;
+            	if (_running) {
+            	    PluginFunctions.arwSetVideoThreshold(value);
+            	}
+			}
         }
     }
 
-    public ARController.ARToolKitLabelingMode LabelingMode
-    {
-        get
-        {
+    public ARController.ARToolKitLabelingMode LabelingMode {
+        get {
 			int ret;
             if (_running) {
 				ret = PluginFunctions.arwGetLabelingMode();
@@ -897,20 +890,18 @@ public class ARController : MonoBehaviour
             }
             return currentLabelingMode;
         }
-
-        set
-        {
-            currentLabelingMode = value;
-            if (_running) {
-				PluginFunctions.arwSetLabelingMode((int)currentLabelingMode);
-            }
+        set {
+			if (value != currentLabelingMode) {
+            	currentLabelingMode = value;
+            	if (_running) {
+					PluginFunctions.arwSetLabelingMode((int)currentLabelingMode);
+            	}
+			}
         }
     }
 
-    public float BorderSize
-    {
-        get
-        {
+    public float BorderSize {
+        get {
 			float ret;
             if (_running) {
 				ret = PluginFunctions.arwGetBorderSize();
@@ -919,48 +910,42 @@ public class ARController : MonoBehaviour
             }
             return currentBorderSize;
         }
-
-        set
-        {
-            currentBorderSize = value;
-            if (_running) {
-				PluginFunctions.arwSetBorderSize(currentBorderSize);
-            }
+        set {
+			if (value != currentBorderSize) {
+            	currentBorderSize = value;
+            	if (_running) {
+					PluginFunctions.arwSetBorderSize(currentBorderSize);
+            	}
+			}
         }
     }
 
-	public int TemplateSize
-	{
-		get
-		{
+	public int TemplateSize {
+		get {
 			return currentTemplateSize;
 		}
-		
-		set
-		{
-			currentTemplateSize = value;
-			Log (LogTag + "Warning: template size changed. Please reload scene.");
+		set {
+			if (value != currentTemplateSize) {
+				currentTemplateSize = value;
+				Log (LogTag + "Warning: template size changed. Please reload scene.");
+			}
 		}
 	}
 	
-	public int TemplateCountMax
-	{
-		get
-		{
+	public int TemplateCountMax {
+		get {
 			return currentTemplateCountMax;
 		}
-		
-		set
-		{
-			currentTemplateCountMax = value;
-			Log (LogTag + "Warning: template maximum count changed. Please reload scene.");
+		set {
+			if (value != currentTemplateCountMax) {
+				currentTemplateCountMax = value;
+				Log (LogTag + "Warning: template maximum count changed. Please reload scene.");
+			}
 		}
 	}
 	
-	public ARController.ARToolKitPatternDetectionMode PatternDetectionMode
-	{
-        get
-        {
+	public ARController.ARToolKitPatternDetectionMode PatternDetectionMode {
+        get {
 			int ret;
             if (_running) {
 				ret = PluginFunctions.arwGetPatternDetectionMode();
@@ -969,20 +954,18 @@ public class ARController : MonoBehaviour
             }
             return currentPatternDetectionMode;
         }
-
-        set
-        {
-            currentPatternDetectionMode = value;
-            if (_running) {
-				PluginFunctions.arwSetPatternDetectionMode((int)currentPatternDetectionMode);
-            }
+        set {
+			if (value != currentPatternDetectionMode) {
+            	currentPatternDetectionMode = value;
+            	if (_running) {
+					PluginFunctions.arwSetPatternDetectionMode((int)currentPatternDetectionMode);
+            	}
+			}
         }
     }
 
-    public ARController.ARToolKitMatrixCodeType MatrixCodeType
-    {
-        get
-        {
+    public ARController.ARToolKitMatrixCodeType MatrixCodeType {
+        get {
 			int ret;
             if (_running) {
 				ret = PluginFunctions.arwGetMatrixCodeType();
@@ -991,20 +974,18 @@ public class ARController : MonoBehaviour
             }
             return currentMatrixCodeType;
         }
-
-        set
-        {
-            currentMatrixCodeType = value;
-            if (_running) {
-				PluginFunctions.arwSetMatrixCodeType((int)currentMatrixCodeType);
-            }
+        set {
+			if (value != currentMatrixCodeType) {
+            	currentMatrixCodeType = value;
+            	if (_running) {
+					PluginFunctions.arwSetMatrixCodeType((int)currentMatrixCodeType);
+            	}
+			}
         }
     }
 
-    public ARController.ARToolKitImageProcMode ImageProcMode
-    {
-        get
-        {
+    public ARController.ARToolKitImageProcMode ImageProcMode {
+        get {
 			int ret;
             if (_running) {
 				ret = PluginFunctions.arwGetImageProcMode();
@@ -1013,20 +994,15 @@ public class ARController : MonoBehaviour
             }
             return currentImageProcMode;
         }
-
-        set
-        {
-            currentImageProcMode = value;
-            if (_running) {
-				PluginFunctions.arwSetImageProcMode((int)currentImageProcMode);
-            }
+		set {
+			if (value != currentImageProcMode) {
+            	currentImageProcMode = value;
+            	if (_running) {
+					PluginFunctions.arwSetImageProcMode((int)currentImageProcMode);
+            	}
+			}
         }
     }
-
-	public ContentMode ContentMode
-	{
-		get
-		{
 	// Removed until working.
 //	public bool NFTMultiMode {
 //		get {
@@ -1044,12 +1020,13 @@ public class ARController : MonoBehaviour
 //			}
 //		}
 //	}
+
+	public ContentMode ContentMode {
+		get {
 			return currentContentMode;
 		}
-		
-		set
-		{
-			if (currentContentMode != value) {
+		set {
+			if (value != currentContentMode) {
 				currentContentMode = value;
 				if (_running) {
 					ConfigureViewports();
@@ -1058,19 +1035,23 @@ public class ARController : MonoBehaviour
 		}
 	}
 	
-	public bool UseVideoBackground
-	{
-		get
-		{
+	public bool UseVideoBackground {
+		get {
 			return currentUseVideoBackground;
 		}
-		
-		set
-		{
-			currentUseVideoBackground = value;
-			if (clearCamera != null) clearCamera.backgroundColor = new Color(0.0f, 0.0f, 0.0f, (currentUseVideoBackground ? 1.0f : 0.0f));
-			if (_videoBackgroundCamera0 != null) _videoBackgroundCamera0.enabled = currentUseVideoBackground;
-			if (_videoBackgroundCamera1 != null) _videoBackgroundCamera1.enabled = currentUseVideoBackground;
+		set {
+			if (value != currentUseVideoBackground) {
+				currentUseVideoBackground = value;
+				if (clearCamera != null) {
+					clearCamera.backgroundColor = new Color(0.0f, 0.0f, 0.0f, (currentUseVideoBackground ? 1.0f : 0.0f));
+				}
+				if (_videoBackgroundCamera0 != null) {
+					_videoBackgroundCamera0.enabled = currentUseVideoBackground;
+				}
+				if (_videoBackgroundCamera1 != null) {
+					_videoBackgroundCamera1.enabled = currentUseVideoBackground;
+				}
+			}
 		}
 	}
 	
