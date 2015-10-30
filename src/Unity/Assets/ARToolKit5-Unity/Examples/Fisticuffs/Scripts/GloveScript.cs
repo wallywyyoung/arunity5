@@ -37,7 +37,7 @@ public class GloveScript : MonoBehaviour {
 	private void FinishPunch(GameObject otherCharacter, bool hit) {
 		characterBehvaiors.punchPhase = 2;
 		if (hit == true) {
-			GameObject poof = Instantiate(hitPoof, transform.position, Quaternion.identity) as GameObject;
+			Instantiate(hitPoof, transform.position, Quaternion.identity);
 			characterBehvaiors.CalculateDamageToOpponent();
 		}
 		if (characterBehvaiors.myTempTarget != null) {

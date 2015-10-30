@@ -426,7 +426,6 @@ public class CharacterBehaviors : MonoBehaviour {
 		CharacterBehaviors opponentBehaviors = opponentCharacter.gameObject.GetComponent<CharacterBehaviors>();
 		
 		float randomDamageModifier = Random.Range(-1.0f, 1.0f);
-		float randomDefenseModifier = Random.Range(-.1f, .1f);
 		
 		float damageBeforeDefense = (damageGivenPerPunch + randomDamageModifier);
 		float damageCalc = damageBeforeDefense - (opponentBehaviors.defenseModifier * damageBeforeDefense);
@@ -456,7 +455,7 @@ public class CharacterBehaviors : MonoBehaviour {
 			Vector3 megaParticlesPosition = new Vector3(transform.position.x, transform.position.y + 50, transform.position.z);
 			FisticuffsController.Instance.megaHit.SetActive(true);
 			FisticuffsController.Instance.oneShotAudio.PlayOneShot(FisticuffsController.Instance.hitExplosion);
-			GameObject megaParticles = Instantiate(FisticuffsController.Instance.megaHitParticles, megaParticlesPosition, Quaternion.identity) as GameObject;
+			Instantiate(FisticuffsController.Instance.megaHitParticles, megaParticlesPosition, Quaternion.identity);
 		}
 		
 
