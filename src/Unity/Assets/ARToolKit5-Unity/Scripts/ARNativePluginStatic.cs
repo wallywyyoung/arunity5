@@ -224,13 +224,14 @@ public static class ARNativePluginStatic
 	
 	[DllImport("__Internal")]
 	public static extern int arwGetImageProcMode();
-	
-	[DllImport("__Internal")]
-	public static extern void arwSetNFTMultiMode(bool on);
-	
-	[DllImport("__Internal")]
-	[return: MarshalAsAttribute(UnmanagedType.I1)]
-	public static extern bool arwGetNFTMultiMode();
+
+	// Removed until working.
+//	[DllImport("__Internal")]
+//	public static extern void arwSetNFTMultiMode(bool on);
+//	
+//	[DllImport("__Internal")]
+//	[return: MarshalAsAttribute(UnmanagedType.I1)]
+//	public static extern bool arwGetNFTMultiMode();
 	
 
 	[DllImport("__Internal", CharSet = CharSet.Ansi)]

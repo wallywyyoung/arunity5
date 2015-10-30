@@ -403,18 +403,19 @@ public static class PluginFunctions
 		if (Application.platform == RuntimePlatform.IPhonePlayer) return ARNativePluginStatic.arwGetImageProcMode();
 		else return ARNativePlugin.arwGetImageProcMode();
 	}
-	
-	public static void arwSetNFTMultiMode(bool on)
-	{
-		if (Application.platform == RuntimePlatform.IPhonePlayer) ARNativePluginStatic.arwSetNFTMultiMode(on);
-		else ARNativePlugin.arwSetNFTMultiMode(on);
-	}
 
-	public static bool arwGetNFTMultiMode()
-	{
-		if (Application.platform == RuntimePlatform.IPhonePlayer) return ARNativePluginStatic.arwGetNFTMultiMode();
-		else return ARNativePlugin.arwGetNFTMultiMode();
-	}
+	// Removed until working.
+//	public static void arwSetNFTMultiMode(bool on)
+//	{
+//		if (Application.platform == RuntimePlatform.IPhonePlayer) ARNativePluginStatic.arwSetNFTMultiMode(on);
+//		else ARNativePlugin.arwSetNFTMultiMode(on);
+//	}
+//
+//	public static bool arwGetNFTMultiMode()
+//	{
+//		if (Application.platform == RuntimePlatform.IPhonePlayer) return ARNativePluginStatic.arwGetNFTMultiMode();
+//		else return ARNativePlugin.arwGetNFTMultiMode();
+//	}
 
 
 	public static int arwAddMarker(string cfg)

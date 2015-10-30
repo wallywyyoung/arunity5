@@ -221,13 +221,14 @@ public static class ARNativePlugin
 	
 	[DllImport(LIBRARY_NAME, CallingConvention=CallingConvention.Cdecl)]
 	public static extern int arwGetImageProcMode();
-	
-	[DllImport(LIBRARY_NAME, CallingConvention=CallingConvention.Cdecl)]
-	public static extern void arwSetNFTMultiMode(bool on);
-	
-	[DllImport(LIBRARY_NAME, CallingConvention=CallingConvention.Cdecl)]
-	[return: MarshalAsAttribute(UnmanagedType.I1)]
-	public static extern bool arwGetNFTMultiMode();
+
+	// Removed until working.
+//	[DllImport(LIBRARY_NAME, CallingConvention=CallingConvention.Cdecl)]
+//	public static extern void arwSetNFTMultiMode(bool on);
+//	
+//	[DllImport(LIBRARY_NAME, CallingConvention=CallingConvention.Cdecl)]
+//	[return: MarshalAsAttribute(UnmanagedType.I1)]
+//	public static extern bool arwGetNFTMultiMode();
 	
 
 	[DllImport(LIBRARY_NAME, CallingConvention=CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
@@ -239,8 +240,7 @@ public static class ARNativePlugin
 	
 	[DllImport(LIBRARY_NAME, CallingConvention=CallingConvention.Cdecl)]
 	public static extern int arwRemoveAllMarkers();
-	
-	
+
 	[DllImport(LIBRARY_NAME, CallingConvention=CallingConvention.Cdecl)]
 	[return: MarshalAsAttribute(UnmanagedType.I1)]
 	public static extern bool arwQueryMarkerVisibility(int markerID);

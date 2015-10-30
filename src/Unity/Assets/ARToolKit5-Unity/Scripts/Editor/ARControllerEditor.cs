@@ -201,12 +201,13 @@ public class ARControllerEditor : Editor
  
 		}
 
-		EditorGUILayout.Separator();
-		
-		showNFTTrackingOptions = EditorGUILayout.Foldout(showNFTTrackingOptions, "NFT Tracking Options");
-		if (showNFTTrackingOptions) {
-			arcontroller.NFTMultiMode = EditorGUILayout.Toggle("Multi-page mode", arcontroller.NFTMultiMode);
-		}
+		// Removed until working.
+//		EditorGUILayout.Separator();
+//		
+//		showNFTTrackingOptions = EditorGUILayout.Foldout(showNFTTrackingOptions, "NFT Tracking Options");
+//		if (showNFTTrackingOptions) {
+//			arcontroller.NFTMultiMode = EditorGUILayout.Toggle("Multi-page mode", arcontroller.NFTMultiMode);
+//		}
 
 		EditorGUILayout.Separator();
 		showApplicationOptions = EditorGUILayout.Foldout(showApplicationOptions, "Application Options");

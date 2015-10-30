@@ -295,8 +295,9 @@ public class ARController : MonoBehaviour
 	private ARToolKitImageProcMode currentImageProcMode = ARToolKitImageProcMode.AR_IMAGE_PROC_FRAME_IMAGE;
 	[SerializeField]
 	private bool currentUseVideoBackground = true;
-	[SerializeField]
-	private bool currentNFTMultiMode = false;
+	// Removed until working.
+//	[SerializeField]
+//	private bool currentNFTMultiMode = false;
 
 
 	//
@@ -602,7 +603,8 @@ public class ARController : MonoBehaviour
         PatternDetectionMode = currentPatternDetectionMode;
         MatrixCodeType = currentMatrixCodeType;
         ImageProcMode = currentImageProcMode;
-		NFTMultiMode = currentNFTMultiMode;
+		// Removed until working.
+//		NFTMultiMode = currentNFTMultiMode;
         
 		// Remaining Unity setup happens in UpdateAR().
 		return true;
@@ -994,29 +996,27 @@ public class ARController : MonoBehaviour
         }
     }
 
-	public bool NFTMultiMode
-	{
-		get
-		{
-			if (_running) {
-				currentNFTMultiMode = PluginFunctions.arwGetNFTMultiMode();
-			}
-			return currentNFTMultiMode;
-		}
-		
-		set
-		{
-			currentNFTMultiMode = value;
-			if (_running) {
-				PluginFunctions.arwSetNFTMultiMode(currentNFTMultiMode);
-			}
-		}
-	}
-
 	public ContentMode ContentMode
 	{
 		get
 		{
+	// Removed until working.
+//	public bool NFTMultiMode {
+//		get {
+//			if (_running) {
+//				currentNFTMultiMode = PluginFunctions.arwGetNFTMultiMode();
+//			}
+//			return currentNFTMultiMode;
+//		}
+//		set {
+//			if (value != currentNFTMultiMode) {
+//				currentNFTMultiMode = value;
+//				if (_running) {
+//					PluginFunctions.arwSetNFTMultiMode(currentNFTMultiMode);
+//				}
+//			}
+//		}
+//	}
 			return currentContentMode;
 		}
 		
