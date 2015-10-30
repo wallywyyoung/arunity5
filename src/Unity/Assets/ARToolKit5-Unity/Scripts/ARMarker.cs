@@ -466,21 +466,17 @@ public class ARMarker : MonoBehaviour
         }
     }
 
-	public float NFTScale
-	{
-		get
-		{
+	public float NFTScale {
+		get {
 			return currentNFTScale; // Serialised.
 		}
-		
-		set
-		{
-			currentNFTScale = value;
-			if (UID != NO_ID && (MarkerType == MarkerType.NFT)) {
-				PluginFunctions.arwSetMarkerOptionFloat(UID, (int)ARWMarkerOption.ARW_MARKER_OPTION_NFT_SCALE, value);
+		set {
+			if (value != currentNFTScale) {
+				currentNFTScale = value;
+				if (UID != NO_ID && (MarkerType == MarkerType.NFT)) {
+					PluginFunctions.arwSetMarkerOptionFloat(UID, (int)ARWMarkerOption.ARW_MARKER_OPTION_NFT_SCALE, value);
+				}
 			}
 		}
 	}
-	
-
 }

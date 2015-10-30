@@ -44,36 +44,21 @@ using UnityEngine;
 using System.IO;
 
 [CustomEditor(typeof(ARMarker))]
-public class ARMarkerEditor : Editor
-{
+public class ARMarkerEditor : Editor {
     public bool showFilterOptions = false;
 
 	private static TextAsset[] PatternAssets;
 	private static int PatternAssetCount;
 	private static string[] PatternFilenames;
 	
-	/*private static Dictionary<ARController.ARToolKitMatrixCodeType, int> barcodeCounts = new Dictionary<ARController.ARToolKitMatrixCodeType, int>() {
-		{ARController.ARToolKitMatrixCodeType.AR_MATRIX_CODE_3x3, 64},
-    	{ARController.ARToolKitMatrixCodeType.AR_MATRIX_CODE_3x3_PARITY65, 32},
-    	{ARController.ARToolKitMatrixCodeType.AR_MATRIX_CODE_3x3_HAMMING63, 8},
-    	{ARController.ARToolKitMatrixCodeType.AR_MATRIX_CODE_4x4, 8192},
-    	{ARController.ARToolKitMatrixCodeType.AR_MATRIX_CODE_4x4_BCH_13_9_3, 512},
-		{ARController.ARToolKitMatrixCodeType.AR_MATRIX_CODE_4x4_BCH_13_5_5, 32}
-//    	{ARController.ARToolKitMatrixCodeType.AR_MATRIX_CODE_5x5, 4194304},
-//    	{ARController.ARToolKitMatrixCodeType.AR_MATRIX_CODE_6x6, 8589934592},
-//    	{ARController.ARToolKitMatrixCodeType.AR_MATRIX_CODE_GLOBAL_ID, 18446744073709551616}
-	};*/
-	
-	void OnDestroy()
-	{
+	void OnDestroy() {
 		// Classes inheriting from MonoBehavior need to set all static member variables to null on unload.
 		PatternAssets = null;
 		PatternAssetCount = 0;
 		PatternFilenames = null;
 	}
 	
-	private static void RefreshPatternFilenames() 
-	{
+	private static void RefreshPatternFilenames()  {
 		PatternAssets = Resources.LoadAll("ardata/markers", typeof(TextAsset)).Cast<TextAsset>().ToArray();
 		PatternAssetCount = PatternAssets.Length;
 		
@@ -83,22 +68,24 @@ public class ARMarkerEditor : Editor
 		}
 	}
 	
-    public override void OnInspectorGUI()
-    {
-   
+    public override void OnInspectorGUI() {
         EditorGUILayout.BeginVertical();
 		
 		// Get the ARMarker that this panel will edit.
-        ARMarker m = (ARMarker)target;
-        if (m == null) return;
+        ARMarker arMarker = (ARMarker)target;
+        if (null == arMarker) {
+			return;
+		}
 		
 		// Attempt to load. Might not work out if e.g. for a single marker, pattern hasn't been
 		// assigned yet, or for an NFT marker, dataset hasn't been specified.
-		if (m.UID == ARMarker.NO_ID) m.Load(); 
+		if (arMarker.UID == ARMarker.NO_ID) {
+			arMarker.Load(); 
+		}
 		
 		// Marker tag
-        m.Tag = EditorGUILayout.TextField("Tag", m.Tag);
-        EditorGUILayout.LabelField("UID", (m.UID == ARMarker.NO_ID ? "Not loaded": m.UID.ToString()));
+        arMarker.Tag = EditorGUILayout.TextField("Tag", arMarker.Tag);
+        EditorGUILayout.LabelField("Unique ID", (arMarker.UID == ARMarker.NO_ID ? "Not Loaded": arMarker.UID.ToString()));
 		
         EditorGUILayout.Separator();
 		
@@ -185,28 +172,26 @@ public class ARMarkerEditor : Editor
 				}
 				break;
         }
-		
+
         EditorGUILayout.Separator();
 		
-        showFilterOptions = EditorGUILayout.Foldout(showFilterOptions, "Filter Options");
-        if (showFilterOptions) {
-			m.Filtered = EditorGUILayout.Toggle("Filtered:", m.Filtered);
-			m.FilterSampleRate = EditorGUILayout.Slider("Sample rate:", m.FilterSampleRate, 1.0f, 30.0f);
-			m.FilterCutoffFreq = EditorGUILayout.Slider("Cutoff freq.:", m.FilterCutoffFreq, 1.0f, 30.0f);
+		arMarker.Filtered = EditorGUILayout.Toggle("Filter Pose", arMarker.Filtered);
+		if (arMarker.Filtered) {
+			arMarker.FilterSampleRate = EditorGUILayout.Slider("Sample rate:", arMarker.FilterSampleRate, 1.0f, 30.0f);
+			arMarker.FilterCutoffFreq = EditorGUILayout.Slider("Cutoff freq.:", arMarker.FilterCutoffFreq, 1.0f, 30.0f);
 		}
 
         EditorGUILayout.BeginHorizontal();
 
         // Draw all the marker images
-        if (m.Patterns != null) {
-            for (int i = 0; i < m.Patterns.Length; i++) {
-                GUILayout.Label(new GUIContent("Pattern " + i + ", " + m.Patterns[i].width.ToString("n3") + " m", m.Patterns[i].texture), GUILayout.ExpandWidth(false)); // n3 -> 3 decimal places.
+        if (arMarker.Patterns != null) {
+            for (int i = 0; i < arMarker.Patterns.Length; ++i) {
+				GUILayout.Label(new GUIContent(string.Format("Pattern {0}, {1}m", i, arMarker.Patterns[i].width.ToString("n3")), arMarker.Patterns[i].texture), GUILayout.ExpandWidth(false)); // n3 -> 3 decimal places.
             }
         }
 		
         EditorGUILayout.EndHorizontal();
 		EditorGUILayout.EndVertical();
-
     }
 
 }
