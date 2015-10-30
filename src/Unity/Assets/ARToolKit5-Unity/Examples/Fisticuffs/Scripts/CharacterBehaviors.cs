@@ -2,24 +2,35 @@ using UnityEngine;
 using System.Collections;
 
 public class CharacterBehaviors : MonoBehaviour {
-	
-	private Camera arCamera;
+	private enum PopupMode { None = 0, Started = 1, InProgress = 2, Ending = 3 };
+
+	private static Camera arCamera = null;
 	private float originalTouchPosY;
+
 	private float popTargetHeight;
+	private PopupMode popUpMode = PopupMode.None;
+
+	// set to true when character is being touched on screen
+	private bool imTouched;
+	private bool okToPlaySounds = false;
+
+	private bool iLost = false;
+
+	// Gloves Punching
 	private float punchTimer;
 	private float punchStartTime;
 	private float maxPunchTime = .65f;
-	private int popUpMode = 0;
-	private bool imTouched; // set to true when character is being touched on screen
-	private bool okToPlaySounds = false;
 	private bool punchTimerHasStarted = false;
 	private bool glovesShouldRetract = true;
-	private bool iLost = false;
-	private Transform whichHandPunches;
-	private Vector3 whichOrigPos;
+	private Transform punchingGlove;
+	private Vector3 punchingGloveStartPosition;
+
+	// Health
 	private float healthScaleFactor = 0;
 	private Vector3 healthOriginalScale;
 	private float totalHealthPoints = 100.0f;
+
+	// Face
 	private GameObject myFace;
 	
 	
@@ -59,19 +70,55 @@ public class CharacterBehaviors : MonoBehaviour {
 	private Vector2 lastTouchPos;
 	private bool lastTouchValid = false;
 
-	void Start () {
-		arCamera = GameObject.FindWithTag("MainCamera").GetComponent<Camera>(); 
+	private Animation characterAnimation = null;
+	private Animation faceAnimation = null;
+
+	void Awake() {
+		characterAnimation = transform.parent.gameObject.GetComponent<Animation>();
+		if (null == characterAnimation) {
+			characterAnimation = transform.parent.gameObject.AddComponent<Animation>();
+		}
+	}
+
+	void Start() {
+		if (null == CharacterBehaviors.arCamera) {
+			CharacterBehaviors.arCamera = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
+		}
+
 		Transform myFaceTransform = transform.FindChild("Face");
 		myFace = myFaceTransform.gameObject;
 
-		if(Application.platform == RuntimePlatform.Android) // ----<<<<<<<<---- Added here because punching was really slow on android!!
+		faceAnimation = myFace.GetComponent<Animation>();
+		if (null == faceAnimation) {
+			faceAnimation = myFace.AddComponent<Animation>();
+		}
+
+		// Punching was really slow on Android!
+		if (Application.platform == RuntimePlatform.Android) {
 			punchSpeedModifier *= 0.5f;
+		}
 	}
 	
 	void OnEnable() {
 		ResetMe();
 		okToAnimate = false;
-		StartPopUp(); // first thing that happens when card is in view - character pops up
+
+		// First thing that happens when card is in view - character pops up.
+		StartPopUp();
+
+		if (FisticuffsController.Instance.cardsInPlay.Count < FisticuffsController.Instance.maxNumberOfCardsInPlay
+		    && !FisticuffsController.Instance.cardsInPlay.Contains(gameObject)) {
+			FisticuffsController.Instance.cardsInPlay.Add(gameObject);
+		}
+	}
+
+	void OnDisable() {
+		if (null == FisticuffsController.Instance) {
+			Debug.LogError("CharacterHolder::OnDisable - FisticuffsController.Instance not set. Is there one in the scene?");
+			return;
+		}
+		
+		FisticuffsController.Instance.cardsInPlay.Remove(gameObject);
 	}
 	
 	void ResetMe() {
@@ -80,11 +127,11 @@ public class CharacterBehaviors : MonoBehaviour {
 			return;
 		}
 
-		transform.parent.gameObject.GetComponent<Animation>().Play("CharacterReset");
+		characterAnimation.Play("CharacterReset");
 		SetHealthScaleFactor();
 		SetHealth(100);
-		myAttributes.SetActiveRecursively(true);
-		myHealthHolder.SetActiveRecursively(false);
+		myAttributes.SetActive(true);
+		myHealthHolder.SetActive(false);
 		leftGlove.localPosition = origLeftGloveLocalPos;
 		rightGlove.localPosition = origRightGloveLocalPos;
 		punchTimerHasStarted = false;
@@ -198,33 +245,32 @@ public class CharacterBehaviors : MonoBehaviour {
 	
 	// Lerps to the various y positions needed for the procedural pop up animation:
 	void PopUp() { 
-
 		if(iLost) {
 			return;
 		}
 
 		Vector3 myPos = transform.localPosition;
 
-		if (popUpMode == 1 && myPos.y < 50) {
+		if (popUpMode == PopupMode.Started && myPos.y < 50) {
 			popTargetHeight = 50;
-		} else if (popUpMode == 1 && (Mathf.Approximately(myPos.y, 50) || myPos.y > 50)) {
-			popUpMode = 2;
+		} else if (popUpMode == PopupMode.Started && (Mathf.Approximately(myPos.y, 50) || myPos.y > 50)) {
+			popUpMode = PopupMode.InProgress;
 		}
 			
-		if (popUpMode == 2 && myPos.y > 15) {
+		if (popUpMode == PopupMode.InProgress && myPos.y > 15) {
 			popTargetHeight = 15;
-		} else if (popUpMode == 2 && (Mathf.Approximately(myPos.y, 15) || myPos.y < 15)) {
-			popUpMode = 3;
+		} else if (popUpMode == PopupMode.InProgress && (Mathf.Approximately(myPos.y, 15) || myPos.y < 15)) {
+			popUpMode = PopupMode.Ending;
 		}
 			
 			
-		if (popUpMode == 3 && myPos.y < 30) {
+		if (popUpMode == PopupMode.Ending && myPos.y < 30) {
 			popTargetHeight = 30;
-		} else if (popUpMode == 3 && (Mathf.Approximately(myPos.y, 30) || myPos.y > 30)) {
+		} else if (popUpMode == PopupMode.Ending && (Mathf.Approximately(myPos.y, 30) || myPos.y > 30)) {
 			StopPopUp();
 		}
 		
-		if (popUpMode > 0) {
+		if (popUpMode != PopupMode.None) {
 			float newY = Mathf.Lerp(myPos.y, popTargetHeight, 1);
 			Vector3 newPos = new Vector3(0, newY, 6);
 			transform.localPosition = newPos;
@@ -238,7 +284,7 @@ public class CharacterBehaviors : MonoBehaviour {
 			return;
 		}
 
-		popUpMode = 1;
+		popUpMode = PopupMode.Started;
 	
 		if (okToPlaySounds == true) { // don't let the sound play as app is first setting up (first game loop on enable)
 			FisticuffsController.Instance.oneShotAudio.PlayOneShot(FisticuffsController.Instance.pop);
@@ -247,7 +293,7 @@ public class CharacterBehaviors : MonoBehaviour {
 	}
 	
 	void StopPopUp() {
-		popUpMode = 0;
+		popUpMode = PopupMode.None;
 		okToAnimate = true;
 	}
 	
@@ -287,18 +333,19 @@ public class CharacterBehaviors : MonoBehaviour {
 			if (FisticuffsController.Instance.gameHasStarted == true) {
 				if (Time.time > punchTimer + modifiedAttackTimeIncrement) {
 					punchTimer = Time.time;
-					GameObject targetCollider = Instantiate(targetPointColliderObj, opponentTargetPoint.position,Quaternion.identity) as GameObject;
+					GameObject targetCollider = Instantiate(targetPointColliderObj, opponentTargetPoint.position, Quaternion.identity) as GameObject;
+					targetCollider.tag = GloveScript.TARGET_TAG;
 					targetCollider.transform.parent = transform;
 					myTempTarget = targetCollider;
 					punchPhase = 1;
 					punchStartTime = Time.time;
 					int whichHand = Random.Range(1,3); // right or left handed punch selected randomly
 					if (whichHand == 1){
-						whichHandPunches = leftGlove;
-						whichOrigPos = origLeftGloveLocalPos;
+						punchingGlove = leftGlove;
+						punchingGloveStartPosition = origLeftGloveLocalPos;
 					} else {
-						whichHandPunches = rightGlove;
-						whichOrigPos = origRightGloveLocalPos;
+						punchingGlove = rightGlove;
+						punchingGloveStartPosition = origRightGloveLocalPos;
 					}
 					modifiedAttackTimeIncrement = attackTimeIncrement + Random.Range(-.5f , .5f);					
 				}
@@ -317,15 +364,15 @@ public class CharacterBehaviors : MonoBehaviour {
 		
 		// fist on its way toward target:
 		if (punchPhase == 1) { 
-			if(whichHandPunches.position != myTempTarget.transform.position){
-				whichHandPunches.position = Vector3.SmoothDamp(whichHandPunches.position, myTempTarget.transform.position, ref velocity, punchSpeedModifier);
+			if(punchingGlove.position != myTempTarget.transform.position){
+				punchingGlove.position = Vector3.SmoothDamp(punchingGlove.position, myTempTarget.transform.position, ref velocity, punchSpeedModifier);
 			}
 		}
 			
 		// fist on its way back from target:
 		if (punchPhase == 2) { 
-			if(!Mathf.Approximately(whichHandPunches.localPosition.x, whichOrigPos.x) || !Mathf.Approximately(whichHandPunches.localPosition.z, whichOrigPos.z)){
-				whichHandPunches.localPosition = Vector3.SmoothDamp(whichHandPunches.localPosition, whichOrigPos, ref velocity, punchSpeedModifier);
+			if(!Mathf.Approximately(punchingGlove.localPosition.x, punchingGloveStartPosition.x) || !Mathf.Approximately(punchingGlove.localPosition.z, punchingGloveStartPosition.z)){
+				punchingGlove.localPosition = Vector3.SmoothDamp(punchingGlove.localPosition, punchingGloveStartPosition, ref velocity, punchSpeedModifier);
 			} else {
 				punchPhase = 0;
 			}
@@ -336,15 +383,15 @@ public class CharacterBehaviors : MonoBehaviour {
 	// starts/stops the hovering up/down idle animation:
 	void Hover() { 
 		if (okToAnimate == true) {
-			if (!transform.parent.gameObject.GetComponent<Animation>().IsPlaying("CharacterHover")){
-				transform.parent.gameObject.GetComponent<Animation>().Play("CharacterHover");
+			if (!characterAnimation.IsPlaying("CharacterHover")){
+				characterAnimation.Play("CharacterHover");
 			}
-			if (!myFace.GetComponent<Animation>().IsPlaying("FaceHit")){
-				myFace.GetComponent<Animation>().Play("FaceIdle");
+			if (!faceAnimation.IsPlaying("FaceHit")){
+				faceAnimation.Play("FaceIdle");
 			}
 		} else {
-			if (transform.parent.gameObject.GetComponent<Animation>().IsPlaying("CharacterHover")) {
-				transform.parent.gameObject.GetComponent<Animation>().Stop();
+			if (characterAnimation.IsPlaying("CharacterHover")) {
+				characterAnimation.Stop();
 			}
 		}
 	}
@@ -356,7 +403,7 @@ public class CharacterBehaviors : MonoBehaviour {
 			return;
 		}
 
-		if (myHealthHolder.active == true && FisticuffsController.Instance.cardsInPlay.Count != FisticuffsController.Instance.cardsNeededForGameToStart) {
+		if (myHealthHolder.activeInHierarchy == true && FisticuffsController.Instance.cardsInPlay.Count != FisticuffsController.Instance.cardsNeededForGameToStart) {
 			ResetMe();
 		}
 	}
@@ -374,7 +421,8 @@ public class CharacterBehaviors : MonoBehaviour {
 		if (myPositionInControllerList == 0) { // if I am position 0, opponent is position 1, otherwise it's vice versa and myOpponentListNum remains 0
 			myOpponentListNum = 1;
 		}
-		Transform opponentCharacter = FisticuffsController.Instance.cardsInPlay[myOpponentListNum].transform.FindChild("Character");
+
+		Transform opponentCharacter = FisticuffsController.Instance.cardsInPlay[myOpponentListNum].transform;
 		CharacterBehaviors opponentBehaviors = opponentCharacter.gameObject.GetComponent<CharacterBehaviors>();
 		
 		float randomDamageModifier = Random.Range(-1.0f, 1.0f);
@@ -382,8 +430,8 @@ public class CharacterBehaviors : MonoBehaviour {
 		
 		float damageBeforeDefense = (damageGivenPerPunch + randomDamageModifier);
 		float damageCalc = damageBeforeDefense - (opponentBehaviors.defenseModifier * damageBeforeDefense);
+
 		float damageFinal;
-		
 		int rollForMassiveHit = Random.Range(0, 1001);
 		if (rollForMassiveHit <= chanceOfMassiveHit) {
 			damageFinal = FisticuffsController.Instance.megaDamageAmount;
@@ -394,8 +442,6 @@ public class CharacterBehaviors : MonoBehaviour {
 		opponentBehaviors.ReceiveDamage(damageFinal);
 	}
 
-	
-	
 	// subtracts damage points from current health and checks for zero (game over)
 	public void ReceiveDamage(float howMuchDamage) { 
 		if (null == FisticuffsController.Instance) {
@@ -403,12 +449,12 @@ public class CharacterBehaviors : MonoBehaviour {
 			return;
 		}
 		
-		myFace.GetComponent<Animation>().Play("FaceHit");
+		faceAnimation.Play("FaceHit");
 		
 		// was it a mega hit? if so, do the explosion stuff:
 		if (howMuchDamage == FisticuffsController.Instance.megaDamageAmount) {
 			Vector3 megaParticlesPosition = new Vector3(transform.position.x, transform.position.y + 50, transform.position.z);
-			FisticuffsController.Instance.megaHit.SetActiveRecursively(true);
+			FisticuffsController.Instance.megaHit.SetActive(true);
 			FisticuffsController.Instance.oneShotAudio.PlayOneShot(FisticuffsController.Instance.hitExplosion);
 			GameObject megaParticles = Instantiate(FisticuffsController.Instance.megaHitParticles, megaParticlesPosition, Quaternion.identity) as GameObject;
 		}
@@ -453,9 +499,9 @@ public class CharacterBehaviors : MonoBehaviour {
 				this.gameObject.GetComponent<Collider>().enabled = false; // disable touch input for me till resetting game!
 				loseAnimPlayed = true;
 				FisticuffsController.Instance.GameEnd();
-				transform.parent.gameObject.GetComponent<Animation>().Play("CharacterLose");
+				characterAnimation.Play("CharacterLose");
 			} else {
-				transform.parent.gameObject.GetComponent<Animation>().Play("CharacterWin");
+				characterAnimation.Play("CharacterWin");
 			}
 		}	
 	}

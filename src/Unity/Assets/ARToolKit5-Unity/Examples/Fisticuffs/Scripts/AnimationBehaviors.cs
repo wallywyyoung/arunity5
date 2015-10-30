@@ -6,29 +6,37 @@ public class AnimationBehaviors : MonoBehaviour {
 	public AudioClip ding;
 	public AudioClip beepCount;
 	public AudioClip fanfare;
-	
+	private AudioSource audioSource = null;
+
+	void Awake() {
+		audioSource = GetComponent<AudioSource>();
+		if (null == audioSource) {
+			audioSource = gameObject.AddComponent<AudioSource>() as AudioSource;
+		}
+	}
+
 	void DeactivateSelf() {
-		gameObject.SetActiveRecursively(false);
+		gameObject.SetActive(false);
 	}
 	
 	void PlaySound(string whichSound) {
 		if (whichSound == "ding") {
-			GetComponent<AudioSource>().PlayOneShot(ding);
+			audioSource.PlayOneShot(ding);
 		} else if (whichSound == "beepCount") {
-			GetComponent<AudioSource>().PlayOneShot(beepCount);
+			audioSource.PlayOneShot(beepCount);
 		} else if (whichSound == "fanfare") {
-			GetComponent<AudioSource>().PlayOneShot(fanfare);
+			audioSource.PlayOneShot(fanfare);
 		} else {
 			Debug.LogWarning("AnimationBehaviors::PlaySound - Sound \"" + whichSound + "\" does not exist!");
 		}
 	}
 	
 	void PlayMainAudioLoop() {
-		GetComponent<AudioSource>().Play();
+		audioSource.Play();
 	}
 	
 	void StopAudio() {
-		GetComponent<AudioSource>().Stop();
+		audioSource.Stop();
 	}
 	
 	void TriggerGameStart() {

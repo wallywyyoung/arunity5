@@ -30,8 +30,6 @@ public class FisticuffsController : MonoBehaviour {
 	private Transform character2;
 	private CharacterBehaviors char1behaviors;
 	private CharacterBehaviors char2behaviors;
-	
-	private static int numPlayers = 0; // start with no players. --------<
 
 	void Awake() {
 		if (null == Instance) {
@@ -42,8 +40,8 @@ public class FisticuffsController : MonoBehaviour {
 	}
 
 	void Start () {
-		bell.SetActiveRecursively(false);
-		megaHit.SetActiveRecursively(false);
+		bell.SetActive(false);
+		megaHit.SetActive(false);
 	}
 	
 	void Update () {
@@ -58,8 +56,8 @@ public class FisticuffsController : MonoBehaviour {
 	void CheckIfTwoCards() {
 
 		if (cardsInPlay.Count == cardsNeededForGameToStart && ready == false) {
-			character1 = cardsInPlay[0].transform.FindChild("Character");
-			character2 = cardsInPlay[1].transform.FindChild("Character");
+			character1 = cardsInPlay[0].transform;//.transform.FindChild("Character");
+			character2 = cardsInPlay[1].transform;//.transform.FindChild("Character");
 			char1behaviors = character1.GetComponent<CharacterBehaviors>();
 			char2behaviors = character2.GetComponent<CharacterBehaviors>();
 			char1behaviors.myPositionInControllerList = 0;
@@ -71,7 +69,7 @@ public class FisticuffsController : MonoBehaviour {
 			ready = false;
 			gameHasStarted = false;
 			bell.GetComponent<Animation>().Stop();
-			bell.SetActiveRecursively(false);
+			bell.SetActive(false);
 			crowdAudio.Stop();
 		}
 	}
@@ -80,11 +78,11 @@ public class FisticuffsController : MonoBehaviour {
 		TakeAim();
 		yield return new WaitForSeconds(1.7f);
 		if (ready == true) {
-			bell.SetActiveRecursively(true);
+			bell.SetActive(true);
 			bell.GetComponent<Animation>().Play("BellStart");
 			// turn off attributes windows when fight is about to start
-			char1behaviors.myAttributes.SetActiveRecursively(false);
-			char2behaviors.myAttributes.SetActiveRecursively(false);
+			char1behaviors.myAttributes.SetActive(false);
+			char2behaviors.myAttributes.SetActive(false);
 		}
 		
 	}
@@ -92,8 +90,8 @@ public class FisticuffsController : MonoBehaviour {
 	public void GameStart() {
 		crowdAudio.Play();
 		gameHasStarted = true;
-		char1behaviors.myHealthHolder.SetActiveRecursively(true);
-		char2behaviors.myHealthHolder.SetActiveRecursively(true);
+		char1behaviors.myHealthHolder.SetActive(true);
+		char2behaviors.myHealthHolder.SetActive(true);
 	}
 	
 	// they track and face eachother if not being animated otherwise
@@ -134,7 +132,7 @@ public class FisticuffsController : MonoBehaviour {
 	
 	IEnumerator EndBell() {
 		yield return new WaitForSeconds(1.0f);
-		bell.SetActiveRecursively(true);
+		bell.SetActive(true);
 		bell.GetComponent<Animation>().Play("BellStop");
 		oneShotAudio.PlayOneShot(victory);
 	}

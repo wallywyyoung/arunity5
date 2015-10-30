@@ -14,7 +14,7 @@ public class TimedSelfDeactivate : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (Time.time > storedTime + timeBeforeDeactivate) {
-			gameObject.SetActiveRecursively(false);
+			gameObject.SetActive(false);
 		}
 	}
 }
