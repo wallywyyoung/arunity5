@@ -88,88 +88,42 @@ public class ARMarkerEditor : Editor {
         EditorGUILayout.LabelField("Unique ID", (arMarker.UID == ARMarker.NO_ID ? "Not Loaded": arMarker.UID.ToString()));
 		
         EditorGUILayout.Separator();
-		
-		// Marker type		
-        MarkerType t = (MarkerType)EditorGUILayout.EnumPopup("Type", m.MarkerType);
-        if (m.MarkerType != t) { // Reload on change.
-			m.Unload();
-			m.MarkerType = t;
-			m.Load();
-		}
+			
+		arMarker.MarkerType = (MarkerType)EditorGUILayout.EnumPopup("Marker Type", arMarker.MarkerType);
 		
 		// Description of the type of marker
-        EditorGUILayout.LabelField("Description", ARMarker.MarkerTypeNames[m.MarkerType]);
-		
-        switch (m.MarkerType) {
-			
+        EditorGUILayout.LabelField("Description", ARMarker.MarkerTypeNames[arMarker.MarkerType]);
+        switch (arMarker.MarkerType) {
 			case MarkerType.Square:	
-        	case MarkerType.SquareBarcode:
-			
-				if (m.MarkerType == MarkerType.Square) {
-				
-					// For pattern markers, offer a popup with marker pattern file names.
-					RefreshPatternFilenames(); // Update the list of available markers from the resources dir
-					if (PatternFilenames.Length > 0) {
-						int patternFilenameIndex = EditorGUILayout.Popup("Pattern file", m.PatternFilenameIndex, PatternFilenames);
-						string patternFilename = PatternAssets[patternFilenameIndex].name;
-						if (patternFilename != m.PatternFilename) {
-							m.Unload();
-							m.PatternFilenameIndex = patternFilenameIndex;
-							m.PatternFilename = patternFilename;
-							m.PatternContents = PatternAssets[m.PatternFilenameIndex].text;
-							m.Load();
-						}
-					} else {
-						m.PatternFilenameIndex = 0;
-						EditorGUILayout.LabelField("Pattern file", "No patterns available");
-						m.PatternFilename = "";
-						m.PatternContents = "";
+				RefreshPatternFilenames(); // Update the list of available markers from the resources dir
+				if (PatternFilenames.Length > 0) {
+					int    patternFilenameIndex = EditorGUILayout.Popup("Pattern File", arMarker.PatternFilenameIndex, PatternFilenames);
+					string patternFilename      = PatternAssets[patternFilenameIndex].name;
+					if (patternFilename != arMarker.PatternFilename) {
+						arMarker.SetPatternProperties(patternFilename, PatternAssets[arMarker.PatternFilenameIndex].text, patternFilenameIndex);
 					}
-				
 				} else {
-				
-					// For barcode markers, allow the user to specify the barcode ID.
-					int BarcodeID = EditorGUILayout.IntField("Barcode ID", m.BarcodeID);
-					//EditorGUILayout.LabelField("(in range 0 to " + barcodeCounts[ARController.MatrixCodeType] + ")");
-	 				if (BarcodeID != m.BarcodeID) {
-						m.Unload();
-						m.BarcodeID = BarcodeID;
-						m.Load();
-					}
-				
+					EditorGUILayout.LabelField("Pattern File", "No patterns available.");
+					arMarker.SetPatternProperties(string.Empty, string.Empty, 0);
 				}
-			
-				float patternWidthPrev = m.PatternWidth;
-				m.PatternWidth = EditorGUILayout.FloatField("Width", m.PatternWidth);
-				if (patternWidthPrev != m.PatternWidth) {
-					m.Unload();
-					m.Load();
-				}
-				m.UseContPoseEstimation = EditorGUILayout.Toggle("Cont. pose estimation", m.UseContPoseEstimation);
-			
+				arMarker.PatternWidth          = EditorGUILayout.FloatField("Pattern Width (m)",         arMarker.PatternWidth);
+				arMarker.UseContPoseEstimation = EditorGUILayout.Toggle(    "Contstant Pose Estimation", arMarker.UseContPoseEstimation);
 				break;
-			
+        	case MarkerType.SquareBarcode:
+				arMarker.BarcodeID             = EditorGUILayout.IntField(  "Barcode ID",                arMarker.BarcodeID);
+				arMarker.PatternWidth          = EditorGUILayout.FloatField("Pattern Width (m)",         arMarker.PatternWidth);
+				arMarker.UseContPoseEstimation = EditorGUILayout.Toggle(    "Contstant Pose Estimation", arMarker.UseContPoseEstimation);
+				break;
         	case MarkerType.Multimarker:
-				string MultiConfigFile = EditorGUILayout.TextField("Multimarker config.", m.MultiConfigFile);
-        	    if (MultiConfigFile != m.MultiConfigFile) {
-					m.Unload();
-					m.MultiConfigFile = MultiConfigFile;
-					m.Load();
-				}
+				arMarker.MultiConfigFile = EditorGUILayout.TextField("Multimarker config.", arMarker.MultiConfigFile);
         	    break;
-
 			case MarkerType.NFT:
-                string NFTDataSetName = EditorGUILayout.TextField("NFT dataset name", m.NFTDataName);
-				if (NFTDataSetName != m.NFTDataName) {
-					m.Unload();
-					m.NFTDataName = NFTDataSetName;
-					m.Load();
+				arMarker.NFTDataName = EditorGUILayout.TextField("NFT dataset name", arMarker.NFTDataName);
+				float nftScale = EditorGUILayout.FloatField("NFT Marker scalefactor", arMarker.NFTScale);
+				if (nftScale != arMarker.NFTScale) {
+					EditorUtility.SetDirty(arMarker);
 				}
-				float nftScalePrev = m.NFTScale;
-				m.NFTScale = EditorGUILayout.FloatField("NFT marker scalefactor", m.NFTScale);
-				if (nftScalePrev != m.NFTScale) {
-					EditorUtility.SetDirty(m);
-				}
+				arMarker.NFTScale = nftScale;
 				break;
         }
 

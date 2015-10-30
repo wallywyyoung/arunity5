@@ -92,24 +92,93 @@ public class ARMarker : MonoBehaviour
     public int UID = NO_ID;      // Current Unique Identifier (UID) assigned to this marker.
 
     // Public members get serialized
-    public MarkerType MarkerType = MarkerType.Square;
+	public MarkerType MarkerType {
+		get {
+			return markerType;
+		}
+		set {
+			if (value != markerType) {
+				Unload();
+				markerType = value;
+				Load();
+			}
+		}
+	}
     public string Tag = "";
 
     // If the marker is single, then it has a filename and a width
-	public int PatternFilenameIndex = 0;
-    public string PatternFilename = "";
-	public string PatternContents = ""; // Set by the editor.
-    public float PatternWidth = 0.08f;
+	public int PatternFilenameIndex {
+		get {
+			return patternFilenameIndex;
+		}
+	}
+	public string PatternFilename {
+		get {
+			return patternFilename;
+		}
+	}
+
+	public string PatternContents {
+		get {
+			return patternContents;
+		}
+	}
+
+	public float PatternWidth {
+		get {
+			return patternWidth;
+		}
+		set {
+			if (value != patternWidth) {
+				Unload();
+				patternWidth = value;
+				Load();
+			}
+		}
+	}
 	
 	// Barcode markers have a user-selected ID.
-	public int BarcodeID = 0;
+	public int BarcodeID {
+		get {
+			return barcodeID;
+		}
+		set {
+			if (value != barcodeID) {
+				Unload();
+				barcodeID = value;
+				Load();
+			}
+		}
+	}
 	
     // If the marker is multi, it just has a config filename
-    public string MultiConfigFile = "";
+	public string MultiConfigFile {
+		get {
+			return multiConfigFile;
+		}
+		set {
+			if (value != multiConfigFile) {
+				Unload();
+				multiConfigFile = value;
+				Load();
+			}
+		}
+	}
 	
 	// NFT markers have a dataset pathname (less the extension).
 	// Also, we need a list of the file extensions that make up an NFT dataset.
-	public string NFTDataName = "";
+	public string NFTDataName {
+		get {
+			return nftDataName;
+		}
+		set {
+			if (value != nftDataName) {
+				Unload();
+				nftDataName = value;
+				Load();
+			}
+		}
+	}
 	#if !UNITY_METRO
 	private readonly string[] NFTDataExts = {"iset", "fset", "fset3"};
 	#endif
@@ -137,10 +206,15 @@ public class ARMarker : MonoBehaviour
     // Realtime tracking information
     private bool visible = false;                                           // Marker is visible or not
 	private Matrix4x4 transformationMatrix;                                 // Full transformation matrix as a Unity matrix
-//    private Quaternion rotation = new Quaternion(0.0f, 0.0f, 0.0f, 1.0f);   // Rotation corrected for Unity
-//    private Vector3 position = new Vector3(0.0f, 0.0f, 0.0f);               // Position corrected for Unity
-    
-
+	
+	private int        patternFilenameIndex = 0;
+	private string     patternContents      = string.Empty;
+	private string     patternFilename      = string.Empty;
+	private int        barcodeID            = 0;
+	private float      patternWidth         = 0.08f;
+	private MarkerType markerType           = MarkerType.Square;
+	private string     multiConfigFile      = string.Empty;   
+	private string     nftDataName          = string.Empty;
     // Initialisation.
 	// When Awake() is called, the object is already instantiated and deserialised.
 	// This is the right place to connect to other objects.
@@ -162,6 +236,16 @@ public class ARMarker : MonoBehaviour
 	{
 		//ARController.Log(LogTag + "ARMarker.OnDisable()");
 		Unload();
+	}
+
+	public void SetPatternProperties(string filename, string contents, int filenameIndex) {
+		if (null != filename && filename != patternFilename) {
+			Unload();
+			patternFilename = filename;
+			patternFilenameIndex = filenameIndex;
+			patternContents = contents;
+			Load();
+		}
 	}
 
 	#if !UNITY_METRO
