@@ -49,18 +49,16 @@ public class ARCameraEditor : Editor
 	private static int OpticalParamsAssetCount;
 	private static string[] OpticalParamsFilenames;
 
-	public static void RefreshOpticalParamsFilenames() 
+	private static void RefreshOpticalParamsFilenames() 
 	{
 		OpticalParamsAssets = Resources.LoadAll("ardata/optical", typeof(TextAsset)).Cast<TextAsset>().ToArray();
 		OpticalParamsAssetCount = OpticalParamsAssets.Length;
 		OpticalParamsFilenames = new string[OpticalParamsAssetCount];
-		for (int i = 0; i < OpticalParamsAssetCount; i++) {					
+		for (int i = 0; i < OpticalParamsAssetCount; ++i) {					
 			OpticalParamsFilenames[i] = OpticalParamsAssets[i].name;				
 		}
 	}
 
-    public override void OnInspectorGUI()
-    {
 		ARCamera arc = (ARCamera)target;
 		if (arc == null) return;
 		
@@ -71,12 +69,9 @@ public class ARCameraEditor : Editor
 		arc.Stereo = EditorGUILayout.Toggle("Part of a stereo pair", arc.Stereo);
 		if (arc.Stereo) {
 			arc.StereoEye = (ARCamera.ViewEye)EditorGUILayout.EnumPopup("Stereo eye:", arc.StereoEye);
+    public override void OnInspectorGUI() {
 		}
 
-		//
-		// Optical parameters.
-		//
-		EditorGUILayout.Separator();
 
 		arc.Optical = EditorGUILayout.Toggle("Optical see-through mode.", arc.Optical);
 

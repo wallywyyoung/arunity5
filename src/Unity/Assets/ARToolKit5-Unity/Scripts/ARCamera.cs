@@ -55,13 +55,11 @@ using UnityEngine;
 /// 
 [RequireComponent(typeof(Transform))]   // A Transform is required to update the position and orientation from tracking
 [ExecuteInEditMode]                     // Run in the editor so we can keep the scale at 1
-public class ARCamera : MonoBehaviour
-{
+public class ARCamera : MonoBehaviour {
 	private const string LogTag = "ARCamera: ";
 	
-	public enum ViewEye
-	{
-		Left = 1,
+	public enum ViewEye {
+		Left  = 1,
 		Right = 2,
 	}
 	
@@ -100,7 +98,7 @@ public class ARCamera : MonoBehaviour
 	// Stereo settings.
 	public bool Stereo = false;
 	public ViewEye StereoEye = ViewEye.Left;
-	
+
 	// Optical settings.
 	public bool Optical = false;
 	private bool opticalSetupOK = false;
