@@ -28,7 +28,7 @@
  *  Copyright 2015 Daqri, LLC.
  *  Copyright 2010-2015 ARToolworks, Inc.
  *
- *  Author(s): Philip Lamb
+ *  Author(s): Philip Lamb, Wally Young
  *
  */
 
@@ -56,33 +56,29 @@ public class ARTrackedObject : MonoBehaviour
 
 	// Private fields with accessors.
 	[SerializeField]
-	private string _markerTag = "";					// Unique tag for the marker to get tracking from
+	private string _markerTag = string.Empty;					// Unique tag for the marker to get tracking from
 	
-	
-	public string MarkerTag
-	{
-		get
-		{
+	public string MarkerTag {
+		get {
 			return _markerTag;
 		}
-		
-		set
-		{
-			_markerTag = value;
-			_marker = null;
+		set {
+			if (value != _markerTag) {
+				_markerTag = value;
+				_marker = null;
+			}
 		}
 	}
 
 	// Return the marker associated with this component.
 	// Uses cached value if available, otherwise performs a find operation.
-	public virtual ARMarker GetMarker()
-	{
-		if (_marker == null) {
+	public virtual ARMarker GetMarker()	{
+		if (null == _marker) {
 			// Locate the marker identified by the tag
-			ARMarker[] ms = FindObjectsOfType<ARMarker>();
-			foreach (ARMarker m in ms) {
-				if (m.Tag == _markerTag) {
-					_marker = m;
+			ARMarker[] arMarkers = FindObjectsOfType<ARMarker>();
+			foreach (ARMarker arMarker in arMarkers) {
+				if (arMarker.Tag == _markerTag) {
+					_marker = arMarker;
 					break;
 				}
 			}
@@ -92,8 +88,7 @@ public class ARTrackedObject : MonoBehaviour
 
 	// Return the origin associated with this component.
 	// Uses cached value if available, otherwise performs a find operation.
-	public virtual AROrigin GetOrigin()
-	{
+	public virtual AROrigin GetOrigin()	{
 		if (_origin == null) {
 			// Locate the origin in parent.
 			_origin = this.gameObject.GetComponentInParent<AROrigin>(); // Unity v4.5 and later.
@@ -101,22 +96,17 @@ public class ARTrackedObject : MonoBehaviour
 		return _origin;
 	}
 
-	void Start()
-	{
-		//ARController.Log(LogTag + "Start()");
-
+	void Start()	{
 		if (Application.isPlaying) {
 			// In Player, set initial visibility to not visible.
-			for (int i = 0; i < this.transform.childCount; i++) this.transform.GetChild(i).gameObject.SetActive(false);
-		} else {
-			// In Editor, set initial visibility to visible.
-			for (int i = 0; i < this.transform.childCount; i++) this.transform.GetChild(i).gameObject.SetActive(true);
+			for (int i = 0; i < transform.childCount; ++i) {
+				this.transform.GetChild(i).gameObject.SetActive(false);
+			}
 		}
 	}
 
 	// Use LateUpdate to be sure the ARMarker has updated before we try and use the transformation.
-	void LateUpdate()
-	{
+	void LateUpdate() {
 		// Local scale is always 1 for now
 		transform.localScale = Vector3.one;
 		
@@ -176,12 +166,9 @@ public class ARTrackedObject : MonoBehaviour
 							for (int i = 0; i < this.transform.childCount; i++) this.transform.GetChild(i).gameObject.SetActive(false);
 						}
 					}
-				} // marker
-
-			} // origin
-		} // Application.isPlaying
-
+				}
+			}
+		}
 	}
-
 }
 
