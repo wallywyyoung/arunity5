@@ -52,11 +52,10 @@ using UnityEngine;
 /// 
 [RequireComponent(typeof(Transform))]   // A Transform is required to update the position and orientation from tracking
 [ExecuteInEditMode]                     // Run in the editor so we can keep the scale at 1
-public class ARTrackedCamera : ARCamera
-{
-	private const string LogTag = "ARTrackedCamera: ";
+public class ARTrackedCamera : ARCamera {
+	private const string LOG_TAG = "ARTrackedCamera: ";
 
-	public float secondsToRemainVisible = 0.0f;		// How long to remain visible after tracking is lost (to reduce flicker)
+	public float secondsToRemainVisible = 0.0f;		// How long to remain visible after tracking is lost (to reduce LOG_TAGr)
 
 	[NonSerialized]
 	protected int cullingMask = -1;					// Correct culling mask for content (set to 0 when not visible)
