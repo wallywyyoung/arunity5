@@ -63,8 +63,7 @@ public class ARTransitionalCamera : ARTrackedCamera
 
     IEnumerator DoTransition(bool flyIn)
     {
-		ARController artoolkit = Component.FindObjectOfType(typeof(ARController)) as ARController;
-
+		ARController artoolkit = ARController.Instance;
         float transitionSpeed = flyIn ? 1.0f : -1.0f;
         bool transitioning = true;
 
