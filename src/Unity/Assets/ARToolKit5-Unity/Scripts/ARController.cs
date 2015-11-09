@@ -298,9 +298,23 @@ public class ARController : MonoBehaviour
 	//
 	// MonoBehavior methods.
 	//
-	
-    void Awake()
-    {
+
+	private static ARController instance = null;
+	public static ARController Instance {
+		get {
+			if (null == instance) {
+				instance = GameObject.FindObjectOfType<ARController>();
+			}
+			return instance;
+		}
+	}
+
+    void Awake() {
+		if (null == instance) {
+			instance = this;
+		} else {
+			Debug.LogError("ERROR: MORE THAN ONE ARCONTROLLER IN SCENE!");
+		}
 		//Log(LogTag + "ARController.Awake())");
 		#if UNITY_IOS && !UNITY_EDITOR
 		ARNativePluginStatic.aruRequestCamera();
