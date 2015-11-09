@@ -623,8 +623,7 @@ public class ARController : MonoBehaviour
 		return true;
 	}
 	
-	bool UpdateAR()
-	{
+	private bool UpdateAR()	{
         if (!_running) {
             return false;
         }
@@ -806,8 +805,7 @@ public class ARController : MonoBehaviour
 		}
 	}
 
-    public void SetVideoAlpha(float a)
-    {
+    public void SetVideoAlpha(float a) {
         if (_videoMaterial0 != null) {
             _videoMaterial0.color = new Color(1.0f, 1.0f, 1.0f, a);
         }
@@ -848,12 +846,13 @@ public class ARController : MonoBehaviour
             return currentThresholdMode;
         }
         set {
-			if (value != currentThresholdMode) {
-            	currentThresholdMode = value;
-            	if (_running) {
-					PluginFunctions.arwSetVideoThresholdMode((int)currentThresholdMode);
-				}
-            }
+			if (value == currentThresholdMode) {
+				return;
+			}
+            currentThresholdMode = value;
+            if (_running) {
+				PluginFunctions.arwSetVideoThresholdMode((int)currentThresholdMode);
+			}
         }
     }
 
@@ -866,12 +865,13 @@ public class ARController : MonoBehaviour
             return currentThreshold;
         }
 		set {
-			if (value != currentThreshold) {
-            	currentThreshold = value;
-            	if (_running) {
-            	    PluginFunctions.arwSetVideoThreshold(value);
-            	}
+			if (value == currentThreshold) {
+				return;
 			}
+            currentThreshold = value;
+            if (_running) {
+                PluginFunctions.arwSetVideoThreshold(value);
+            }
         }
     }
 
@@ -886,12 +886,13 @@ public class ARController : MonoBehaviour
             return currentLabelingMode;
         }
         set {
-			if (value != currentLabelingMode) {
-            	currentLabelingMode = value;
-            	if (_running) {
-					PluginFunctions.arwSetLabelingMode((int)currentLabelingMode);
-            	}
+			if (value == currentLabelingMode) {
+				return;
 			}
+            currentLabelingMode = value;
+            if (_running) {
+				PluginFunctions.arwSetLabelingMode((int)currentLabelingMode);
+            }
         }
     }
 
@@ -906,12 +907,13 @@ public class ARController : MonoBehaviour
             return currentBorderSize;
         }
         set {
-			if (value != currentBorderSize) {
-            	currentBorderSize = value;
-            	if (_running) {
-					PluginFunctions.arwSetBorderSize(currentBorderSize);
-            	}
+			if (value == currentBorderSize) {
+				return;
 			}
+            currentBorderSize = value;
+            if (_running) {
+				PluginFunctions.arwSetBorderSize(currentBorderSize);
+            }
         }
     }
 
@@ -920,10 +922,11 @@ public class ARController : MonoBehaviour
 			return currentTemplateSize;
 		}
 		set {
-			if (value != currentTemplateSize) {
-				currentTemplateSize = value;
-				Log (LogTag + "Warning: template size changed. Please reload scene.");
+			if (value == currentTemplateSize) {
+				return;
 			}
+			currentTemplateSize = value;
+			Log (LogTag + "Warning: template size changed. Please reload scene.");
 		}
 	}
 	
@@ -932,10 +935,11 @@ public class ARController : MonoBehaviour
 			return currentTemplateCountMax;
 		}
 		set {
-			if (value != currentTemplateCountMax) {
-				currentTemplateCountMax = value;
-				Log (LogTag + "Warning: template maximum count changed. Please reload scene.");
+			if (value == currentTemplateCountMax) {
+				return;
 			}
+			currentTemplateCountMax = value;
+			Log (LogTag + "Warning: template maximum count changed. Please reload scene.");
 		}
 	}
 	
@@ -950,12 +954,13 @@ public class ARController : MonoBehaviour
             return currentPatternDetectionMode;
         }
         set {
-			if (value != currentPatternDetectionMode) {
-            	currentPatternDetectionMode = value;
-            	if (_running) {
-					PluginFunctions.arwSetPatternDetectionMode((int)currentPatternDetectionMode);
-            	}
+			if (value == currentPatternDetectionMode) {
+				return;
 			}
+            currentPatternDetectionMode = value;
+            if (_running) {
+				PluginFunctions.arwSetPatternDetectionMode((int)currentPatternDetectionMode);
+            }
         }
     }
 
@@ -970,12 +975,13 @@ public class ARController : MonoBehaviour
             return currentMatrixCodeType;
         }
         set {
-			if (value != currentMatrixCodeType) {
-            	currentMatrixCodeType = value;
-            	if (_running) {
-					PluginFunctions.arwSetMatrixCodeType((int)currentMatrixCodeType);
-            	}
+			if (value == currentMatrixCodeType) {
+				return;
 			}
+            currentMatrixCodeType = value;
+            if (_running) {
+				PluginFunctions.arwSetMatrixCodeType((int)currentMatrixCodeType);
+            }
         }
     }
 
@@ -990,12 +996,13 @@ public class ARController : MonoBehaviour
             return currentImageProcMode;
         }
 		set {
-			if (value != currentImageProcMode) {
-            	currentImageProcMode = value;
-            	if (_running) {
-					PluginFunctions.arwSetImageProcMode((int)currentImageProcMode);
-            	}
+			if (value == currentImageProcMode) {
+				return;
 			}
+            currentImageProcMode = value;
+            if (_running) {
+				PluginFunctions.arwSetImageProcMode((int)currentImageProcMode);
+            }
         }
     }
 	// Removed until working.
@@ -1021,11 +1028,12 @@ public class ARController : MonoBehaviour
 			return currentContentMode;
 		}
 		set {
-			if (value != currentContentMode) {
-				currentContentMode = value;
-				if (_running) {
-					ConfigureViewports();
-				}
+			if (value == currentContentMode) {
+				return;
+			}
+			currentContentMode = value;
+			if (_running) {
+				ConfigureViewports();
 			}
 		}
 	}
@@ -1054,14 +1062,13 @@ public class ARController : MonoBehaviour
 	// Internal methods.
 	//
 	
-	private void UpdateTexture()
-    {
+	private void UpdateTexture() {
         // Only update the texture when running
-        if (!_running) return;
-
+        if (!_running) {
+			return;
+		}
 
 		if (!VideoIsStereo) {
-
 			// Mono.
 			if (_videoTexture0 == null) {
 				Log(LogTag + "Error: No video texture to update.");
