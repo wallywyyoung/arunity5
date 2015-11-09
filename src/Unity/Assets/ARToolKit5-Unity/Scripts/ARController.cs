@@ -390,40 +390,29 @@ public class ARController : MonoBehaviour
 		}
 	}
 	
-	void Update()
+	void Update() {
+		if (!Application.isPlaying) {
+			return;
+		}
 
-    {
-		//Log(LogTag + "ARController.Update()");
-        
-		if (Application.isPlaying) {
+        if (Input.GetKeyDown(KeyCode.Menu) || Input.GetKeyDown(KeyCode.Return)) {
+			showGUIDebug = !showGUIDebug;
+		}
 
-            // Player update.
-            if (Input.GetKeyDown(KeyCode.Menu) || Input.GetKeyDown(KeyCode.Return)) showGUIDebug = !showGUIDebug;
-			if (QuitOnEscOrBack && Input.GetKeyDown(KeyCode.Escape)) Application.Quit(); // On Android, maps to "back" button.
+		if (QuitOnEscOrBack && Input.GetKeyDown(KeyCode.Escape)) {
+			Application.Quit(); // On Android, maps to "back" button.
+		}
 	
-	        CalculateFPS();
-	        
-	        UpdateAR();
-	
-		} else {
-		
-            // Editor update.
-        
-        }
+	    CalculateFPS();
+	    
+	    UpdateAR();
     }
 
-    // Called when the user quits the application, or presses stop in the editor.
-    void OnApplicationQuit()
-    {
-		//Log(LogTag + "ARController.OnApplicationQuit()");
-        
+    void OnApplicationQuit() {
         StopAR();
     }
 
-	void OnDisable()
-	{
-		//Log(LogTag + "ARController.OnDisable()");
-
+	void OnDisable() {
 		// Since we might be going away, tell users of our Log function
 		// to stop calling it.
 		switch (Application.platform) {
@@ -460,10 +449,7 @@ public class ARController : MonoBehaviour
 	// As OnDestroy() is called from the ARController object's destructor, don't do anything
 	// here that assumes that the ARController object is still valid. Do that sort of shutdown
 	// in OnDisable() instead.
-    void OnDestroy()
-	{
-		//Log(LogTag + "ARController.OnDestroy()");
-
+    void OnDestroy() {
 		Log(LogTag + "Shutting down ARToolKit");
 		// arwShutdownAR() causes everything ARToolKit holds to be unloaded.
 		if (!PluginFunctions.arwShutdownAR ()) {
@@ -476,9 +462,7 @@ public class ARController : MonoBehaviour
 	//
 	// User-callable AR methods.
 	//
-	
-	public bool StartAR()
-	{
+	public bool StartAR() {
 		// Catch attempts to inadvertently call StartAR() twice.
         if (_running) {
             Log(LogTag + "WARNING: StartAR() called while already running. Ignoring.\n");
@@ -492,11 +476,7 @@ public class ARController : MonoBehaviour
         // Check rendering device.
         string renderDevice = SystemInfo.graphicsDeviceVersion;
         _useNativeGLTexturing = !renderDevice.StartsWith("Direct") && UseNativeGLTexturingIfAvailable;
-        if (_useNativeGLTexturing) {
-            Log(LogTag + "Render device: " + renderDevice + ", using native GL texturing.");
-        } else {
-            Log(LogTag + "Render device: " + renderDevice + ", using Unity texturing.");
-        }
+		Log(LogTag + "Render device: " + renderDevice + ", using" +( _useNativeGLTexturing ? "Unity" : "native GL") + " texturing.");
 
         CreateClearCamera();
         
@@ -519,8 +499,12 @@ public class ARController : MonoBehaviour
                 videoConfiguration0 = videoConfigurationWindows0;
 				videoConfiguration1 = videoConfigurationWindows1;
 				if (_useNativeGLTexturing || !AllowNonRGBVideo) {
-					if (videoConfiguration0.IndexOf("-device=WinMF") != -1) videoConfiguration0 += " -format=BGRA";
-					if (videoConfiguration1.IndexOf("-device=WinMF") != -1) videoConfiguration1 += " -format=BGRA";
+					if (videoConfiguration0.IndexOf("-device=WinMF") != -1) {
+						videoConfiguration0 += " -format=BGRA";
+					}
+					if (videoConfiguration1.IndexOf("-device=WinMF") != -1) {
+						videoConfiguration1 += " -format=BGRA";
+					}
 				}
 				break;
             case RuntimePlatform.Android:
@@ -528,8 +512,9 @@ public class ARController : MonoBehaviour
 				videoConfiguration1 = videoConfigurationAndroid1 + " -cachedir=\"" + Application.temporaryCachePath + "\""  + (_useNativeGLTexturing || !AllowNonRGBVideo ? " -format=RGBA" : "");
 				break;
             case RuntimePlatform.IPhonePlayer:
-				videoConfiguration0 = videoConfigurationiOS0 + (_useNativeGLTexturing || !AllowNonRGBVideo ? " -format=BGRA" : "");
-				videoConfiguration1 = videoConfigurationiOS1 + (_useNativeGLTexturing || !AllowNonRGBVideo ? " -format=BGRA" : "");
+				bool brga = _useNativeGLTexturing || !AllowNonRGBVideo;
+				videoConfiguration0 = videoConfigurationiOS0 + (brga ? " -format=BGRA" : "");
+				videoConfiguration1 = videoConfigurationiOS1 + (brga ? " -format=BGRA" : "");
 				break;
 #if UNITY_5
 			case RuntimePlatform.WSAPlayerX86:
@@ -1043,17 +1028,18 @@ public class ARController : MonoBehaviour
 			return currentUseVideoBackground;
 		}
 		set {
-			if (value != currentUseVideoBackground) {
-				currentUseVideoBackground = value;
-				if (clearCamera != null) {
-					clearCamera.backgroundColor = new Color(0.0f, 0.0f, 0.0f, (currentUseVideoBackground ? 1.0f : 0.0f));
-				}
-				if (_videoBackgroundCamera0 != null) {
-					_videoBackgroundCamera0.enabled = currentUseVideoBackground;
-				}
-				if (_videoBackgroundCamera1 != null) {
-					_videoBackgroundCamera1.enabled = currentUseVideoBackground;
-				}
+			if (value == currentUseVideoBackground) {
+				return;
+			}
+			currentUseVideoBackground = value;
+			if (clearCamera != null) {
+				clearCamera.backgroundColor = new Color(0.0f, 0.0f, 0.0f, (currentUseVideoBackground ? 1.0f : 0.0f));
+			}
+			if (_videoBackgroundCamera0 != null) {
+				_videoBackgroundCamera0.enabled = currentUseVideoBackground;
+			}
+			if (_videoBackgroundCamera1 != null) {
+				_videoBackgroundCamera1.enabled = currentUseVideoBackground;
 			}
 		}
 	}
