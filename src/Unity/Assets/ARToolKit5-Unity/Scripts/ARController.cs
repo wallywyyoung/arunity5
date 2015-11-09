@@ -31,7 +31,7 @@
  *  Copyright 2015 Daqri, LLC.
  *  Copyright 2010-2015 ARToolworks, Inc.
  *
- *  Author(s): Philip Lamb, Julian Looser
+ *  Author(s): Philip Lamb, Julian Looser, Wally Young
  *
  */
 
@@ -72,6 +72,8 @@ public enum ContentAlign
 [ExecuteInEditMode]
 public class ARController : MonoBehaviour
 {
+	private const float NEAR_PLANE = 0.01f; // Default as defined in ARController.cpp
+	private const float FAR_PLANE  = 10.0f; // Default as defined in ARController.cpp
 	//
     // Logging.
 	//
@@ -167,13 +169,6 @@ public class ARController : MonoBehaviour
 	private Camera _videoBackgroundCamera0 = null; // The Camera component attached to _videoBackgroundCameraGO0. Easier to keep this reference than calling _videoBackgroundCameraGO0.GetComponent<Camera>() each time.
 	private GameObject _videoBackgroundCameraGO1 = null; // The GameObject which holds the Camera object(s) for the stereo right-eye video background.
 	private Camera _videoBackgroundCamera1 = null; // The Camera component attached to _videoBackgroundCameraGO1. Easier to keep this reference than calling _videoBackgroundCameraGO1.GetComponent<Camera>() eaach time.
-
-	//
-	// Other
-	//
-	
-    public float NearPlane = 0.01f;
-    public float FarPlane = 5.0f;
 
 	public bool ContentRotate90 = false; // Used in CreateVideoBackgroundCamera().
 	public bool ContentFlipH = false;
@@ -592,11 +587,11 @@ public class ARController : MonoBehaviour
 		if (!VideoIsStereo) {
 			Log(LogTag + "Starting ARToolKit video with vconf '" + videoConfiguration0 + "'.");
 			//_running = PluginFunctions.arwStartRunning(videoConfiguration, cparaName, nearPlane, farPlane);
-			_running = PluginFunctions.arwStartRunningB(videoConfiguration0, cparam0, cparam0.Length, NearPlane, FarPlane);
+			_running = PluginFunctions.arwStartRunningB(videoConfiguration0, cparam0, cparam0.Length, NEAR_PLANE, FAR_PLANE);
 		} else {
 			Log(LogTag + "Starting ARToolKit video with vconfL '" + videoConfiguration0 + "', vconfR '" + videoConfiguration1 + "'.");
 			//_running = PluginFunctions.arwStartRunningStereo(vconfL, cparaNameL, vconfR, cparaNameR, transL2RName, nearPlane, farPlane);
-			_running = PluginFunctions.arwStartRunningStereoB(videoConfiguration0, cparam0, cparam0.Length, videoConfiguration1, cparam1, cparam1.Length, transL2R, transL2R.Length, NearPlane, FarPlane);
+			_running = PluginFunctions.arwStartRunningStereoB(videoConfiguration0, cparam0, cparam0.Length, videoConfiguration1, cparam1, cparam1.Length, transL2R, transL2R.Length, NEAR_PLANE, FAR_PLANE);
 
 		}
         
@@ -1504,34 +1499,29 @@ public class ARController : MonoBehaviour
 	}
 
 	// Iterate through all ARCamera objects, asking each to set its viewing frustum and any viewing pose.
-	private bool ConfigureForegroundCameras()
-	{
+	private bool ConfigureForegroundCameras() {
 		// Note if  any of the ARCamera objects are in optical mode so we can adjust UseVideoBackground.
 		bool optical = false;
-		
 		ARCamera[] arCameras = FindObjectsOfType(typeof(ARCamera)) as ARCamera[];
 		foreach (ARCamera arc in arCameras) {
-			
 			bool ok;
 			if (!arc.Stereo) {
 				// A mono display.
-				ok = arc.SetupCamera(NearPlane, FarPlane, _videoProjectionMatrix0, ref optical);
+				ok = arc.SetupCamera(_videoProjectionMatrix0, ref optical);
 			} else {
 				// One eye of a stereo display.
 				if (arc.StereoEye == ARCamera.ViewEye.Left) {
-					ok = arc.SetupCamera(NearPlane, FarPlane, _videoProjectionMatrix0, ref optical);
+					ok = arc.SetupCamera(_videoProjectionMatrix0, ref optical);
 				} else {
-					ok = arc.SetupCamera(NearPlane, FarPlane, (VideoIsStereo ? _videoProjectionMatrix1 : _videoProjectionMatrix0), ref optical);
+					ok = arc.SetupCamera((VideoIsStereo ? _videoProjectionMatrix1 : _videoProjectionMatrix0), ref optical);
 				}
 			}
 			if (!ok) {
 				Log(LogTag + "Error setting up ARCamera.");
 			}
 		}
-
 		// If any of the ARCameras are in optical mode, turn off the video background, otherwise turn it on.
 		UseVideoBackground = !optical;
-		
 		return true;
 	}
 	

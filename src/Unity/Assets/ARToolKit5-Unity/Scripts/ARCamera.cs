@@ -31,7 +31,7 @@
  *  Copyright 2015 Daqri, LLC.
  *  Copyright 2010-2015 ARToolworks, Inc.
  *
- *  Author(s): Philip Lamb, Julian Looser
+ *  Author(s): Philip Lamb, Julian Looser, Wally Young
  *
  */
 
@@ -136,18 +136,12 @@ public class ARCamera : MonoBehaviour {
 		}
 	}
 
-	public bool SetupCamera(float nearClipPlane, float farClipPlane, Matrix4x4 projectionMatrix, ref bool opticalOut)
+	public bool SetupCamera(Matrix4x4 projectionMatrix, ref bool opticalOut)
 	{
 		Camera c = this.gameObject.GetComponent<Camera>();
 		
 		// A perspective projection matrix from the tracker
 		c.orthographic = false;
-		
-		// Shouldn't really need to set these, because they are part of the custom 
-		// projection matrix, but it seems that in the editor, the preview camera view 
-		// isn't using the custom projection matrix.
-		c.nearClipPlane = nearClipPlane;
-		c.farClipPlane = farClipPlane;
 		
 		if (Optical) {
 			float fovy ;
