@@ -31,18 +31,20 @@
  *  Copyright 2015 Daqri, LLC.
  *  Copyright 2010-2015 ARToolworks, Inc.
  *
- *  Author(s): Julian Looser, Philip Lamb
+ *  Author(s): Julian Looser, Philip Lamb, Wally Young
  *
  */
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using UnityEngine;
 
 public static class ARUtilityFunctions
 {
+	private const string LOG_TAG = "ARUtilityFunctions: ";
 
 	/// <summary>
 	/// Returns the named camera or null if not found.
@@ -140,6 +142,41 @@ public static class ARUtilityFunctions
 		lhm[3, 3] =  rhm[3, 3];
 
 		return lhm;
+	}
+
+	private const string UNPACK_ERROR = LOG_TAG + "Error unpacking '{0}' to '{1}'"; 
+
+	public static bool GetFileFromStreamingAssets(string relative, out string desination) {
+		desination = Path.Combine(Application.streamingAssetsPath, relative);
+#if !UNITY_METRO
+		// On Android, we need to unpack the StreamingAssets from the .jar file in which
+		// they're archived into the native file system.
+		// URIs are valid whether we're using an absolute path or not.
+		// Check specifically for URL-like scheme.
+		if (desination.Contains("://")) {
+			// E.g. "jar:file://" + Application.dataPath + "!/assets/" + basename;
+			string source = desination;
+			desination = Path.Combine(Application.temporaryCachePath, relative);
+			// File has already been unpacked. Skip.
+			// TODO: Add some integrity checking that it's the right file.
+			if (!File.Exists(desination)) {
+				return true;
+			}
+			WWW www = new WWW(source);
+			// This will block in the webplayer.
+		    // TODO: switch to co-routine.
+			while (!www.isDone);
+			if (!string.IsNullOrEmpty(www.error)) {
+				ARController.Log(string.Format(UNPACK_ERROR, source, desination));
+				desination = string.Empty;
+				return false;
+			}
+			// Note: 64MB limit on File.WriteAllBytes.
+			// TODO: Verify limit.
+			File.WriteAllBytes(desination, www.bytes);
+		}
+#endif
+		return true;
 	}
 
 }
