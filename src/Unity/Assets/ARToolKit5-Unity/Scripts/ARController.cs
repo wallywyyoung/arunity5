@@ -554,26 +554,32 @@ public class ARController : MonoBehaviour
         }	
 
 		// Load the default camera parameters.
-		TextAsset ta;
 		byte[] cparam0 = null;
 		byte[] cparam1 = null;
 		byte[] transL2R = null;
-        ta = Resources.Load("ardata/" + videoCParamName0, typeof(TextAsset)) as TextAsset;
-        if (ta == null) {		
-            // Error - the camera_para.dat file isn't in the right place			
-			Log(LogTag + "StartAR(): Error: Camera parameters file not found at Resources/ardata/" + videoCParamName0 + ".bytes");
-            return (false);
-        }
-        cparam0 = ta.bytes;
+
+		string basePath = Path.Combine(Application.streamingAssetsPath, "ARToolKit/Cameras");
+		string source = Path.Combine(basePath, videoCParamName0 + ".dat");
+		string dest = source;
+
+		ARUtilityFunctions.GetFileFromStreamingAssets(source, out dest);
+		if (string.IsNullOrEmpty(dest)) {		
+			// Error - the camera_para.dat file isn't in the right place			
+			Log(LogTag + "StartAR(): Error: Camera parameters file not found at " + source);
+			return false;
+		}
+		cparam0 = File.ReadAllBytes(dest);
 		if (VideoIsStereo) {
-			ta = Resources.Load("ardata/" + videoCParamName1, typeof(TextAsset)) as TextAsset;
-			if (ta == null) {		
+			source = Path.Combine(Application.streamingAssetsPath, videoCParamName1 + ".dat");
+			ARUtilityFunctions.GetFileFromStreamingAssets(source, out dest);
+			if (string.IsNullOrEmpty(dest)) {		
 				// Error - the camera_para.dat file isn't in the right place			
-				Log(LogTag + "StartAR(): Error: Camera parameters file not found at Resources/ardata/" + videoCParamName1 + ".bytes");
+				Log(LogTag + "StartAR(): Error: Camera parameters file not found at " + source);
 				return (false);
 			}
-			cparam1 = ta.bytes;
-			ta = Resources.Load("ardata/" + transL2RName, typeof(TextAsset)) as TextAsset;
+			cparam1 = File.ReadAllBytes(dest);
+
+			var ta = Resources.Load("ardata/" + transL2RName, typeof(TextAsset)) as TextAsset;
 			if (ta == null) {		
 				// Error - the transL2R.dat file isn't in the right place			
 				Log(LogTag + "StartAR(): Error: The stereo calibration file not found at Resources/ardata/" + transL2RName + ".bytes");

@@ -65,10 +65,22 @@ public class ARControllerEditor : Editor {
 
         EditorGUILayout.Separator();
 		if (!arcontroller.VideoIsStereo) {
-			arcontroller.videoCParamName0 = EditorGUILayout.TextField("Camera Parameter", arcontroller.videoCParamName0);
+			if (cameras == null || cameras[0] == "") {
+				cameras = ARToolKitAssetManager.GetCameras();
+			}
+			cameraIndex = EditorGUILayout.Popup("Camera Parameter", cameraIndex, cameras);
+			if (string.Compare(cameras[cameraIndex], arcontroller.videoCParamName0, StringComparison.Ordinal) != 0) {
+				arcontroller.videoCParamName0 = cameras[cameraIndex];
+			}
 		} else {
-			arcontroller.videoCParamName0 = EditorGUILayout.TextField("Camera Parameter (L)", arcontroller.videoCParamName0);
-			arcontroller.videoCParamName1 = EditorGUILayout.TextField("Camera Parameter (R)", arcontroller.videoCParamName1);
+			cameraIndex = EditorGUILayout.Popup("Camera Parameter (L)", cameraIndex, cameras);
+			if (string.Compare(cameras[cameraIndex], arcontroller.videoCParamName0, StringComparison.Ordinal) != 0) {
+				arcontroller.videoCParamName0 = cameras[cameraIndex];
+			}
+			cameraIndexR = EditorGUILayout.Popup("Camera Parameter (R)", cameraIndexR, cameras);
+			if (string.Compare(cameras[cameraIndexR], arcontroller.videoCParamName1, StringComparison.Ordinal) != 0) {
+				arcontroller.videoCParamName1 = cameras[cameraIndexR];
+			}
 		}
 
 		showVideoConfiguration = EditorGUILayout.Foldout(showVideoConfiguration, "Video Configuration");
