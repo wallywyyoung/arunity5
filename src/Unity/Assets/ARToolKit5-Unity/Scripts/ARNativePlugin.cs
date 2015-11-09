@@ -31,7 +31,7 @@
  *  Copyright 2015 Daqri, LLC.
  *  Copyright 2010-2015 ARToolworks, Inc.
  *
- *  Author(s): Philip Lamb
+ *  Author(s): Philip Lamb, Wally Young
  *
  */
 
