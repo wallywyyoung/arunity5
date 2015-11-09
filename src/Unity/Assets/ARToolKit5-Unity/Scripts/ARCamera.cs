@@ -175,7 +175,13 @@ public class ARCamera : MonoBehaviour {
 		
 		// Renders after the clear and background cameras
 		c.depth = 2;
-		
+
+		// Ensure background camera isn't rendered in ARCamera.
+		c.cullingMask &= ARController.Instance.BackgroundLayer0;
+		if (Stereo) {
+			c.cullingMask &= ARController.Instance.BackgroundLayer1;
+		}
+
 		c.transform.position = new Vector3(0.0f, 0.0f, 0.0f);
 		c.transform.rotation = new Quaternion(0.0f, 0.0f, 0.0f, 1.0f);
 		c.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
