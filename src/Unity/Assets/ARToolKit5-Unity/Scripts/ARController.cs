@@ -1192,15 +1192,10 @@ public class ARController : MonoBehaviour
 					}
 				}
 			}
-
-
 		}
-
-
     }
 
-	private bool CreateClearCamera()
-    {
+	private bool CreateClearCamera() {
         // Attach the clear camera to this GameObject, so that we can respond to 
         // camera events in addition to clearing the display.
 		clearCamera = this.gameObject.GetComponent<Camera>();
@@ -1212,7 +1207,7 @@ public class ARController : MonoBehaviour
         clearCamera.depth = 0;
         clearCamera.cullingMask = 0;
 		
-		 // Clear color to black.
+		// Clear color to black.
         clearCamera.clearFlags = CameraClearFlags.SolidColor;
         if (UseVideoBackground) clearCamera.backgroundColor = new Color(0.0f, 0.0f, 0.0f, 1.0f);
         else clearCamera.backgroundColor = new Color(0.0f, 0.0f, 0.0f, 0.0f);
@@ -1222,8 +1217,7 @@ public class ARController : MonoBehaviour
 	
 	// Creates a GameObject in layer 'layer' which renders a mesh displaying the video stream.
 	// Places references to the Color array (as required), the texture and the material into the out parameters.
-	private GameObject CreateVideoBackgroundMesh(int index, int w, int h, int layer, out Color[] vbca, out Color32[] vbc32a, out Texture2D vbt, out Material vbm)
-	{
+	private GameObject CreateVideoBackgroundMesh(int index, int w, int h, int layer, out Color[] vbca, out Color32[] vbc32a, out Texture2D vbt, out Material vbm) {
 		// Check parameters.
 		if (w <= 0 || h <= 0) {
 			Log(LogTag + "Error: Cannot configure video texture with invalid video size: " + w + "x" + h);
@@ -1311,8 +1305,7 @@ public class ARController : MonoBehaviour
 	}
 
 	// Creates a GameObject holding a camera with name 'name', which will render layer 'layer'.
-	private GameObject CreateVideoBackgroundCamera(String name, int layer, out Camera vbc)
-	{
+	private GameObject CreateVideoBackgroundCamera(String name, int layer, out Camera vbc) {
 		// Create new GameObject to hold camera.
 		GameObject vbcgo = new GameObject(name);
 		if (vbcgo == null) {
@@ -1354,62 +1347,92 @@ public class ARController : MonoBehaviour
 		return vbcgo;
 	}
 	
-	private void DestroyVideoBackground()
-	{
+	private void DestroyVideoBackground() {
 		bool ed = Application.isEditor;
 
 		_videoBackgroundCamera0 = null;
 		_videoBackgroundCamera1 = null;
 		if (_videoBackgroundCameraGO0 != null) {
-			if (ed) DestroyImmediate(_videoBackgroundCameraGO0);
-			else Destroy(_videoBackgroundCameraGO0);
+			if (ed) {
+				DestroyImmediate(_videoBackgroundCameraGO0);
+			} else {
+				Destroy(_videoBackgroundCameraGO0);
+			}
 			_videoBackgroundCameraGO0 = null;
 		}
 		if (_videoBackgroundCameraGO1 != null) {
-			if (ed) DestroyImmediate(_videoBackgroundCameraGO1);
-			else Destroy(_videoBackgroundCameraGO1);
+			if (ed) {
+				DestroyImmediate(_videoBackgroundCameraGO1);
+			} else {
+				Destroy(_videoBackgroundCameraGO1);
+			}
 			_videoBackgroundCameraGO1 = null;
 		}
 
 		if (_videoMaterial0 != null) {
-			if (ed) DestroyImmediate(_videoMaterial0);
-			else Destroy(_videoMaterial0);
+			if (ed) {
+				DestroyImmediate(_videoMaterial0);
+			} else {
+				Destroy(_videoMaterial0);
+			}
 			_videoMaterial0 = null;
 		}
 		if (_videoMaterial1 != null) {
-			if (ed) DestroyImmediate(_videoMaterial1);
-			else Destroy(_videoMaterial1);
+			if (ed) {
+				DestroyImmediate(_videoMaterial1);
+			} else {
+				Destroy(_videoMaterial1);
+			}
 			_videoMaterial1 = null;
 		}
 		if (_videoTexture0 != null) {
-			if (ed) DestroyImmediate(_videoTexture0);
-			else Destroy(_videoTexture0);
+			if (ed) {
+				DestroyImmediate(_videoTexture0);
+			} else {
+				Destroy(_videoTexture0);
+			}
 			_videoTexture0 = null;
 		}
 		if (_videoTexture1 != null) {
-			if (ed) DestroyImmediate(_videoTexture1);
-			else Destroy(_videoTexture1);
+			if (ed) {
+				DestroyImmediate(_videoTexture1);
+			} else {
+				Destroy(_videoTexture1);
+			}
 			_videoTexture1 = null;
 		}
-		if (_videoColorArray0 != null) _videoColorArray0 = null;
-		if (_videoColorArray1 != null) _videoColorArray1 = null;
-		if (_videoColor32Array0 != null) _videoColor32Array0 = null;
-		if (_videoColor32Array1 != null) _videoColor32Array1 = null;
+		if (_videoColorArray0 != null) {
+			_videoColorArray0 = null;
+		}
+		if (_videoColorArray1 != null) {
+			_videoColorArray1 = null;
+		}
+		if (_videoColor32Array0 != null) {
+			_videoColor32Array0 = null;
+		}
+		if (_videoColor32Array1 != null) {
+			_videoColor32Array1 = null;
+		}
 		if (_videoBackgroundMeshGO0 != null) {
-			if (ed) DestroyImmediate(_videoBackgroundMeshGO0);
-			else Destroy(_videoBackgroundMeshGO0);
+			if (ed) {
+				DestroyImmediate(_videoBackgroundMeshGO0);
+			} else {
+				Destroy(_videoBackgroundMeshGO0);
+			}
 			_videoBackgroundMeshGO0 = null;
 		}
 		if (_videoBackgroundMeshGO1 != null) {
-			if (ed) DestroyImmediate(_videoBackgroundMeshGO1);
-			else Destroy(_videoBackgroundMeshGO1);
+			if (ed) {
+				DestroyImmediate(_videoBackgroundMeshGO1);
+			} else {
+				Destroy(_videoBackgroundMeshGO1);
+			}
 			_videoBackgroundMeshGO1 = null;
 		}
 		Resources.UnloadUnusedAssets();
 	}
 
-	private bool DestroyClearCamera()
-	{
+	private bool DestroyClearCamera() {
 		//bool ed = Application.isEditor;
 		if (clearCamera != null) {
 			//Log(LogTag + "Destroying Camera on ARController object");
@@ -1419,13 +1442,11 @@ public class ARController : MonoBehaviour
 			clearCamera = null;
 			//Log(LogTag + "AFTER: ARController Camera component is '" + this.gameObject.GetComponent<Camera>() + "'");
 		}
-
 		return true;
 	}
 
 	// References globals ContentMode, ContentAlign, ContentRotate90, Screen.width, Screen.height.
-	private Rect getViewport(int contentWidth, int contentHeight, bool stereo, ARCamera.ViewEye viewEye)
-	{
+	private Rect getViewport(int contentWidth, int contentHeight, bool stereo, ARCamera.ViewEye viewEye) {
 		int backingWidth = Screen.width;
 		int backingHeight = Screen.height;
 		int left, bottom, w, h;
@@ -1479,8 +1500,7 @@ public class ARController : MonoBehaviour
 		return new Rect(left, bottom, w, h);
 	}
 
-	private void CycleContentMode()
-	{
+	private void CycleContentMode() {
 		switch (ContentMode) {
 		case ContentMode.Fit:
 			ContentMode = ContentMode.Stretch;
@@ -1525,10 +1545,8 @@ public class ARController : MonoBehaviour
 		return true;
 	}
 	
-	private bool ConfigureViewports()
-	{
+	private bool ConfigureViewports() {
 		bool haveStereoARCamera = false;
-
 		// Set viewports on foreground camera(s).
 		ARCamera[] arCameras = FindObjectsOfType(typeof(ARCamera)) as ARCamera[];
 		foreach (ARCamera arc in arCameras) {
@@ -1545,7 +1563,6 @@ public class ARController : MonoBehaviour
 				}
 			}
 		}
-
 		// Set viewports on background camera(s).
 		if (!haveStereoARCamera) {
 			// Mono display.
@@ -1569,8 +1586,7 @@ public class ARController : MonoBehaviour
 		return true;
 	}
 
-    private Mesh newVideoMesh(bool flipX, bool flipY, float textureScaleU, float textureScaleV)
-    {
+    private Mesh newVideoMesh(bool flipX, bool flipY, float textureScaleU, float textureScaleV) {
         Mesh m = new Mesh();
         m.Clear();
 
@@ -1612,21 +1628,23 @@ public class ARController : MonoBehaviour
 		return m;
     }
 
-    public static void Log(String msg)
-    {
+    public static void Log(String msg) {
         // Add the new log message to the collection. If the collection has grown too large
         // then remove the oldest messages.
         logMessages.Add(msg);
-        while (logMessages.Count > MaximumLogMessages) logMessages.RemoveAt(0);
-
+        while (logMessages.Count > MaximumLogMessages) {
+			logMessages.RemoveAt(0);
+		}
         // If there is a logCallback then use that to handle the log message. Otherwise simply
         // print out on the debug console.
-        if (logCallback != null) logCallback(msg);
-        else Debug.Log(msg);
+        if (logCallback != null) {
+			logCallback(msg);
+		} else {
+			Debug.Log(msg);
+		}
     }
 
-    private void CalculateFPS()
-    {
+    private void CalculateFPS() {
         if (timeCounter < refreshTime) {
             timeCounter += Time.deltaTime;
             frameCounter++;
@@ -1645,9 +1663,7 @@ public class ARController : MonoBehaviour
     private GUIStyle[] style = new GUIStyle[3];
     private bool guiSetup = false;
 
-    private void SetupGUI()
-    {
-
+    private void SetupGUI() {
         style[0] = new GUIStyle(GUI.skin.label);
         style[0].normal.textColor = new Color(0, 0, 0, 1);
 
@@ -1666,11 +1682,13 @@ public class ARController : MonoBehaviour
 
 	private bool showGUIDebug = false;
     private bool showGUIDebugInfo = true;
-    private bool showGUIDebugLogConsole = false;
+	private bool showGUIDebugLogConsole = false;
+	public Vector2 scrollPosition = Vector2.zero;
 	
-    void OnGUI()
-    {
-        if (!guiSetup) SetupGUI();
+    void OnGUI() {
+        if (!guiSetup) {
+			SetupGUI();
+		}
 
 		if (showGUIErrorDialog) {
 			showGUIErrorDialogWinRect = GUILayout.Window(0, showGUIErrorDialogWinRect, DrawErrorDialog, "Error");
@@ -1697,8 +1715,12 @@ public class ARController : MonoBehaviour
 				}
 			}
 #endif
-			if (GUI.Button(new Rect(400, 320, 150, 50), "Video background: " + UseVideoBackground)) UseVideoBackground = !UseVideoBackground;
-			if (GUI.Button(new Rect(400, 390, 150, 50), "Debug mode: " + DebugVideo)) DebugVideo = !DebugVideo;
+			if (GUI.Button(new Rect(400, 320, 150, 50), "Video background: " + UseVideoBackground)) {
+				UseVideoBackground = !UseVideoBackground;
+			}
+			if (GUI.Button(new Rect(400, 390, 150, 50), "Debug mode: " + DebugVideo)) {
+				DebugVideo = !DebugVideo;
+			}
 		
 			ARToolKitThresholdMode currentThresholdMode = VideoThresholdMode;
 	        GUI.Label(new Rect(400, 460, 320, 25), "Threshold Mode: " + currentThresholdMode);
@@ -1715,20 +1737,17 @@ public class ARController : MonoBehaviour
         }
     }
 	
-	
-	private void DrawErrorDialog(int winID)
-	{
+	private void DrawErrorDialog(int winID) {
 		GUILayout.BeginVertical();
 		GUILayout.Label(showGUIErrorDialogContent);
 	   	GUILayout.FlexibleSpace();
-		if (GUILayout.Button("OK")) showGUIErrorDialog = false;
+		if (GUILayout.Button("OK")) {
+			showGUIErrorDialog = false;
+		}
 		GUILayout.EndVertical();
 	}
-	
-//	private bool toggle = false;
 
-    private void DrawInfoGUI()
-    {
+    private void DrawInfoGUI() {
         // Basic ARToolKit information
         GUI.Label(new Rect(10, 10, 500, 25), "ARToolKit " + Version);
         GUI.Label(new Rect(10, 30, 500, 25), "Video " + _videoWidth0 + "x" + _videoHeight0 + "@" + _videoPixelSize0 + "Bpp (" + _videoPixelFormatString0 + ")");
@@ -1743,7 +1762,6 @@ public class ARController : MonoBehaviour
         GUI.Label(new Rect(10, 190, 500, 25), "Screen : " + Screen.width + "x" + Screen.height);
         GUI.Label(new Rect(10, 210, 500, 25), "Viewport : " + _videoBackgroundCamera0.pixelRect.xMin + "," + _videoBackgroundCamera0.pixelRect.yMin + ", " + _videoBackgroundCamera0.pixelRect.xMax + ", " + _videoBackgroundCamera0.pixelRect.yMax);
         //GUI.Label(new Rect(10, 250, 800, 100), "Base Data Path : " + BaseDataPath);
-		
 
         int y = 350;
 
@@ -1754,11 +1772,7 @@ public class ARController : MonoBehaviour
         }
     }
 
-
-    public Vector2 scrollPosition = Vector2.zero;
-
-    private void DrawLogConsole()
-    {
+    private void DrawLogConsole() {
         Rect consoleRect = new Rect(0, 0, Screen.width, 200);
 
         GUIStyle s = new GUIStyle(GUI.skin.box);
@@ -1771,11 +1785,7 @@ public class ARController : MonoBehaviour
         DrawLogEntries(consoleRect, false);
     }
 
-
-    private void DrawLogEntries(Rect container, bool reverse)
-    {
-        //int numItems = logMessages.Count;
-
+    private void DrawLogEntries(Rect container, bool reverse) {
         Rect scrollViewRect = new Rect(5, 5, container.width - 10, container.height - 10);
 
         float height = 0;
@@ -1798,9 +1808,13 @@ public class ARController : MonoBehaviour
         int i = 0;
 
         foreach (String s in lm) {
-            i = 0;
-            if (s.StartsWith(LogTag)) i = 1;
-            else if (s.StartsWith("ARController C++:")) i = 2;
+            if (s.StartsWith(LogTag)) {
+				i = 1;
+			} else if (s.StartsWith("ARController C++:")) {
+				i = 2;
+			} else {
+				i = 0;
+			}
 
             float h = GUI.skin.label.CalcHeight(new GUIContent(s), width);
             GUI.Label(new Rect(0, y, width, h), s, style[i]);
@@ -1810,6 +1824,5 @@ public class ARController : MonoBehaviour
 
         GUI.EndScrollView();
     }
-
 }
 
