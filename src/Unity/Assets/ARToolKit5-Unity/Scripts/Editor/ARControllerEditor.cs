@@ -51,7 +51,6 @@ public class ARControllerEditor : Editor {
     private bool showSquareTrackingOptions = false;
 //	private bool showNFTTrackingOptions    = false;
 	private bool showApplicationOptions    = false;
-	private bool arCameraOptions           = false;
 
     public override void OnInspectorGUI()
     {
@@ -117,10 +116,10 @@ public class ARControllerEditor : Editor {
 			if (arcontroller.UseNativeGLTexturingIfAvailable) {
 				EditorGUILayout.HelpBox("Warning: Native GL Texturing is not availible on all platforms!", MessageType.Warning);
 				EditorGUI.BeginDisabledGroup(true);
-				arcontroller.AllowNonRGBVideo = EditorGUILayout.Toggle("Allow Non-RGB Video Internally.", false);
+				arcontroller.AllowNonRGBVideo = EditorGUILayout.Toggle("Process Non-RGB Video", false);
 				EditorGUI.EndDisabledGroup();
 			} else {
-				arcontroller.AllowNonRGBVideo = EditorGUILayout.Toggle("Allow Non-RGB video Internally.", arcontroller.AllowNonRGBVideo);
+				arcontroller.AllowNonRGBVideo = EditorGUILayout.Toggle("Process Non-RGB Video", arcontroller.AllowNonRGBVideo);
 			}
 
 
@@ -129,15 +128,9 @@ public class ARControllerEditor : Editor {
 			if (newContentMode != currentContentMode) {
 				arcontroller.ContentMode = newContentMode;
 			}
-			arcontroller.ContentRotate90 = EditorGUILayout.Toggle("Rotate 90° CW",      arcontroller.ContentRotate90);
-			arcontroller.ContentFlipV    = EditorGUILayout.Toggle("Flip Vertically",    arcontroller.ContentFlipV);
-			arcontroller.ContentFlipH    = EditorGUILayout.Toggle("Flip Horizontally.", arcontroller.ContentFlipH);
-		}
-
-		arCameraOptions = EditorGUILayout.Foldout(arCameraOptions, "AR Camera Options");
-		if (arCameraOptions) {
-			arcontroller.NearPlane = EditorGUILayout.FloatField("Near Plane", arcontroller.NearPlane);
-  	      	arcontroller.FarPlane  = EditorGUILayout.FloatField("Far Plane",  arcontroller.FarPlane);
+			arcontroller.ContentRotate90 = EditorGUILayout.Toggle("Rotate 90° Clockwise", arcontroller.ContentRotate90);
+			arcontroller.ContentFlipV    = EditorGUILayout.Toggle("Flip Vertically",      arcontroller.ContentFlipV);
+			arcontroller.ContentFlipH    = EditorGUILayout.Toggle("Flip Horizontally",    arcontroller.ContentFlipH);
 		}
 
         showThresholdOptions = EditorGUILayout.Foldout(showThresholdOptions, "Threshold Options");
