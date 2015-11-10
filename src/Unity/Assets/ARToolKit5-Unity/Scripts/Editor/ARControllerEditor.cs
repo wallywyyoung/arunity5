@@ -44,16 +44,16 @@ using UnityEngine;
 
 [CustomEditor(typeof(ARController))]
 public class ARControllerEditor : Editor {
+	private bool     showVideoConfiguration    = false;
+	private bool     showVideoOptions          = false;
+    private bool     showThresholdOptions      = false;
+//	private bool     showNFTTrackingOptions    = false;
+	private bool     showApplicationOptions    = false;
+	private string[] cameras                   = null;
+	private int      cameraIndex               = 0;
+	private int      cameraIndexR              = 0;
 
-	private bool showVideoConfiguration    = false;
-	private bool showVideoOptions          = false;
-    private bool showThresholdOptions      = false;
-//	private bool showNFTTrackingOptions    = false;
-	private bool showApplicationOptions    = false;
-
-    public override void OnInspectorGUI()
-    {
-
+    public override void OnInspectorGUI() {
         ARController arcontroller = (ARController)target;
         if (arcontroller == null) {
 			return;
@@ -82,8 +82,7 @@ public class ARControllerEditor : Editor {
 		}
 
 		showVideoConfiguration = EditorGUILayout.Foldout(showVideoConfiguration, "Video Configuration");
-		if (showVideoConfiguration)
-		{
+		if (showVideoConfiguration) {
 			if (!arcontroller.VideoIsStereo) {
 				arcontroller.videoConfigurationAndroid0      = EditorGUILayout.TextField("Android",           arcontroller.videoConfigurationAndroid0);
 				arcontroller.videoConfigurationiOS0          = EditorGUILayout.TextField("iOS",               arcontroller.videoConfigurationiOS0);
@@ -133,8 +132,7 @@ public class ARControllerEditor : Editor {
 		}
 
         showThresholdOptions = EditorGUILayout.Foldout(showThresholdOptions, "Threshold Options");
-        if (showThresholdOptions)
-        {
+        if (showThresholdOptions) {
             // Threshold mode selection
             ARController.ARToolKitThresholdMode currentThreshMode = arcontroller.VideoThresholdMode;
             ARController.ARToolKitThresholdMode newThreshMode = (ARController.ARToolKitThresholdMode)EditorGUILayout.EnumPopup("Mode", currentThreshMode);
