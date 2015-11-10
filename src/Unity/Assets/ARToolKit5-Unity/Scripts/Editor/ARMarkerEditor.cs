@@ -56,7 +56,7 @@ public class ARMarkerEditor : Editor {
 		PatternAssets = null;
 		PatternAssetCount = 0;
 		PatternFilenames = null;
-	}
+	} 
 	
 	private static void RefreshPatternFilenames()  {
 		PatternAssets = Resources.LoadAll("ardata/markers", typeof(TextAsset)).Cast<TextAsset>().ToArray();

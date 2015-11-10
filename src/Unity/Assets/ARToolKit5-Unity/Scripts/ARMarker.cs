@@ -394,13 +394,13 @@ public class ARMarker : MonoBehaviour
 	// state produced by this update may lag by one frame.
     void Update()
     {
-		float[] matrixRawArray = new float[16];
-
 		//ARController.Log(LogTag + "ARMarker.Update()");
 		if (UID == NO_ID || !PluginFunctions.inited) {
             visible = false;
             return;
-        }
+		}
+
+		float[] matrixRawArray = new float[16];
 
 		// Query visibility if we are running in the Player.
         if (Application.isPlaying) {

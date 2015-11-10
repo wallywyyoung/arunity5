@@ -290,6 +290,7 @@ public class ARController : MonoBehaviour
 	private ARToolKitImageProcMode currentImageProcMode = ARToolKitImageProcMode.AR_IMAGE_PROC_FRAME_IMAGE;
 	[SerializeField]
 	private bool currentUseVideoBackground = true;
+	public bool trackTemplatesInColor = false;
 	// Removed until working.
 //	[SerializeField]
 //	private bool currentNFTMultiMode = false;
@@ -306,6 +307,12 @@ public class ARController : MonoBehaviour
 				instance = GameObject.FindObjectOfType<ARController>();
 			}
 			return instance;
+		}
+	}
+
+	public bool Running {
+		get {
+			return _running;
 		}
 	}
 
@@ -373,7 +380,10 @@ public class ARController : MonoBehaviour
 		foreach (ARMarker m in markers) {
 			m.Load();
 		}
-		
+		ARTrackedMarker[] tmarkers = FindObjectsOfType(typeof(ARTrackedMarker)) as ARTrackedMarker[];
+		foreach (ARTrackedMarker m in tmarkers) {
+			m.Load();
+		}
 		if (Application.isPlaying) {
 			
 			// Player start.
@@ -1112,8 +1122,8 @@ public class ARController : MonoBehaviour
 		} else {
 			// Stereo.
 			if (_videoTexture0 == null || _videoTexture1 == null) {
-				return;
 				Log(LogTag + "Error: No video textures to update.");
+				return;
 			}
 			if (_useNativeGLTexturing) {
 				// As of 2013-09-23, mobile platforms don't support GL.IssuePluginEvent().

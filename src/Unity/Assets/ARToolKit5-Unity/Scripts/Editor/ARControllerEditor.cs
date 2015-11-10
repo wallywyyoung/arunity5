@@ -48,7 +48,6 @@ public class ARControllerEditor : Editor {
 	private bool showVideoConfiguration    = false;
 	private bool showVideoOptions          = false;
     private bool showThresholdOptions      = false;
-    private bool showSquareTrackingOptions = false;
 //	private bool showNFTTrackingOptions    = false;
 	private bool showApplicationOptions    = false;
 
@@ -153,32 +152,6 @@ public class ARControllerEditor : Editor {
                 }
             }
         }
-
-		showSquareTrackingOptions = EditorGUILayout.Foldout(showSquareTrackingOptions, "Square Tracking Options");
-		if (showSquareTrackingOptions) {
-			arcontroller.TemplateSize = EditorGUILayout.IntSlider("Template Size (bits)", arcontroller.TemplateSize, 16, 64);
-
-			int currentTemplateCountMax = arcontroller.TemplateCountMax;
-			int newTemplateCountMax = EditorGUILayout.IntField("Maximum Template Count", currentTemplateCountMax);
-			if (newTemplateCountMax != currentTemplateCountMax && newTemplateCountMax > 0) {
-				arcontroller.TemplateCountMax = newTemplateCountMax;
-			}
-
-			arcontroller.BorderSize           = UnityEngine.Mathf.Clamp(EditorGUILayout.FloatField("Border Size (%)", arcontroller.BorderSize), 0.0f, 0.5f);
-
-			arcontroller.LabelingMode         = (ARController.ARToolKitLabelingMode)EditorGUILayout.EnumPopup("Marker Border Color", arcontroller.LabelingMode);
-
-			arcontroller.PatternDetectionMode = (ARController.ARToolKitPatternDetectionMode)EditorGUILayout.EnumPopup("Pattern Detection Mode", arcontroller.PatternDetectionMode);
- 
-			// Matrix code type selection (only when in one of the matrix modes).
-			if (   arcontroller.PatternDetectionMode == ARController.ARToolKitPatternDetectionMode.AR_MATRIX_CODE_DETECTION
-			    || arcontroller.PatternDetectionMode == ARController.ARToolKitPatternDetectionMode.AR_TEMPLATE_MATCHING_COLOR_AND_MATRIX
-			    || arcontroller.PatternDetectionMode == ARController.ARToolKitPatternDetectionMode.AR_TEMPLATE_MATCHING_MONO_AND_MATRIX) {
-				 arcontroller.MatrixCodeType = (ARController.ARToolKitMatrixCodeType)EditorGUILayout.EnumPopup("Matrix Code Type", arcontroller.MatrixCodeType);
-			}
-
-			arcontroller.ImageProcMode = (ARController.ARToolKitImageProcMode)EditorGUILayout.EnumPopup("Image Processing Mode", arcontroller.ImageProcMode); 
-		}
 
 		// Removed until working.
 //		EditorGUILayout.Separator();
