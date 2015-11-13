@@ -44,6 +44,7 @@ public static class ARToolKitAssetManager {
 	public const string CAMERA_DIRECTORY_NAME    = "ARToolKit/Cameras";
 	public const string NFT_DIRECTORY_NAME       = "ARToolKit/NFT";
 	public const string PATTERN_DIRECTORY_NAME   = "ARToolKit/Patterns";
+	public const string OPTICAL_DIRECTORY_NAME   = "ARToolKit/Optical";
 	public const string MULTI_DIRECTORY_NAME     = "ARToolKit";
 	
 	#if UNITY_EDITOR
@@ -51,10 +52,11 @@ public static class ARToolKitAssetManager {
 	// recalcuate these periodically to make sure we're up to date.
 	// Do not use these directly, use the accesors below.
 	// GUID is used to track changes.
-	private static string[] nftMarkers         = null;
-	private static string[] multimarkers       = null;
-	private static string[] patternMarkers     = null;
-	private static string[] markers            = null;
+	private static string[] nftMarkers          = null;
+	private static string[] multimarkers        = null;
+	private static string[] patternMarkers      = null;
+	private static string[] markers             = null;
+	private static string[] opticalCalibrations = null;
 	private static System.Guid     guid               = System.Guid.Empty;
 
 	public static System.Guid Guid {
@@ -106,9 +108,15 @@ public static class ARToolKitAssetManager {
 			return markers;
 		}
 	}
-//
-//	public static string[] GetArrayByMarkerType(MarkerType markerType) {
-//	}
+
+	public static string[] OpticalCalibrations {
+		get {
+			if (null == markers) {
+				GetOpticalCalibrations();
+			}
+			return opticalCalibrations;
+		}
+	}
 
 	public static string[] GetBarcodeList(ARController.ARToolKitMatrixCodeType matrixCodeType) {
 		switch (matrixCodeType) {
@@ -135,6 +143,15 @@ public static class ARToolKitAssetManager {
 		return files.Select(f => f.Name.Replace(".dat", "")).ToArray();
 	}
 	
+	private static string[] GetOpticalCalibrations() {
+		string        path  = Path.Combine(Application.streamingAssetsPath, OPTICAL_DIRECTORY_NAME);
+		DirectoryInfo dir   = new DirectoryInfo(path);
+		FileInfo[]    files = dir.GetFiles("*.dat");
+		var arr = files.Select(f => f.Name.Replace(".dat", "")).ToList();
+		arr.Insert(0, "Disabled");
+		return files.Select(f => f.Name.Replace(".dat", "")).ToArray();
+	}
+
 	private static string[] GetNFTMarkers() {
 		string        path  = Path.Combine(Application.streamingAssetsPath, NFT_DIRECTORY_NAME);
 		DirectoryInfo dir   = new DirectoryInfo(path);
@@ -146,7 +163,8 @@ public static class ARToolKitAssetManager {
 		string        path  = Path.Combine(Application.streamingAssetsPath, PATTERN_DIRECTORY_NAME);
 		DirectoryInfo dir   = new DirectoryInfo(path);
 		FileInfo[]    files = dir.GetFiles();
-		return files.Select(f => f.Name.Replace(string.Concat("." + f.Extension), "")).ToArray();
+		var arr = from file in files where !file.Name.EndsWith(".meta") select file.Name;
+		return arr.ToArray();
 	}
 	
 	private static string[] GetMultiMarkers() {
