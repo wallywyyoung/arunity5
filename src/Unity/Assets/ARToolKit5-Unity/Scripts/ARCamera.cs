@@ -56,7 +56,7 @@ using UnityEngine;
 [RequireComponent(typeof(Transform))]   // A Transform is required to update the position and orientation from tracking
 [ExecuteInEditMode]                     // Run in the editor so we can keep the scale at 1
 public class ARCamera : MonoBehaviour {
-	private const string LogTag = "ARCamera: ";
+	private const string LOG_TAG = "ARCamera: ";
 	
 	public enum ViewEye {
 		Left  = 1,
@@ -78,20 +78,18 @@ public class ARCamera : MonoBehaviour {
 		STEREO_DISPLAY_MODE_ANAGLYPH_RED_BLUE,      // One output. Both views are rendered into the same buffer, the left view drawn only in the red channel and the right view only in the blue channel.
 		STEREO_DISPLAY_MODE_ANAGLYPH_RED_GREEN,     // One output. Both views are rendered into the same buffer, the left view drawn only in the red channel and the right view only in the green channel.
 	}*/
-	
-	private AROrigin _origin = null;
-	protected ARMarker _marker = null;				// Instance of marker that will be used as the origin for the camera pose.
-	
-	[NonSerialized]
-	protected Vector3 arPosition = Vector3.zero;	// Current 3D position from tracking
-	[NonSerialized]
-	protected Quaternion arRotation = Quaternion.identity; // Current 3D rotation from tracking
-	[NonSerialized]
-	protected bool arVisible = false;				// Current visibility from tracking
-	[NonSerialized]
-	protected float timeLastUpdate = 0;				// Time when tracking was last updated.
-	[NonSerialized]
-	protected float timeTrackingLost = 0;			// Time when tracking was last lost.
+
+	private Matrix4x4 opticalViewMatrix; // This transform expresses the position and orientation of the physical camera in eye coordinates.
+	private int    opticalParamsFilenameIndex = 0;
+	private string opticalParamsFilename      = string.Empty;
+	private byte[] opticalParamsFileContents  = new byte[0]; // Set by the Editor.	
+	[NonSerialized] private   AROrigin   _origin          = null;
+	[NonSerialized] protected ARMarker   _marker          = null;				 // Instance of marker that will be used as the origin for the camera pose.
+	[NonSerialized] protected Vector3    arPosition       = Vector3.zero;	     // Current 3D position from tracking
+	[NonSerialized] protected Quaternion arRotation       = Quaternion.identity; // Current 3D rotation from tracking
+	[NonSerialized] protected bool       arVisible        = false;				 // Current visibility from tracking
+	[NonSerialized] protected float      timeLastUpdate   = 0;			         // Time when tracking was last updated.
+	[NonSerialized] protected float      timeTrackingLost = 0;			         // Time when tracking was last lost.
 	
 	public GameObject eventReceiver;
 	
@@ -100,7 +98,7 @@ public class ARCamera : MonoBehaviour {
 	public ViewEye StereoEye = ViewEye.Left;
 
 	// Optical settings.
-	public bool Optical = false;
+	public  bool Optical = false;
 	private bool opticalSetupOK = false;
 
 	public int OpticalParamsFilenameIndex {
@@ -122,11 +120,7 @@ public class ARCamera : MonoBehaviour {
 	}
 
 	public float OpticalEyeLateralOffsetRight = 0.0f;
-	private Matrix4x4 opticalViewMatrix; // This transform expresses the position and orientation of the physical camera in eye coordinates.
-	
-	private int    opticalParamsFilenameIndex = 0;
-	private string opticalParamsFilename      = string.Empty;
-	private byte[] opticalParamsFileContents  = new byte[0]; // Set by the Editor.
+
 	
 	public void SetOpticalParameters(string filename, byte[] contents, int filenameIndex) {
 		if (null != filename && filename != opticalParamsFilename) {
@@ -136,8 +130,7 @@ public class ARCamera : MonoBehaviour {
 		}
 	}
 
-	public bool SetupCamera(Matrix4x4 projectionMatrix, ref bool opticalOut)
-	{
+	public bool SetupCamera(Matrix4x4 projectionMatrix, ref bool opticalOut) {
 		Camera c = this.gameObject.GetComponent<Camera>();
 		
 		// A perspective projection matrix from the tracker
@@ -150,18 +143,20 @@ public class ARCamera : MonoBehaviour {
 			float[] p = new float[16];
 			opticalSetupOK = PluginFunctions.arwLoadOpticalParams(null, OpticalParamsFileContents, OpticalParamsFileContents.Length, out fovy, out aspect, m, p);
 			if (!opticalSetupOK) {
-				ARController.Log(LogTag + "Error loading optical parameters.");
+				ARController.Log(LOG_TAG + "Error loading optical parameters.");
 				return false;
 			}
 			m[12] *= 0.001f;
 			m[13] *= 0.001f;
 			m[14] *= 0.001f;
-			ARController.Log(LogTag + "Optical parameters: fovy=" + fovy  + ", aspect=" + aspect + ", camera position (m)={" + m[12].ToString("F3") + ", " + m[13].ToString("F3") + ", " + m[14].ToString("F3") + "}");
+			ARController.Log(LOG_TAG + "Optical parameters: fovy=" + fovy  + ", aspect=" + aspect + ", camera position (m)={" + m[12].ToString("F3") + ", " + m[13].ToString("F3") + ", " + m[14].ToString("F3") + "}");
 			
 			c.projectionMatrix = ARUtilityFunctions.MatrixFromFloatArray(p);
 			
 			opticalViewMatrix = ARUtilityFunctions.MatrixFromFloatArray(m);
-			if (OpticalEyeLateralOffsetRight != 0.0f) opticalViewMatrix = Matrix4x4.TRS(new Vector3(-OpticalEyeLateralOffsetRight, 0.0f, 0.0f), Quaternion.identity, Vector3.one) * opticalViewMatrix; 
+			if (OpticalEyeLateralOffsetRight != 0.0f) {
+				opticalViewMatrix = Matrix4x4.TRS(new Vector3(-OpticalEyeLateralOffsetRight, 0.0f, 0.0f), Quaternion.identity, Vector3.one) * opticalViewMatrix; 
+			}
 			// Convert to left-hand matrix.
 			opticalViewMatrix = ARUtilityFunctions.LHMatrixFromRHMatrix(opticalViewMatrix);
 			
@@ -191,8 +186,7 @@ public class ARCamera : MonoBehaviour {
 	
 	// Return the origin associated with this component.
 	// Uses cached value if available, otherwise performs a find operation.
-	public virtual AROrigin GetOrigin()
-	{
+	public virtual AROrigin GetOrigin()	{
 		if (_origin == null) {
 			// Locate the origin in parent.
 			_origin = this.gameObject.GetComponentInParent<AROrigin>();
@@ -201,16 +195,16 @@ public class ARCamera : MonoBehaviour {
 	}
 	
 	// Get the marker, if any, currently acting as the base.
-	public virtual ARMarker GetMarker()
-	{
+	public virtual ARMarker GetMarker() {
 		AROrigin origin = GetOrigin();
-		if (origin == null) return null;
-		return (origin.GetBaseMarker());
+		if (origin == null) {
+			return null;
+		}
+		return origin.GetBaseMarker();
 	}
 	
 	// Updates arVisible, arPosition, arRotation based on linked marker state.
-	private void UpdateTracking()
-	{
+	private void UpdateTracking() {
 		// Note the current time
 		timeLastUpdate = Time.realtimeSinceStartup;
 			
@@ -255,8 +249,7 @@ public class ARCamera : MonoBehaviour {
 		}
 	}
 	
-	protected virtual void ApplyTracking()
-	{
+	protected virtual void ApplyTracking() {
 		if (arVisible) {
 			transform.localPosition = arPosition; // TODO: Change to transform.position = PositionFromMatrix(origin.transform.localToWorldMatrix * pose) etc;
 			transform.localRotation = arRotation;
@@ -264,11 +257,9 @@ public class ARCamera : MonoBehaviour {
 	}
 	
 	// Use LateUpdate to be sure the ARMarker has updated before we try and use the transformation.
-	public void LateUpdate()
-	{
+	public void LateUpdate() {
 		// Local scale is always 1 for now
 		transform.localScale = Vector3.one;
-		
 		// Update tracking if we are running in Player.
 		if (Application.isPlaying) {
 			UpdateTracking();

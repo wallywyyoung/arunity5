@@ -79,8 +79,8 @@ public class ARTrackedMarker : MonoBehaviour {
 	private const string MULTI_CONFIG          = "multi;{0}";
 	private const string NFT_CONFIG            = "nft;{0}";
 	
-	private const float ARTOOLKIT_TO_UNITY    = 1000.0f;
-	private const float UNITY_TO_ARTOOLKIT    = 1.0f / ARTOOLKIT_TO_UNITY;
+	public const float ARTOOLKIT_TO_UNITY    = 1000.0f;
+	public const float UNITY_TO_ARTOOLKIT    = 1.0f / ARTOOLKIT_TO_UNITY;
 	
 	private const string LOAD_FAILURE         = LOG_TAG + "Failed to load {0}. Quitting.";
 

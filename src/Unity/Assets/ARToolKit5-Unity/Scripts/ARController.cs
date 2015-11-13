@@ -711,7 +711,9 @@ public class ARController : MonoBehaviour
 				bool haveStereoARCameras = false;
 				ARCamera[] arCameras = FindObjectsOfType(typeof(ARCamera)) as ARCamera[];
 				foreach (ARCamera arc in arCameras) {
-					if (arc.Stereo) haveStereoARCameras = true;
+					if (arc.Stereo) {
+						haveStereoARCameras = true;
+					}
 				}
 				if (!haveStereoARCameras) {
 					// Mono display.
