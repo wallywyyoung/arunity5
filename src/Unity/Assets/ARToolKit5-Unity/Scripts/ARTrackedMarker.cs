@@ -533,10 +533,10 @@ public class ARTrackedMarker : MonoBehaviour {
 //				} else {
 //					// If this marker is not the base, need to take base inverse etc.
 //					pose = (origin.transform.localToWorldMatrix * origin.GetBaseMarker().TransformationMatrix.inverse * transformationMatrix);
-				pose = ARStaticCamera.Instance.transform.localToWorldMatrix * Matrix4x4.identity.inverse * transformationMatrix;
+				pose = ARStaticCamera.Instance.transform.localToWorldMatrix * transformationMatrix;
 //				}
 				transform.position   = ARUtilityFunctions.PositionFromMatrix(pose);
-				transform.rotation   = ARUtilityFunctions.QuaternionFromMatrix(pose);
+				transform.rotation   = ARUtilityFunctions.RotationFromMatrix(pose);
 				transform.localScale = storedScale;
 			}
 			

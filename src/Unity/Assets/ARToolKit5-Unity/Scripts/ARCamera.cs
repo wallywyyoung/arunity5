@@ -233,7 +233,7 @@ public class ARCamera : MonoBehaviour {
 				// camera "rotation", because an unrotated Unity camera is looking horizontally.
 				// So we choose to treat an unrotated marker as standing vertically, and apply a transform to the scene to
 				// to get it to lie flat on the ground.
-				arRotation = ARUtilityFunctions.QuaternionFromMatrix(pose);
+				arRotation = ARUtilityFunctions.RotationFromMatrix(pose);
 				
 				if (!arVisible) {
 					// Marker was hidden but now is visible.

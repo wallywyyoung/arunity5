@@ -1,4 +1,4 @@
-﻿/*
+/*
  *  ARTrackedObject.cs
  *  ARToolKit for Unity
  *
@@ -148,7 +148,7 @@ public class ARTrackedObject : MonoBehaviour
 						    pose = (origin.transform.localToWorldMatrix * baseMarker.TransformationMatrix.inverse * marker.TransformationMatrix);
 						}
 						transform.position = ARUtilityFunctions.PositionFromMatrix(pose);
-						transform.rotation = ARUtilityFunctions.QuaternionFromMatrix(pose);
+						transform.rotation = ARUtilityFunctions.RotationFromMatrix(pose);
 
 						if (eventReceiver != null) eventReceiver.BroadcastMessage("OnMarkerTracked", marker, SendMessageOptions.DontRequireReceiver);
 

@@ -1,4 +1,4 @@
-﻿/*
+/*
  *  ARTransitionalCamera.cs
  *  ARToolKit for Unity
  *
@@ -111,7 +111,7 @@ public class ARTransitionalCamera : ARTrackedCamera
 		Matrix4x4 targetInWorldFrame = targetObject.transform.localToWorldMatrix;
 		Matrix4x4 targetInCameraFrame = this.gameObject.GetComponent<Camera>().transform.parent.worldToLocalMatrix * targetInWorldFrame;
 		vrTargetPosition = ARUtilityFunctions.PositionFromMatrix(targetInCameraFrame);
-		vrTargetRotation = ARUtilityFunctions.QuaternionFromMatrix(targetInCameraFrame);
+		vrTargetRotation = ARUtilityFunctions.RotationFromMatrix(targetInCameraFrame);
 
 		vrObserverAzimuth = vrObserverElevation = 0.0f; // VR mode starts pointing in direction specified by the axes of the target.
 		vrObserverOffset = Vector3.zero;
