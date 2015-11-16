@@ -1505,11 +1505,6 @@ public class ARController : MonoBehaviour
 	private bool ConfigureForegroundCameras() {
 		// Note if  any of the ARCamera objects are in optical mode so we can adjust UseVideoBackground.
 		bool optical = false;
-
-		for (int i = 0; i < 3; ++i) {
-			Vector4 row = _videoProjectionMatrix0.GetRow(i);
-			Debug.Log(string.Format("VPM 1: {0}\t{1}\t{2}\t{3}", row[0], row[1], row[2], row[3]));
-		}
 		ARStaticCamera arStaticCamera = ARStaticCamera.Instance;
 		if (null != arStaticCamera) {
 		    bool ok = arStaticCamera.SetupCamera(_videoProjectionMatrix0, (VideoIsStereo ? _videoProjectionMatrix1 : _videoProjectionMatrix0), ref optical);
@@ -1518,10 +1513,6 @@ public class ARController : MonoBehaviour
 			}
 		} else {
 			Debug.LogError("ARStaticCamera Doesn't Exist!");
-		}
-		for (int i = 0; i < 3; ++i) {
-			Vector4 row = _videoProjectionMatrix0.GetRow(i);
-			Debug.Log(string.Format("VPM 2: {0}\t{1}\t{2}\t{3}", row[0], row[1], row[2], row[3]));
 		}
 		ARCamera[] arCameras = FindObjectsOfType(typeof(ARCamera)) as ARCamera[];
 		foreach (ARCamera arc in arCameras) {
