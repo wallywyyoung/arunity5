@@ -720,6 +720,10 @@ public class ARController : MonoBehaviour
 	            
 				// Create background camera(s) to actually view the "video background" layer(s).
 				bool haveStereoARCameras = false;
+				ARStaticCamera arStaticCamera = ARStaticCamera.Instance;
+				if (null != arStaticCamera && arStaticCamera.Stereo) {
+					haveStereoARCameras = true;
+				}
 				ARCamera[] arCameras = FindObjectsOfType(typeof(ARCamera)) as ARCamera[];
 				foreach (ARCamera arc in arCameras) {
 					if (arc.Stereo) {
@@ -1501,6 +1505,24 @@ public class ARController : MonoBehaviour
 	private bool ConfigureForegroundCameras() {
 		// Note if  any of the ARCamera objects are in optical mode so we can adjust UseVideoBackground.
 		bool optical = false;
+
+		for (int i = 0; i < 3; ++i) {
+			Vector4 row = _videoProjectionMatrix0.GetRow(i);
+			Debug.Log(string.Format("VPM 1: {0}\t{1}\t{2}\t{3}", row[0], row[1], row[2], row[3]));
+		}
+		ARStaticCamera arStaticCamera = ARStaticCamera.Instance;
+		if (null != arStaticCamera) {
+		    bool ok = arStaticCamera.SetupCamera(_videoProjectionMatrix0, (VideoIsStereo ? _videoProjectionMatrix1 : _videoProjectionMatrix0), ref optical);
+			if (!ok) {
+				Log(LogTag + "Error setting up ARCamera.");
+			}
+		} else {
+			Debug.LogError("ARStaticCamera Doesn't Exist!");
+		}
+		for (int i = 0; i < 3; ++i) {
+			Vector4 row = _videoProjectionMatrix0.GetRow(i);
+			Debug.Log(string.Format("VPM 2: {0}\t{1}\t{2}\t{3}", row[0], row[1], row[2], row[3]));
+		}
 		ARCamera[] arCameras = FindObjectsOfType(typeof(ARCamera)) as ARCamera[];
 		foreach (ARCamera arc in arCameras) {
 			bool ok;
@@ -1527,6 +1549,19 @@ public class ARController : MonoBehaviour
 	private bool ConfigureViewports() {
 		bool haveStereoARCamera = false;
 		// Set viewports on foreground camera(s).
+		ARStaticCamera arStaticCamera = ARStaticCamera.Instance;
+		if (null != arStaticCamera) {
+			Rect leftViewport  = new Rect(0.0f, 0.0f, 0.0f, 0.0f);
+			Rect rightViewport = new Rect(0.0f, 0.0f, 0.0f, 0.0f);
+			if (arStaticCamera.Stereo) {
+				haveStereoARCamera = true;
+				leftViewport  = getViewport(_videoWidth0, _videoHeight0, true, ARCamera.ViewEye.Left);
+				rightViewport = getViewport((VideoIsStereo ? _videoWidth1 : _videoWidth0), (VideoIsStereo ? _videoHeight1 : _videoHeight0), true, ARCamera.ViewEye.Right);
+			} else {
+				leftViewport = getViewport(_videoWidth0, _videoHeight0, false, ARCamera.ViewEye.Left);			
+			}
+			arStaticCamera.ConfigureViewports(leftViewport, rightViewport);
+		}
 		ARCamera[] arCameras = FindObjectsOfType(typeof(ARCamera)) as ARCamera[];
 		foreach (ARCamera arc in arCameras) {
 			if (!arc.Stereo) {
