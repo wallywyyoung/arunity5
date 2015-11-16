@@ -37,12 +37,10 @@
 using UnityEngine;
 using System.Collections;
 using System.Linq;
-
-[ExecuteInEditMode]
-[RequireComponent(typeof(Camera))]
 public class ARStaticCamera : MonoBehaviour {
 	private const string LOG_TAG           = "ARStaticCamera: ";
 	private const string OPTICAL_LOG       = LOG_TAG + "Optical parameters: fovy={0}, aspect={1}, camera position (m)={{2}, {3}, {4}}";
+	private const string LEFT_EYE_NAME     = "ARCamera Left Eye";
 	private const string RIGHT_EYE_NAME    = "ARCamera Right Eye";
 	private const float  NO_LATERAL_OFFSET = 0.0f;
 
@@ -76,20 +74,15 @@ public class ARStaticCamera : MonoBehaviour {
 	public  byte[]    OpticalParametersR      = null;
 	// Average of male/female IPD from https://en.wikipedia.org/wiki/Interpupillary_distance
 	public  float     OpticalEyeLateralOffset = 63.5f;
-
 	
-	private Matrix4x4 opticalViewMatrix       = Matrix4x4.identity;
-	public  Matrix4x4 OpticalViewMatrix {
-		get {
-			return opticalViewMatrix;
-		}
-	}
+	private Matrix4x4 opticalViewMatrixL       = Matrix4x4.identity;
+	private Matrix4x4 opticalViewMatrixR       = Matrix4x4.identity;
 	
 	private Camera leftCamera = null;
 	private Camera LeftCamera {
 		get {
 			if (null == leftCamera) {
-				leftCamera = GetComponent<Camera>();
+				leftCamera = MakeCamera(LEFT_EYE_NAME);
 			}
 			return leftCamera;
 		}
@@ -99,17 +92,12 @@ public class ARStaticCamera : MonoBehaviour {
 	private Camera RightCamera {
 		get {
 			if (null == rightCamera) {
-				GameObject rightEye = new GameObject(RIGHT_EYE_NAME);
-				rightEye.transform.parent        = gameObject.transform;
-				rightEye.transform.localPosition = Vector3.zero;
-				rightEye.transform.localRotation = Quaternion.identity;
-				rightEye.transform.localScale    = Vector3.zero;
-				rightCamera = rightEye.AddComponent<Camera>();
+				rightCamera = MakeCamera(RIGHT_EYE_NAME);
 			}
 			return rightCamera;
 		}
 	}
-	
+
 	private bool useLateralOffset {
 		get {
 			return Optical && !OpticalParametersL.SequenceEqual(OpticalParametersR);
@@ -134,14 +122,14 @@ public class ARStaticCamera : MonoBehaviour {
 	public bool SetupCamera(Matrix4x4 projectionMatrixL, Matrix4x4 projectionMatrixR, ref bool opticalOut) {
 		opticalOut = Optical;
 
-		bool success = SetupCamera(projectionMatrixL, LeftCamera, Optical ? OpticalParametersL : null, NO_LATERAL_OFFSET);
+		bool success = SetupCamera(projectionMatrixL, LeftCamera, Optical ? OpticalParametersL : null, NO_LATERAL_OFFSET, ref opticalViewMatrixL);
 		if (Stereo) {
-			success = success && SetupCamera(projectionMatrixR, RightCamera, Optical ? OpticalParametersR : null, useLateralOffset ? OpticalEyeLateralOffset : NO_LATERAL_OFFSET);
+			success = success && SetupCamera(projectionMatrixR, RightCamera, Optical ? OpticalParametersR : null, useLateralOffset ? OpticalEyeLateralOffset : NO_LATERAL_OFFSET, ref opticalViewMatrixR);
 		}
 		return success;
 	}
 
-	private bool SetupCamera(Matrix4x4 projectionMatrix, Camera referencedCamera, byte[] opticalParameters, float lateralOffset) {
+	private bool SetupCamera(Matrix4x4 projectionMatrix, Camera referencedCamera, byte[] opticalParameters, float lateralOffset, ref Matrix4x4 opticalViewMatrix) {
 		// A perspective projection matrix from the tracker
 		referencedCamera.orthographic = false;
 		
@@ -170,20 +158,33 @@ public class ARStaticCamera : MonoBehaviour {
 			}
 			// Convert to left-hand matrix.
 			opticalViewMatrix = ARUtilityFunctions.LHMatrixFromRHMatrix(opticalViewMatrix);
+			
+			referencedCamera.transform.localPosition = ARUtilityFunctions.PositionFromMatrix(opticalViewMatrix);
+			referencedCamera.transform.localRotation = ARUtilityFunctions.RotationFromMatrix(opticalViewMatrix);
 		}
 		
 		// Don't clear anything or else we interfere with other foreground cameras
 		referencedCamera.clearFlags = CameraClearFlags.Nothing;
 
 		// Renders after the clear and background cameras
-		referencedCamera.depth = 2;
+		referencedCamera.depth = ARController.BACKGROUND_CAMERA_DEPTH + 1;
 		
 		// Ensure background camera isn't rendered in ARCamera.
-		referencedCamera.cullingMask &= ARController.Instance.BackgroundLayer0;
-		if (ARController.Instance.VideoIsStereo) {
+		if ((referencedCamera.cullingMask & ARController.Instance.BackgroundLayer0) == ARController.Instance.BackgroundLayer0) {
+			referencedCamera.cullingMask &= ARController.Instance.BackgroundLayer0;
+		}
+		if (ARController.Instance.VideoIsStereo && (referencedCamera.cullingMask & ARController.Instance.BackgroundLayer1) == ARController.Instance.BackgroundLayer1) {
 			referencedCamera.cullingMask &= ARController.Instance.BackgroundLayer1;
 		}
 		return true;
 	}
 
+	private Camera MakeCamera(string cameraName) {
+		GameObject cameraObject = new GameObject(cameraName);
+		cameraObject.transform.parent        = gameObject.transform;
+		cameraObject.transform.localPosition = Vector3.zero;
+		cameraObject.transform.localRotation = Quaternion.identity;
+		cameraObject.transform.localScale    = Vector3.zero;
+		return cameraObject.AddComponent<Camera>();
+	}
 }

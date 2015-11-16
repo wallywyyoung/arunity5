@@ -70,8 +70,8 @@ public enum ContentAlign
 /// </summary>
 /// 
 [ExecuteInEditMode]
-public class ARController : MonoBehaviour
-{
+public class ARController : MonoBehaviour {
+	public const  int   BACKGROUND_CAMERA_DEPTH = 1;
 	private const float NEAR_PLANE = 0.01f; // Default as defined in ARController.cpp
 	private const float FAR_PLANE  = 10.0f; // Default as defined in ARController.cpp
 	//
@@ -1187,14 +1187,16 @@ public class ARController : MonoBehaviour
 		}
 
 		// First camera to render, don't render any layers.
-        clearCamera.depth = 0;
+        clearCamera.depth = BACKGROUND_CAMERA_DEPTH - 1;
         clearCamera.cullingMask = 0;
 		
 		// Clear color to black.
         clearCamera.clearFlags = CameraClearFlags.SolidColor;
-        if (UseVideoBackground) clearCamera.backgroundColor = new Color(0.0f, 0.0f, 0.0f, 1.0f);
-        else clearCamera.backgroundColor = new Color(0.0f, 0.0f, 0.0f, 0.0f);
-
+        if (UseVideoBackground) {
+			clearCamera.backgroundColor = new Color(0.0f, 0.0f, 0.0f, 1.0f);
+		} else {
+			clearCamera.backgroundColor = new Color(0.0f, 0.0f, 0.0f, 0.0f);
+		}
         return true;
     }
 	
@@ -1322,7 +1324,7 @@ public class ARController : MonoBehaviour
 		vbc.cullingMask = 1 << layer;
 		
 		// Renders after the clear camera but before foreground cameras
-		vbc.depth = 1;
+		vbc.depth = BACKGROUND_CAMERA_DEPTH;
 
 		// Finally: having done all this setup, if video background isn't actually wanted, disable the camera.
 		vbc.enabled = UseVideoBackground;
