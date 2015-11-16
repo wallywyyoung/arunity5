@@ -84,15 +84,16 @@ public class ARTrackedMarker : MonoBehaviour {
 	
 	private const string LOAD_FAILURE         = LOG_TAG + "Failed to load {0}. Quitting.";
 
-#if UNITY_EDITOR
+	#region Editor
 	// UnityEditor doesn't serialize properties.
 	// In order to keep track of what we're using, we serialize their properties here,
 	// rather than using some ugly ID association with EditorPrefs.
+	// These are not #if'd out because that would change the serialization layout of the class.
 	// TODO: Remove this by dynamic lookup of these values based on actually used
 	// serialized information.
 	public        int    EditorMarkerIndex    = 0;
 	public        string EditorMarkerName     = string.Empty;
-#endif
+	#endregion
 
 	// Current Unique Identifier (UID) assigned to this marker.
 	// UID is not serialized because its value is only meaningful during a specific run.
@@ -383,21 +384,16 @@ public class ARTrackedMarker : MonoBehaviour {
 						ARController.Log(string.Format(LOAD_FAILURE, "NFT marker due to no NFTDataName"));
 						return;
 					}
-				Debug.LogError("PRE: " + NFTDataName);
 				string relative = string.Format(NFT_FORMAT, NFTDataName);
-				Debug.LogError("POST: " + relative);
 					foreach (string ext in NFTDataExts) {
 						assetDirectory = string.Empty;
 					string temp = relative + ext;
-					Debug.LogError("EXT: " + temp + " " + assetDirectory);
 						if (!ARUtilityFunctions.GetFileFromStreamingAssets(temp, out assetDirectory)) {
 							ARController.Log(string.Format(LOAD_FAILURE, relative));
 							return;
 					}
-					Debug.LogError("EXT POST: " + temp + " " + assetDirectory);
 					}
 					if (!string.IsNullOrEmpty(assetDirectory)) {
-					Debug.LogError("PATH : " + string.Format(NFT_CONFIG, assetDirectory.Split('.')[0]));
 						configuration = string.Format(NFT_CONFIG, assetDirectory.Split('.')[0]);
 					}
 					break;
@@ -528,16 +524,17 @@ public class ARTrackedMarker : MonoBehaviour {
 				
 				// 4 - If visible, set marker pose.
 				Matrix4x4 pose;
-				AROrigin origin = gameObject.GetComponentInParent<AROrigin>();
-				if (null == origin) {
-					pose = transformationMatrix;
-				} else if (this == origin.GetBaseMarker()) {
-					// If there is no origin, or this marker is the base, no need to take base inverse etc.
-					pose = origin.transform.localToWorldMatrix;
-				} else {
-					// If this marker is not the base, need to take base inverse etc.
-					pose = (origin.transform.localToWorldMatrix * origin.GetBaseMarker().TransformationMatrix.inverse * transformationMatrix);
-				}
+//				AROrigin origin = gameObject.GetComponentInParent<AROrigin>();
+//				if (null == origin) {
+//					pose = transformationMatrix;
+//				} else if (this == origin.GetBaseMarker()) {
+//					// If there is no origin, or this marker is the base, no need to take base inverse etc.
+//					pose = origin.transform.localToWorldMatrix;
+//				} else {
+//					// If this marker is not the base, need to take base inverse etc.
+//					pose = (origin.transform.localToWorldMatrix * origin.GetBaseMarker().TransformationMatrix.inverse * transformationMatrix);
+				pose = ARStaticCamera.Instance.transform.localToWorldMatrix * Matrix4x4.identity.inverse * transformationMatrix;
+//				}
 				transform.position   = ARUtilityFunctions.PositionFromMatrix(pose);
 				transform.rotation   = ARUtilityFunctions.QuaternionFromMatrix(pose);
 				transform.localScale = storedScale;

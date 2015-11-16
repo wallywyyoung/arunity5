@@ -88,6 +88,17 @@ public class ARController : MonoBehaviour
 	public bool QuitOnEscOrBack = true;
 	public bool AutoStartAR = true;
 
+	#region Editor
+	// UnityEditor doesn't serialize properties.
+	// In order to keep track of what we're using, we serialize their properties here,
+	// rather than using some ugly ID association with EditorPrefs.
+	// These are not #if'd out because that would change the serialization layout of the class.
+	// TODO: Remove this by dynamic lookup of these values based on actually used
+	// serialized information.
+	public int      EditorCameraIndex               = 0;
+	public int      EditorCameraIndexR              = 0;
+	#endif
+
 	//
 	// State.
 	//

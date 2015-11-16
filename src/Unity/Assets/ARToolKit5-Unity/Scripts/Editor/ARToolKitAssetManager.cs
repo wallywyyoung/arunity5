@@ -111,8 +111,8 @@ public static class ARToolKitAssetManager {
 
 	public static string[] OpticalCalibrations {
 		get {
-			if (null == markers) {
-				GetOpticalCalibrations();
+			if (null == opticalCalibrations) {
+				opticalCalibrations = GetOpticalCalibrations();
 			}
 			return opticalCalibrations;
 		}
@@ -139,6 +139,9 @@ public static class ARToolKitAssetManager {
 	public static string[] GetCameras() {
 		string        path  = Path.Combine(Application.streamingAssetsPath, CAMERA_DIRECTORY_NAME);
 		DirectoryInfo dir   = new DirectoryInfo(path);
+		if (!dir.Exists) {
+			return new string[0];
+		}
 		FileInfo[]    files = dir.GetFiles("*.dat");
 		return files.Select(f => f.Name.Replace(".dat", "")).ToArray();
 	}
@@ -146,15 +149,19 @@ public static class ARToolKitAssetManager {
 	private static string[] GetOpticalCalibrations() {
 		string        path  = Path.Combine(Application.streamingAssetsPath, OPTICAL_DIRECTORY_NAME);
 		DirectoryInfo dir   = new DirectoryInfo(path);
+		if (!dir.Exists) {
+			return new string[0];
+		}
 		FileInfo[]    files = dir.GetFiles("*.dat");
-		var arr = files.Select(f => f.Name.Replace(".dat", "")).ToList();
-		arr.Insert(0, "Disabled");
 		return files.Select(f => f.Name.Replace(".dat", "")).ToArray();
 	}
 
 	private static string[] GetNFTMarkers() {
 		string        path  = Path.Combine(Application.streamingAssetsPath, NFT_DIRECTORY_NAME);
 		DirectoryInfo dir   = new DirectoryInfo(path);
+		if (!dir.Exists) {
+			return new string[0];
+		}
 		FileInfo[]    files = dir.GetFiles("*.iset");
 		return files.Select(f => f.Name.Replace(".iset", "")).ToArray();
 	}
@@ -162,14 +169,19 @@ public static class ARToolKitAssetManager {
 	private static string[] GetPatternMarkers() {
 		string        path  = Path.Combine(Application.streamingAssetsPath, PATTERN_DIRECTORY_NAME);
 		DirectoryInfo dir   = new DirectoryInfo(path);
-		FileInfo[]    files = dir.GetFiles();
-		var arr = from file in files where !file.Name.EndsWith(".meta") select file.Name;
-		return arr.ToArray();
+		if (!dir.Exists) {
+			return new string[0];
+		}
+		FileInfo[]    files = dir.GetFiles("*.patt");
+		return files.Select(f => f.Name.Replace(".patt", "")).ToArray();
 	}
 	
 	private static string[] GetMultiMarkers() {
 		string        path  = Path.Combine(Application.streamingAssetsPath, MULTI_DIRECTORY_NAME);
 		DirectoryInfo dir   = new DirectoryInfo(path);
+		if (!dir.Exists) {
+			return new string[0];
+		}
 		FileInfo[]    files = dir.GetFiles("*.dat");
 		return files.Select(f => f.Name.Replace(".dat", "")).ToArray();
 	}

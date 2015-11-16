@@ -110,7 +110,7 @@ public class ARTrackedMarkerEditor : Editor {
         switch (arMarker.MarkerType) {
 			case MarkerType.Square:
 				if (newSelection) {
-					arMarker.PatternContents       = GetPatternContents(arMarker.EditorMarkerIndex);
+					arMarker.PatternContents   = GetPatternContents(ARToolKitAssetManager.AllMarkers[arMarker.EditorMarkerIndex]);
 				}
 				arMarker.PatternWidth          = EditorGUILayout.FloatField("Pattern Width (m)",         arMarker.PatternWidth);
 				arMarker.UseContPoseEstimation = EditorGUILayout.Toggle(    "Contstant Pose Estimation", arMarker.UseContPoseEstimation);
@@ -234,11 +234,11 @@ public class ARTrackedMarkerEditor : Editor {
 		// Default. Harmless out of range.
 		return MarkerType.Square;
 	}
-	
-	private static string GetPatternContents(int markerIndex) {
-		string path = Application.streamingAssetsPath;
-		path = Path.Combine(path, ARToolKitAssetManager.PATTERN_DIRECTORY_NAME);
-		path = Path.Combine(path, ARToolKitAssetManager.AllMarkers[markerIndex]);
+
+	private const string PATTERN_EXT = ".patt";
+	private static string GetPatternContents(string markerName) {
+		string path = Path.Combine(Application.streamingAssetsPath, ARToolKitAssetManager.PATTERN_DIRECTORY_NAME);
+		path = Path.Combine(path, markerName + PATTERN_EXT);
 		return File.ReadAllText(path);
 	}
 }

@@ -50,103 +50,101 @@ public class ARControllerEditor : Editor {
 //	private bool     showNFTTrackingOptions    = false;
 	private bool     showApplicationOptions    = false;
 	private string[] cameras                   = null;
-	private int      cameraIndex               = 0;
-	private int      cameraIndexR              = 0;
 
     public override void OnInspectorGUI() {
-        ARController arcontroller = (ARController)target;
-        if (arcontroller == null) {
+        ARController arController = (ARController)target;
+        if (arController == null) {
 			return;
 		}
 
-        EditorGUILayout.LabelField("Version", "ARToolKit " + arcontroller.Version);
+        EditorGUILayout.LabelField("Version", "ARToolKit " + arController.Version);
 
         EditorGUILayout.Separator();
-		if (!arcontroller.VideoIsStereo) {
+		if (!arController.VideoIsStereo) {
 			if (cameras == null || cameras[0] == "") {
 				cameras = ARToolKitAssetManager.GetCameras();
 			}
-			cameraIndex = EditorGUILayout.Popup("Camera Parameter", cameraIndex, cameras);
-			if (string.Compare(cameras[cameraIndex], arcontroller.videoCParamName0, StringComparison.Ordinal) != 0) {
-				arcontroller.videoCParamName0 = cameras[cameraIndex];
+			arController.EditorCameraIndex = EditorGUILayout.Popup("Camera Parameter", arController.EditorCameraIndex, cameras);
+			if (string.Compare(cameras[arController.EditorCameraIndex], arController.videoCParamName0, StringComparison.Ordinal) != 0) {
+				arController.videoCParamName0 = cameras[arController.EditorCameraIndex];
 			}
 		} else {
-			cameraIndex = EditorGUILayout.Popup("Camera Parameter (L)", cameraIndex, cameras);
-			if (string.Compare(cameras[cameraIndex], arcontroller.videoCParamName0, StringComparison.Ordinal) != 0) {
-				arcontroller.videoCParamName0 = cameras[cameraIndex];
+			arController.EditorCameraIndex = EditorGUILayout.Popup("Camera Parameter (L)", arController.EditorCameraIndex, cameras);
+			if (string.Compare(cameras[arController.EditorCameraIndex], arController.videoCParamName0, StringComparison.Ordinal) != 0) {
+				arController.videoCParamName0 = cameras[arController.EditorCameraIndex];
 			}
-			cameraIndexR = EditorGUILayout.Popup("Camera Parameter (R)", cameraIndexR, cameras);
-			if (string.Compare(cameras[cameraIndexR], arcontroller.videoCParamName1, StringComparison.Ordinal) != 0) {
-				arcontroller.videoCParamName1 = cameras[cameraIndexR];
+			arController.EditorCameraIndexR = EditorGUILayout.Popup("Camera Parameter (R)", arController.EditorCameraIndexR, cameras);
+			if (string.Compare(cameras[arController.EditorCameraIndexR], arController.videoCParamName1, StringComparison.Ordinal) != 0) {
+				arController.videoCParamName1 = cameras[arController.EditorCameraIndexR];
 			}
 		}
 
 		showVideoConfiguration = EditorGUILayout.Foldout(showVideoConfiguration, "Video Configuration");
 		if (showVideoConfiguration) {
-			if (!arcontroller.VideoIsStereo) {
-				arcontroller.videoConfigurationAndroid0      = EditorGUILayout.TextField("Android",           arcontroller.videoConfigurationAndroid0);
-				arcontroller.videoConfigurationiOS0          = EditorGUILayout.TextField("iOS",               arcontroller.videoConfigurationiOS0);
-				arcontroller.videoConfigurationLinux0        = EditorGUILayout.TextField("Linux",             arcontroller.videoConfigurationLinux0);
-				arcontroller.videoConfigurationMacOSX0       = EditorGUILayout.TextField("Mac OS X",          arcontroller.videoConfigurationMacOSX0);
-				arcontroller.videoConfigurationWindows0      = EditorGUILayout.TextField("Windows",           arcontroller.videoConfigurationWindows0);
-				arcontroller.videoConfigurationWindowsStore0 = EditorGUILayout.TextField("Windows Store",     arcontroller.videoConfigurationWindowsStore0);
+			if (!arController.VideoIsStereo) {
+				arController.videoConfigurationAndroid0      = EditorGUILayout.TextField("Android",           arController.videoConfigurationAndroid0);
+				arController.videoConfigurationiOS0          = EditorGUILayout.TextField("iOS",               arController.videoConfigurationiOS0);
+				arController.videoConfigurationLinux0        = EditorGUILayout.TextField("Linux",             arController.videoConfigurationLinux0);
+				arController.videoConfigurationMacOSX0       = EditorGUILayout.TextField("Mac OS X",          arController.videoConfigurationMacOSX0);
+				arController.videoConfigurationWindows0      = EditorGUILayout.TextField("Windows",           arController.videoConfigurationWindows0);
+				arController.videoConfigurationWindowsStore0 = EditorGUILayout.TextField("Windows Store",     arController.videoConfigurationWindowsStore0);
 			} else {
-				arcontroller.videoConfigurationAndroid0      = EditorGUILayout.TextField("Android (L)",       arcontroller.videoConfigurationAndroid0);
-				arcontroller.videoConfigurationAndroid1      = EditorGUILayout.TextField("Android (R)",       arcontroller.videoConfigurationAndroid1);
-				arcontroller.videoConfigurationiOS0          = EditorGUILayout.TextField("iOS (L)",           arcontroller.videoConfigurationiOS0);
-				arcontroller.videoConfigurationiOS1          = EditorGUILayout.TextField("iOS (R)",           arcontroller.videoConfigurationiOS1);
-				arcontroller.videoConfigurationLinux0        = EditorGUILayout.TextField("Linux (L)",         arcontroller.videoConfigurationLinux0);
-				arcontroller.videoConfigurationLinux1        = EditorGUILayout.TextField("Linux (R)",         arcontroller.videoConfigurationLinux1);
-				arcontroller.videoConfigurationMacOSX0       = EditorGUILayout.TextField("OS X (L)",          arcontroller.videoConfigurationMacOSX0);
-				arcontroller.videoConfigurationMacOSX1       = EditorGUILayout.TextField("OS X (R)",          arcontroller.videoConfigurationMacOSX1);
-				arcontroller.videoConfigurationWindows0      = EditorGUILayout.TextField("Windows (L)",       arcontroller.videoConfigurationWindows0);
-				arcontroller.videoConfigurationWindows1      = EditorGUILayout.TextField("Windows (R)",       arcontroller.videoConfigurationWindows1);
-				arcontroller.videoConfigurationWindowsStore0 = EditorGUILayout.TextField("Windows Store (L)", arcontroller.videoConfigurationWindowsStore0);
-				arcontroller.videoConfigurationWindowsStore1 = EditorGUILayout.TextField("Windows Store (R)", arcontroller.videoConfigurationWindowsStore1);
+				arController.videoConfigurationAndroid0      = EditorGUILayout.TextField("Android (L)",       arController.videoConfigurationAndroid0);
+				arController.videoConfigurationAndroid1      = EditorGUILayout.TextField("Android (R)",       arController.videoConfigurationAndroid1);
+				arController.videoConfigurationiOS0          = EditorGUILayout.TextField("iOS (L)",           arController.videoConfigurationiOS0);
+				arController.videoConfigurationiOS1          = EditorGUILayout.TextField("iOS (R)",           arController.videoConfigurationiOS1);
+				arController.videoConfigurationLinux0        = EditorGUILayout.TextField("Linux (L)",         arController.videoConfigurationLinux0);
+				arController.videoConfigurationLinux1        = EditorGUILayout.TextField("Linux (R)",         arController.videoConfigurationLinux1);
+				arController.videoConfigurationMacOSX0       = EditorGUILayout.TextField("OS X (L)",          arController.videoConfigurationMacOSX0);
+				arController.videoConfigurationMacOSX1       = EditorGUILayout.TextField("OS X (R)",          arController.videoConfigurationMacOSX1);
+				arController.videoConfigurationWindows0      = EditorGUILayout.TextField("Windows (L)",       arController.videoConfigurationWindows0);
+				arController.videoConfigurationWindows1      = EditorGUILayout.TextField("Windows (R)",       arController.videoConfigurationWindows1);
+				arController.videoConfigurationWindowsStore0 = EditorGUILayout.TextField("Windows Store (L)", arController.videoConfigurationWindowsStore0);
+				arController.videoConfigurationWindowsStore1 = EditorGUILayout.TextField("Windows Store (R)", arController.videoConfigurationWindowsStore1);
 			}
 		}
 
 		showVideoOptions = EditorGUILayout.Foldout(showVideoOptions, "Video Background");
 		if (showVideoOptions) {
-			arcontroller.BackgroundLayer0 = EditorGUILayout.LayerField("Background Layer", arcontroller.BackgroundLayer0);
+			arController.BackgroundLayer0 = EditorGUILayout.LayerField("Background Layer", arController.BackgroundLayer0);
 
-			arcontroller.UseNativeGLTexturingIfAvailable = EditorGUILayout.Toggle("Native GL Texturing", arcontroller.UseNativeGLTexturingIfAvailable);
-			if (arcontroller.UseNativeGLTexturingIfAvailable) {
+			arController.UseNativeGLTexturingIfAvailable = EditorGUILayout.Toggle("Native GL Texturing", arController.UseNativeGLTexturingIfAvailable);
+			if (arController.UseNativeGLTexturingIfAvailable) {
 				EditorGUILayout.HelpBox("Warning: Native GL Texturing is not availible on all platforms!", MessageType.Warning);
 				EditorGUI.BeginDisabledGroup(true);
-				arcontroller.AllowNonRGBVideo = EditorGUILayout.Toggle("Process Non-RGB Video", false);
+				arController.AllowNonRGBVideo = EditorGUILayout.Toggle("Process Non-RGB Video", false);
 				EditorGUI.EndDisabledGroup();
 			} else {
-				arcontroller.AllowNonRGBVideo = EditorGUILayout.Toggle("Process Non-RGB Video", arcontroller.AllowNonRGBVideo);
+				arController.AllowNonRGBVideo = EditorGUILayout.Toggle("Process Non-RGB Video", arController.AllowNonRGBVideo);
 			}
 
 
-			ContentMode currentContentMode = arcontroller.ContentMode;
+			ContentMode currentContentMode = arController.ContentMode;
 			ContentMode newContentMode = (ContentMode)EditorGUILayout.EnumPopup("Content Mode", currentContentMode);
 			if (newContentMode != currentContentMode) {
-				arcontroller.ContentMode = newContentMode;
+				arController.ContentMode = newContentMode;
 			}
-			arcontroller.ContentRotate90 = EditorGUILayout.Toggle("Rotate 90° Clockwise", arcontroller.ContentRotate90);
-			arcontroller.ContentFlipV    = EditorGUILayout.Toggle("Flip Vertically",      arcontroller.ContentFlipV);
-			arcontroller.ContentFlipH    = EditorGUILayout.Toggle("Flip Horizontally",    arcontroller.ContentFlipH);
+			arController.ContentRotate90 = EditorGUILayout.Toggle("Rotate 90° Clockwise", arController.ContentRotate90);
+			arController.ContentFlipV    = EditorGUILayout.Toggle("Flip Vertically",      arController.ContentFlipV);
+			arController.ContentFlipH    = EditorGUILayout.Toggle("Flip Horizontally",    arController.ContentFlipH);
 		}
 
         showThresholdOptions = EditorGUILayout.Foldout(showThresholdOptions, "Threshold Options");
         if (showThresholdOptions) {
             // Threshold mode selection
-            ARController.ARToolKitThresholdMode currentThreshMode = arcontroller.VideoThresholdMode;
+            ARController.ARToolKitThresholdMode currentThreshMode = arController.VideoThresholdMode;
             ARController.ARToolKitThresholdMode newThreshMode = (ARController.ARToolKitThresholdMode)EditorGUILayout.EnumPopup("Mode", currentThreshMode);
             if (newThreshMode != currentThreshMode) {
-                arcontroller.VideoThresholdMode = newThreshMode;
+                arController.VideoThresholdMode = newThreshMode;
             }
 			EditorGUILayout.HelpBox(ARController.ThresholdModeDescriptions[newThreshMode], MessageType.Info);
 
             // Show threshold slider only in manual or bracketing modes.
 			if (newThreshMode == ARController.ARToolKitThresholdMode.Manual || newThreshMode == ARController.ARToolKitThresholdMode.Bracketing) {
-                int currentThreshold = arcontroller.VideoThreshold;
+                int currentThreshold = arController.VideoThreshold;
                 int newThreshold = EditorGUILayout.IntSlider("Threshold", currentThreshold, 0, 255);
                 if (newThreshold != currentThreshold) {
-                    arcontroller.VideoThreshold = newThreshold;
+                    arController.VideoThreshold = newThreshold;
                 }
             }
         }
@@ -161,21 +159,21 @@ public class ARControllerEditor : Editor {
 
 		showApplicationOptions = EditorGUILayout.Foldout(showApplicationOptions, "Additional Options");
 		if (showApplicationOptions) {
-			arcontroller.AutoStartAR = EditorGUILayout.Toggle("Auto-Start AR.", arcontroller.AutoStartAR);
-			if (arcontroller.AutoStartAR) {
+			arController.AutoStartAR = EditorGUILayout.Toggle("Auto-Start AR.", arController.AutoStartAR);
+			if (arController.AutoStartAR) {
 				EditorGUILayout.HelpBox("ARController.StartAR() will be called during MonoBehavior.Start().", MessageType.Info);
 			} else {
 				EditorGUILayout.HelpBox("ARController.StartAR() will not be called during MonoBehavior.Start(); you must call it yourself.", MessageType.Warning);
 			}
 
-			arcontroller.QuitOnEscOrBack = EditorGUILayout.Toggle("Quit on [Esc].", arcontroller.QuitOnEscOrBack);
-			if (arcontroller.QuitOnEscOrBack) {
+			arController.QuitOnEscOrBack = EditorGUILayout.Toggle("Quit on [Esc].", arController.QuitOnEscOrBack);
+			if (arController.QuitOnEscOrBack) {
 				EditorGUILayout.HelpBox("The [esc] key (Windows, OS X) or the [Back] button (Android) will quit the app.", MessageType.Info);
 			} else {
 				EditorGUILayout.HelpBox("The [esc] key (Windows, OS X) or the [Back] button (Android) will be ignored.", MessageType.Warning);
 			}
 
-			arcontroller.VideoIsStereo = EditorGUILayout.Toggle("Stereo Video Input", arcontroller.VideoIsStereo);
+			arController.VideoIsStereo = EditorGUILayout.Toggle("Stereo Video Input", arController.VideoIsStereo);
 			EditorGUILayout.HelpBox("Check this option if you plan to use two cameras to track the environment. This is not stereoscopic rendering. Note: You will have to configure both left (L) and right (R) cameras separately.", MessageType.Info);
 		}
     }
