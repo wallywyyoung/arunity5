@@ -97,7 +97,7 @@ public class ARController : MonoBehaviour
 	// serialized information.
 	public int      EditorCameraIndex               = 0;
 	public int      EditorCameraIndexR              = 0;
-	#endif
+	#endregion
 
 	//
 	// State.
