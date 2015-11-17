@@ -107,11 +107,8 @@ public class ARMarker : MonoBehaviour
     public string Tag = "";
 
     // If the marker is single, then it has a filename and a width
-	public int PatternFilenameIndex {
-		get {
-			return patternFilenameIndex;
-		}
-	}
+	public int FilenameIndex;
+
 	public string PatternFilename {
 		get {
 			return patternFilename;
@@ -206,8 +203,7 @@ public class ARMarker : MonoBehaviour
     // Realtime tracking information
     private bool visible = false;                                           // Marker is visible or not
 	private Matrix4x4 transformationMatrix;                                 // Full transformation matrix as a Unity matrix
-	
-	private int        patternFilenameIndex = 0;
+
 	private string     patternContents      = string.Empty;
 	private string     patternFilename      = string.Empty;
 	private int        barcodeID            = 0;
@@ -238,11 +234,10 @@ public class ARMarker : MonoBehaviour
 		Unload();
 	}
 
-	public void SetPatternProperties(string filename, string contents, int filenameIndex) {
+	public void SetPatternProperties(string filename, string contents) {
 		if (null != filename && filename != patternFilename) {
 			Unload();
 			patternFilename = filename;
-			patternFilenameIndex = filenameIndex;
 			patternContents = contents;
 			Load();
 		}

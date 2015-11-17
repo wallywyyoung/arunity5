@@ -1513,8 +1513,6 @@ public class ARController : MonoBehaviour {
 			if (!ok) {
 				Log(LogTag + "Error setting up ARCamera.");
 			}
-		} else {
-			Debug.LogError("ARStaticCamera Doesn't Exist!");
 		}
 		ARCamera[] arCameras = FindObjectsOfType(typeof(ARCamera)) as ARCamera[];
 		foreach (ARCamera arc in arCameras) {
