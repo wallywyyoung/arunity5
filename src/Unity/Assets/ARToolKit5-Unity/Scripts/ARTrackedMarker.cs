@@ -69,7 +69,7 @@ public class ARTrackedMarker : MonoBehaviour {
 
     private const string LOG_TAG = "ARTrackedMarker: ";
 
-	private const int    NO_ID   = -1;
+	public const int    NO_ID   = -1;
 
 	private const string NFT_FORMAT            = "ARToolKit/NFT/{0}";
 	private const string MULTI_FORMAT		   = "ARToolKit";
@@ -319,8 +319,8 @@ public class ARTrackedMarker : MonoBehaviour {
 	[NonSerialized] private float       nftWidth             = 1.0f;               // Once marker is loaded, this holds the width of the marker in Unity units.
 	[NonSerialized] private float       nftHeight            = 1.0f;               // Once marker is loaded, this holds the height of the marker in Unity units.
 	[NonSerialized] private ARPattern[] patterns             = null;               // Single markers have a single pattern, multi markers have one or more, NFT have none.
-	[NonSerialized] private bool        visible              = false;              // Marker is visible or not.
-	[NonSerialized] private Matrix4x4   transformationMatrix = Matrix4x4.identity; // Full transformation matrix as a Unity matrix.
+	[NonSerialized] protected bool        visible              = false;              // Marker is visible or not.
+	[NonSerialized] protected Matrix4x4   transformationMatrix = Matrix4x4.identity; // Full transformation matrix as a Unity matrix.
 
 	// Private fields with accessors.
 	// Marker configuration options.
@@ -486,7 +486,7 @@ public class ARTrackedMarker : MonoBehaviour {
 	// 5 - If visibility state is new, notify event recievers via "OnMarkerFound" or "OnMarkerLost".
 	// 6 - If visibility state is new, set appropriate active state for marker children.
 	// 7 - If visible, notify event recievers that the marker's pose has been updated via "OnMarkerTracked".
-	private void LateUpdate() {
+	protected virtual void LateUpdate() {
 		if (!Application.isPlaying) {
 			return;
 		}

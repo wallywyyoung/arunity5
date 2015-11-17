@@ -95,8 +95,8 @@ public class ARController : MonoBehaviour {
 	// These are not #if'd out because that would change the serialization layout of the class.
 	// TODO: Remove this by dynamic lookup of these values based on actually used
 	// serialized information.
-	public int      EditorCameraIndex               = 0;
-	public int      EditorCameraIndexR              = 0;
+	public int EditorCameraIndex  = 0;
+	public int EditorCameraIndexR = 0;
 	#endregion
 
 	//
