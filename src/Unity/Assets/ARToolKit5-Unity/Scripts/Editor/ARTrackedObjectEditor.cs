@@ -31,40 +31,25 @@
  *  Copyright 2015 Daqri, LLC.
  *  Copyright 2010-2015 ARToolworks, Inc.
  *
- *  Author(s): Philip Lamb, Julian Looser
+ *  Author(s): Philip Lamb, Julian Looser, Wally Young
  *
  */
 
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using UnityEditor;
 using UnityEngine;
 
 [CustomEditor(typeof(ARTrackedObject))] 
-public class ARTrackedObjectEditor : Editor 
-{
-    public override void OnInspectorGUI()
-    {
+public class ARTrackedObjectEditor : Editor {
+
+	private ARTrackedMarker marker = null;
+
+    public override void OnInspectorGUI() {
 		ARTrackedObject arto = (ARTrackedObject)target;
-		if (arto == null) return;
-
-		arto.MarkerTag = EditorGUILayout.TextField("Marker tag", arto.MarkerTag);
-
-		ARMarker marker = arto.GetMarker();
-		EditorGUILayout.LabelField("Got marker", marker == null ? "no" : "yes");
-		if (marker != null) {
-			string type = ARMarker.MarkerTypeNames[marker.MarkerType];
-			EditorGUILayout.LabelField("Marker UID", (marker.UID != ARMarker.NO_ID ? marker.UID.ToString() : "Not loaded") + " (" + type + ")");	
+		if (null == arto) {
+			return;
 		}
 		
-		EditorGUILayout.Separator();
-		
-		arto.secondsToRemainVisible = EditorGUILayout.FloatField("Stay visible", arto.secondsToRemainVisible);
-		
-		EditorGUILayout.Separator();
-		
-		arto.eventReceiver = (GameObject)EditorGUILayout.ObjectField("Event Receiver:", arto.eventReceiver, typeof(GameObject), true);
+		arto.secondsToRemainVisible = EditorGUILayout.FloatField("Remain Visible on Loss (s)", arto.secondsToRemainVisible);
 	}
 }

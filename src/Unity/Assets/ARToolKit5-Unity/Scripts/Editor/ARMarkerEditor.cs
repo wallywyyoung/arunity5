@@ -157,6 +157,11 @@ public class ARMarkerEditor : Editor {
 				ARController.Instance.ImageProcMode = (ARController.ARToolKitImageProcMode)EditorGUILayout.EnumPopup("Image Processing Mode", ARController.Instance.ImageProcMode); 
 			}
 		}
+		
+		var obj = new SerializedObject(arMarker);
+		var prop = obj.FindProperty("eventRecievers");
+		EditorGUILayout.PropertyField(prop, new GUIContent("Event Recievers"), true);
+		obj.ApplyModifiedProperties();
 	}
 	
 	private static void UpdatePatternDetectionMode() {

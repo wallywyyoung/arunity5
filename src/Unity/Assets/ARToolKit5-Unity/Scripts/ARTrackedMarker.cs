@@ -308,7 +308,7 @@ public class ARTrackedMarker : MonoBehaviour {
 		}
 	}
 
-	public List<IAREventReciever> eventRecievers = new List<IAREventReciever>();
+	public List<AAREventReciever> eventRecievers = new List<AAREventReciever>();
 
 	#if !UNITY_METRO
 	private readonly string[] NFTDataExts = {".iset", ".fset", ".fset3"};

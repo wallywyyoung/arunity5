@@ -62,9 +62,15 @@ class ARTrackedObjectGizmo
 
     private static void DrawMarker(ARTrackedObject to, bool selected)
 	{
-        ARMarker m = to.GetMarker();
-        if (m == null) return;
-		if (!m.gameObject.activeInHierarchy) return; // Don't attempt to load inactive ARMarkers.
+		var markers = from marker in GameObject.FindObjectsOfType<ARMarker>()
+			where marker.eventRecievers.Contains(to) select marker;
+		ARMarker m = markers.First();
+        if (m == null) {
+			return;
+		}
+		if (!m.gameObject.activeInHierarchy) {
+			return; // Don't attempt to load inactive ARMarkers.
+		}
 		
 		// Attempt to load. Might not work out if e.g. for a single marker, pattern hasn't been
 		// assigned yet, or for an NFT marker, dataset hasn't been specified.

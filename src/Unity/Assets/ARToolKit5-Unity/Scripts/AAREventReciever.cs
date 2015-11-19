@@ -34,6 +34,8 @@
  *
  */
 
+using UnityEngine;
+
 /// <summary>
 /// Any object that implements IAREventReciever is eligable to register for tracking
 /// events from any ARTrackedMarker object.
@@ -41,8 +43,8 @@
 ///   arTrackedMarker.eventRecievers.add(this);
 /// </summary>
 /// 
-public interface IAREventReciever {
-	void OnMarkerFound(ARTrackedMarker marker);
-	void OnMarkerTracked(ARTrackedMarker marker);
-	void OnMarkerLost(ARTrackedMarker marker);
+public abstract class AAREventReciever : MonoBehaviour {
+	public abstract void OnMarkerFound(ARTrackedMarker marker);
+	public abstract void OnMarkerTracked(ARTrackedMarker marker);
+	public abstract void OnMarkerLost(ARTrackedMarker marker);
 }

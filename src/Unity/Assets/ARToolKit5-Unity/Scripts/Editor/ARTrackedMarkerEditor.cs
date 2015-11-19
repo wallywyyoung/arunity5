@@ -79,7 +79,6 @@ public class ARTrackedMarkerEditor : Editor {
 //		}
 		arMarker.EditorMarkerIndex = EditorGUILayout.Popup("Marker", arMarker.EditorMarkerIndex, ARToolKitAssetManager.AllMarkers);
 
-
 		bool newSelection = false;
 		if (string.CompareOrdinal(arMarker.EditorMarkerName, ARToolKitAssetManager.AllMarkers[arMarker.EditorMarkerIndex]) != 0) {
 			newSelection = true;
@@ -170,6 +169,11 @@ public class ARTrackedMarkerEditor : Editor {
 				ARController.Instance.ImageProcMode = (ARController.ARToolKitImageProcMode)EditorGUILayout.EnumPopup("Image Processing Mode", ARController.Instance.ImageProcMode); 
 			}
 		}
+
+		var obj = new SerializedObject(arMarker);
+		var prop = obj.FindProperty("eventRecievers");
+		EditorGUILayout.PropertyField(prop, new GUIContent("Event Recievers"), true);
+		obj.ApplyModifiedProperties();
 	}
 
 	private static void UpdatePatternDetectionMode() {

@@ -86,8 +86,12 @@ public class ARMarker : ARTrackedMarker {
 
 		// Query visibility if we are running in the Player.
         if (Application.isPlaying) {
-
-			visible = PluginFunctions.arwQueryMarkerTransformation(UID, matrixRawArray);
+			// 1 - Query for visibility.
+			bool nowVisible = PluginFunctions.arwQueryMarkerTransformation(UID, matrixRawArray);
+			
+			// 2 - Determine if visibility state is new.
+			bool notify = (nowVisible && !visible) || (!nowVisible && visible);
+			visible = nowVisible;
 			
             if (visible) {
 				matrixRawArray[12] *= 0.001f; // Scale the position from ARToolKit units (mm) into Unity units (m).
@@ -95,13 +99,32 @@ public class ARMarker : ARTrackedMarker {
 				matrixRawArray[14] *= 0.001f;
 
 				Matrix4x4 matrixRaw = ARUtilityFunctions.MatrixFromFloatArray(matrixRawArray);
-				//ARController.Log("arwQueryMarkerTransformation(" + UID + ") got matrix: [" + Environment.NewLine + matrixRaw.ToString("F3").Trim() + "]");
 
 				// ARToolKit uses right-hand coordinate system where the marker lies in x-y plane with right in direction of +x,
 				// up in direction of +y, and forward (towards viewer) in direction of +z.
 				// Need to convert to Unity's left-hand coordinate system where marker lies in x-y plane with right in direction of +x,
 				// up in direction of +y, and forward (towards viewer) in direction of -z.
 				transformationMatrix = ARUtilityFunctions.LHMatrixFromRHMatrix(matrixRaw);
+			}
+
+			// 5 - If visibility state is new, notify event recievers via "OnMarkerFound" or "OnMarkerLost".
+			if (notify) {
+				if (null != eventRecievers && eventRecievers.Count > 0) {
+					if (visible) {
+						eventRecievers.ForEach(x => x.OnMarkerFound(this));
+					} else {
+						eventRecievers.ForEach(x => x.OnMarkerLost(this));
+					}
+				}
+				// 6 - If visibility state is new, set appropriate active state for marker children.
+				for (int i = 0; i < transform.childCount; ++i) {
+					transform.GetChild(i).gameObject.SetActive(visible);
+				}
+			}
+			
+			// 7 - If visible, notify event recievers that the marker's pose has been updated via "OnMarkerTracked".
+			if (null != eventRecievers&& eventRecievers.Count > 0) {
+				eventRecievers.ForEach(x => x.OnMarkerTracked(this));
 			}
 		}
     }
