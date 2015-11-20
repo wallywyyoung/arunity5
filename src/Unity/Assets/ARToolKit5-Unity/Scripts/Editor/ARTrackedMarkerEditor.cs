@@ -85,6 +85,7 @@ public class ARTrackedMarkerEditor : Editor {
 		}
 		MarkerType markerType = DetermineMarkerType(arMarker.EditorMarkerIndex);
 		if (arMarker.MarkerType != markerType) {
+			arMarker.ClearUnusedValues();
 			arMarker.MarkerType = markerType;
 			UpdatePatternDetectionMode();
 		}

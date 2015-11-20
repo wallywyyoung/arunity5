@@ -561,4 +561,28 @@ public class ARTrackedMarker : MonoBehaviour {
 			}
 		}
 	}
+	
+	public void ClearUnusedValues() {
+		patterns = null;
+		if (markerType != MarkerType.Multimarker) {
+			multiConfigFile = string.Empty;
+		}
+		if (markerType != MarkerType.NFT) {
+			nftDataName = string.Empty;
+			nftWidth = 0.0f;
+			nftHeight = 0.0f;
+			currentNFTScale = 1.0f;
+		}
+		if (markerType != MarkerType.Square) {
+			patternContents = string.Empty;
+		}
+		if (markerType != MarkerType.SquareBarcode) {
+			barcodeID = 0;
+		}
+		if (MarkerType != MarkerType.Square && MarkerType != MarkerType.SquareBarcode) {
+			patternWidth = 0.08f;
+			UseContPoseEstimation = false;
+		}
+	}
+
 }
