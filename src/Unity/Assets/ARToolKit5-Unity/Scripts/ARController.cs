@@ -347,10 +347,7 @@ public class ARController : MonoBehaviour {
         }
 	}
 
-	void OnEnable()
-	{
-		//Log(LogTag + "ARController.OnEnable()");
-
+	void OnEnable() {
 		// Register the log callback.
 		switch (Application.platform) {
             case RuntimePlatform.OSXEditor:						// Unity Editor on OS X.
@@ -485,13 +482,10 @@ public class ARController : MonoBehaviour {
 	// here that assumes that the ARController object is still valid. Do that sort of shutdown
 	// in OnDisable() instead.
     void OnDestroy() {
-		Log(LogTag + "Shutting down ARToolKit");
 		// arwShutdownAR() causes everything ARToolKit holds to be unloaded.
 		if (!PluginFunctions.arwShutdownAR ()) {
 			Log(LogTag + "Error shutting down ARToolKit.");
 		}
-
-		// Classes inheriting from MonoBehavior should set all static member variables to null on unload.
 	}
 	
 	//
@@ -500,7 +494,6 @@ public class ARController : MonoBehaviour {
 	public bool StartAR() {
 		// Catch attempts to inadvertently call StartAR() twice.
         if (_running) {
-            Log(LogTag + "WARNING: StartAR() called while already running. Ignoring.\n");
             return false;
         }
         
@@ -634,7 +627,6 @@ public class ARController : MonoBehaviour {
         }
         
 		// After calling arwStartRunningB/arwStartRunningStereoB, set ARToolKit configuration.
-        Log(LogTag + "Setting ARToolKit tracking settings.");
         VideoThreshold = currentThreshold;
         VideoThresholdMode = currentThresholdMode;
         LabelingMode = currentLabelingMode;
@@ -773,8 +765,6 @@ public class ARController : MonoBehaviour {
 						}
 					}
 				}
-
-				Log (LogTag + "Scene configured for video.");
 	            _sceneConfiguredForVideo = true;     
 	        } // !running
 		} // !sceneConfiguredForVideo
