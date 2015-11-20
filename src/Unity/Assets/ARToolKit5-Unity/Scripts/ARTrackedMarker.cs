@@ -78,9 +78,9 @@ public class ARTrackedMarker : MonoBehaviour {
 	private const string SINGLE_BARCODE_CONFIG = "single_barcode;{0};{1}";
 	private const string MULTI_CONFIG          = "multi;{0}";
 	private const string NFT_CONFIG            = "nft;{0}";
-	
-	public const float ARTOOLKIT_TO_UNITY    = 1000.0f;
-	public const float UNITY_TO_ARTOOLKIT    = 1.0f / ARTOOLKIT_TO_UNITY;
+	private const string MULTI_EXT	           = ".dat";
+	public const float ARTOOLKIT_TO_UNITY      = 1000.0f;
+	public const float UNITY_TO_ARTOOLKIT      = 1.0f / ARTOOLKIT_TO_UNITY;
 	
 	private const string LOAD_FAILURE         = LOG_TAG + "Failed to load {0}. Quitting.";
 
@@ -122,7 +122,7 @@ public class ARTrackedMarker : MonoBehaviour {
 			return patternContents;
 		}
 		set {
-			if (value != patternContents) {
+			if (string.CompareOrdinal(value, patternContents) != 0) {
 				Unload();
 				patternContents = value;
 				Load();
@@ -163,7 +163,7 @@ public class ARTrackedMarker : MonoBehaviour {
 			return multiConfigFile;
 		}
 		set {
-			if (value != multiConfigFile) {
+			if (string.CompareOrdinal(value, multiConfigFile) != 0) {
 				Unload();
 				multiConfigFile = value;
 				Load();
@@ -178,7 +178,7 @@ public class ARTrackedMarker : MonoBehaviour {
 			return nftDataName;
 		}
 		set {
-			if (value != nftDataName) {
+			if (string.CompareOrdinal(value, nftDataName) != 0) {
 				Unload();
 				nftDataName = value;
 				Load();
@@ -373,7 +373,7 @@ public class ARTrackedMarker : MonoBehaviour {
 						ARController.Log(string.Format(LOAD_FAILURE, "multimarker due to no MultiConfigFile"));
 						return;
 					}
-					string path = Path.Combine(MULTI_FORMAT, MultiConfigFile);
+					string path = Path.Combine(MULTI_FORMAT, MultiConfigFile + MULTI_EXT);
 					ARUtilityFunctions.GetFileFromStreamingAssets(path, out assetDirectory);
 					if (!string.IsNullOrEmpty(assetDirectory)) {
 						configuration = string.Format(MULTI_CONFIG, assetDirectory);

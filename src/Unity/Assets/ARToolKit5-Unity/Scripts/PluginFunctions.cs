@@ -71,9 +71,14 @@ public static class PluginFunctions
 	public static bool arwInitialiseAR(int pattSize = 16, int pattCountMax = 25)
 	{
 		bool ok;
-		if (Application.platform == RuntimePlatform.IPhonePlayer) ok = ARNativePluginStatic.arwInitialiseARWithOptions(pattSize, pattCountMax);
-		else ok = ARNativePlugin.arwInitialiseARWithOptions(pattSize, pattCountMax);
-		if (ok) PluginFunctions.inited = true;
+		if (Application.platform == RuntimePlatform.IPhonePlayer) {
+			ok = ARNativePluginStatic.arwInitialiseARWithOptions(pattSize, pattCountMax);
+		} else {
+			ok = ARNativePlugin.arwInitialiseARWithOptions(pattSize, pattCountMax);
+		}
+		if (ok) {
+			PluginFunctions.inited = true;
+		}
 		return ok;
 	}
 	

@@ -64,12 +64,11 @@ public class ARTrackedMarkerEditor : Editor {
         if (null == arMarker) {
 			return;
 		}
-		
 		// Attempt to load. Might not work out if e.g. for a single marker, pattern hasn't been
 		// assigned yet, or for an NFT marker, dataset hasn't been specified.
-//		if (arMarker.UID == ARMarker.NO_ID) {
-//			arMarker.Load(); 
-//		}
+		if (arMarker.UID == ARMarker.NO_ID) {
+			arMarker.Load(); 
+		}
 
 //		if (!ARToolKitAssetManager.Guid.Equals(cacheGuid)) {
 //			cacheGuid = ARToolKitAssetManager.Guid;

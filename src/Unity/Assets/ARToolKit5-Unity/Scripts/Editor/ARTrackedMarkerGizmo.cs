@@ -105,6 +105,9 @@ class ARTrackedMarkerGizmo {
     }
 
 	private static void DrawMultiMarker(ARTrackedMarker arTrackedMarker, Matrix4x4 mat, bool selected) {
+		if (null == arTrackedMarker.Patterns) {
+			return;
+		}
 		for (int i = 0; i < arTrackedMarker.Patterns.Length; ++i) {
 			Matrix4x4 mat1 = mat * arTrackedMarker.Patterns[i].matrix;
             float pattWidth = arTrackedMarker.Patterns[i].width;
