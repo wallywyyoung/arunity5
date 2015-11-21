@@ -716,12 +716,6 @@ public class ARController : MonoBehaviour {
 				if (null != arStaticCamera && arStaticCamera.Stereo) {
 					haveStereoARCameras = true;
 				}
-				ARCamera[] arCameras = FindObjectsOfType(typeof(ARCamera)) as ARCamera[];
-				foreach (ARCamera arc in arCameras) {
-					if (arc.Stereo) {
-						haveStereoARCameras = true;
-					}
-				}
 				if (!haveStereoARCameras) {
 					// Mono display.
 					// Use only first video source, regardless of whether VideoIsStereo.
@@ -1421,7 +1415,7 @@ public class ARController : MonoBehaviour {
 	}
 
 	// References globals ContentMode, ContentAlign, ContentRotate90, Screen.width, Screen.height.
-	private Rect getViewport(int contentWidth, int contentHeight, bool stereo, ARCamera.ViewEye viewEye) {
+	private Rect getViewport(int contentWidth, int contentHeight, bool stereo, ARStaticCamera.ViewEye viewEye) {
 		int backingWidth = Screen.width;
 		int backingHeight = Screen.height;
 		int left, bottom, w, h;
@@ -1430,7 +1424,7 @@ public class ARController : MonoBehaviour {
 			// Assume side-by-side or half side-by-side mode.
 			w = backingWidth / 2;
 			h = backingHeight;
-			if (viewEye == ARCamera.ViewEye.Left) left = 0;
+			if (viewEye == ARStaticCamera.ViewEye.Left) left = 0;
 			else left = backingWidth / 2;
 			bottom = 0;
 		} else {
@@ -1504,24 +1498,6 @@ public class ARController : MonoBehaviour {
 				Log(LogTag + "Error setting up ARCamera.");
 			}
 		}
-		ARCamera[] arCameras = FindObjectsOfType(typeof(ARCamera)) as ARCamera[];
-		foreach (ARCamera arc in arCameras) {
-			bool ok;
-			if (!arc.Stereo) {
-				// A mono display.
-				ok = arc.SetupCamera(_videoProjectionMatrix0, ref optical);
-			} else {
-				// One eye of a stereo display.
-				if (arc.StereoEye == ARCamera.ViewEye.Left) {
-					ok = arc.SetupCamera(_videoProjectionMatrix0, ref optical);
-				} else {
-					ok = arc.SetupCamera((VideoIsStereo ? _videoProjectionMatrix1 : _videoProjectionMatrix0), ref optical);
-				}
-			}
-			if (!ok) {
-				Log(LogTag + "Error setting up ARCamera.");
-			}
-		}
 		// If any of the ARCameras are in optical mode, turn off the video background, otherwise turn it on.
 		UseVideoBackground = !optical;
 		return true;
@@ -1536,36 +1512,21 @@ public class ARController : MonoBehaviour {
 			Rect rightViewport = new Rect(0.0f, 0.0f, 0.0f, 0.0f);
 			if (arStaticCamera.Stereo) {
 				haveStereoARCamera = true;
-				leftViewport  = getViewport(_videoWidth0, _videoHeight0, true, ARCamera.ViewEye.Left);
-				rightViewport = getViewport((VideoIsStereo ? _videoWidth1 : _videoWidth0), (VideoIsStereo ? _videoHeight1 : _videoHeight0), true, ARCamera.ViewEye.Right);
+				leftViewport  = getViewport(_videoWidth0, _videoHeight0, true, ARStaticCamera.ViewEye.Left);
+				rightViewport = getViewport((VideoIsStereo ? _videoWidth1 : _videoWidth0), (VideoIsStereo ? _videoHeight1 : _videoHeight0), true, ARStaticCamera.ViewEye.Right);
 			} else {
-				leftViewport = getViewport(_videoWidth0, _videoHeight0, false, ARCamera.ViewEye.Left);			
+				leftViewport = getViewport(_videoWidth0, _videoHeight0, false, ARStaticCamera.ViewEye.Left);			
 			}
 			arStaticCamera.ConfigureViewports(leftViewport, rightViewport);
-		}
-		ARCamera[] arCameras = FindObjectsOfType(typeof(ARCamera)) as ARCamera[];
-		foreach (ARCamera arc in arCameras) {
-			if (!arc.Stereo) {
-				// A mono display.
-				arc.gameObject.GetComponent<Camera>().pixelRect = getViewport(_videoWidth0, _videoHeight0, false, ARCamera.ViewEye.Left);
-			} else {
-				// One eye of a stereo display.
-				haveStereoARCamera = true;
-				if (arc.StereoEye == ARCamera.ViewEye.Left) {
-					arc.gameObject.GetComponent<Camera>().pixelRect = getViewport(_videoWidth0, _videoHeight0, true, ARCamera.ViewEye.Left);
-				} else {
-					arc.gameObject.GetComponent<Camera>().pixelRect = getViewport((VideoIsStereo ? _videoWidth1 : _videoWidth0), (VideoIsStereo ? _videoHeight1 : _videoHeight0), true, ARCamera.ViewEye.Right);
-				}
-			}
 		}
 		// Set viewports on background camera(s).
 		if (!haveStereoARCamera) {
 			// Mono display.
-			_videoBackgroundCamera0.pixelRect = getViewport(_videoWidth0, _videoHeight0, false, ARCamera.ViewEye.Left);
+			_videoBackgroundCamera0.pixelRect = getViewport(_videoWidth0, _videoHeight0, false, ARStaticCamera.ViewEye.Left);
 		} else {
 			// Stereo display.
-			_videoBackgroundCamera0.pixelRect = getViewport(_videoWidth0, _videoHeight0, true, ARCamera.ViewEye.Left);
-			_videoBackgroundCamera1.pixelRect = getViewport((VideoIsStereo ? _videoWidth1 : _videoWidth0), (VideoIsStereo ? _videoHeight1 : _videoHeight0), true, ARCamera.ViewEye.Right);
+			_videoBackgroundCamera0.pixelRect = getViewport(_videoWidth0, _videoHeight0, true, ARStaticCamera.ViewEye.Left);
+			_videoBackgroundCamera1.pixelRect = getViewport((VideoIsStereo ? _videoWidth1 : _videoWidth0), (VideoIsStereo ? _videoHeight1 : _videoHeight0), true, ARStaticCamera.ViewEye.Right);
 		}
 
 #if UNITY_ANDROID

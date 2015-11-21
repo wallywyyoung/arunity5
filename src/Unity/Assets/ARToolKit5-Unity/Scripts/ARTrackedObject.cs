@@ -42,35 +42,11 @@ using UnityEngine;
 [RequireComponent(typeof(Transform))]
 [ExecuteInEditMode]
 public class ARTrackedObject : AAREventReciever {
-	private Coroutine timer   = null;
-	private AROrigin  _origin = null;
-
-	public  float      secondsToRemainVisible = 0.0f;	// How long to remain visible after tracking is lost (to reduce flicker)
-
-	// Return the origin associated with this component.
-	// Uses cached value if available, otherwise performs a find operation.
-	public virtual AROrigin GetOrigin()	{
-		if (_origin == null) {
-			// Locate the origin in parent.
-			_origin = this.gameObject.GetComponentInParent<AROrigin>(); // Unity v4.5 and later.
-		}
-		return _origin;
-	}
-
-	void Start()	{
-		if (!Application.isPlaying) {
-			return;
-		}
-		// In Player, set initial visibility to not visible.
-		for (int i = 0; i < transform.childCount; ++i) {
-			this.transform.GetChild(i).gameObject.SetActive(false);
-		}
-	}
-
+	private Coroutine timer                  = null;
+	public  float     secondsToRemainVisible = 0.0f;	// After tracking is lost (to reduce flicker).
+	
 	public override void OnMarkerFound(ARTrackedMarker marker) {
-		Debug.LogError("OnMarkerFound");
 		if (null != timer) {
-			Debug.LogError("null != timer");
 			StopCoroutine(timer);
 			timer = null;
 			return;
@@ -89,24 +65,23 @@ public class ARTrackedObject : AAREventReciever {
 	}
 	
 	public override void OnMarkerTracked(ARTrackedMarker marker) {
-		AROrigin origin = GetOrigin();
-		if (null == origin) {
-			return;
-		}
-		ARMarker baseMarker = origin.GetBaseMarker();
-		if (null == baseMarker) {
-			return;
-		}
-		
+		// 4 - If visible, set marker pose.
+		Vector3 storedScale = transform.localScale;
 		Matrix4x4 pose;
-		if (marker == baseMarker) {
-			// If this marker is the base, no need to take base inverse etc.
-			pose = origin.transform.localToWorldMatrix;
-		} else {
-			pose = (origin.transform.localToWorldMatrix * baseMarker.TransformationMatrix.inverse * marker.TransformationMatrix);
+		pose = ARStaticCamera.Instance.transform.localToWorldMatrix * marker.TransformationMatrix;
+		transform.position   = ARUtilityFunctions.PositionFromMatrix(pose);
+		transform.rotation   = ARUtilityFunctions.RotationFromMatrix(pose);
+		transform.localScale = storedScale;
+	}
+
+	private void Start()	{
+		if (!Application.isPlaying) {
+			return;
 		}
-		transform.position = ARUtilityFunctions.PositionFromMatrix(pose);
-		transform.rotation = ARUtilityFunctions.RotationFromMatrix(pose);
+		// In Player, set initial visibility to not visible.
+		for (int i = 0; i < transform.childCount; ++i) {
+			this.transform.GetChild(i).gameObject.SetActive(false);
+		}
 	}
 
 	private IEnumerator MarkerLostTimer() {
@@ -116,6 +91,5 @@ public class ARTrackedObject : AAREventReciever {
 		}
 		timer = null;
 	}
-
 }
 

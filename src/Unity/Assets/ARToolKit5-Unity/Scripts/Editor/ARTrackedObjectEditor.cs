@@ -48,8 +48,7 @@ public class ARTrackedObjectEditor : Editor {
 		ARTrackedObject arto = (ARTrackedObject)target;
 		if (null == arto) {
 			return;
-		}
-		
-		arto.secondsToRemainVisible = EditorGUILayout.FloatField("Remain Visible on Loss (s)", arto.secondsToRemainVisible);
+		}		
+		arto.secondsToRemainVisible = EditorGUILayout.FloatField("Remain Visible on Marker Lost (s)", arto.secondsToRemainVisible);
 	}
 }

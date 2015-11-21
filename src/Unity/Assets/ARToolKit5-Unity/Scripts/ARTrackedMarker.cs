@@ -524,17 +524,7 @@ public class ARTrackedMarker : MonoBehaviour {
 				
 				// 4 - If visible, set marker pose.
 				Matrix4x4 pose;
-//				AROrigin origin = gameObject.GetComponentInParent<AROrigin>();
-//				if (null == origin) {
-//					pose = transformationMatrix;
-//				} else if (this == origin.GetBaseMarker()) {
-//					// If there is no origin, or this marker is the base, no need to take base inverse etc.
-//					pose = origin.transform.localToWorldMatrix;
-//				} else {
-//					// If this marker is not the base, need to take base inverse etc.
-//					pose = (origin.transform.localToWorldMatrix * origin.GetBaseMarker().TransformationMatrix.inverse * transformationMatrix);
 				pose = ARStaticCamera.Instance.transform.localToWorldMatrix * transformationMatrix;
-//				}
 				transform.position   = ARUtilityFunctions.PositionFromMatrix(pose);
 				transform.rotation   = ARUtilityFunctions.RotationFromMatrix(pose);
 				transform.localScale = storedScale;

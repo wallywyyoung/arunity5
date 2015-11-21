@@ -28,102 +28,58 @@
  *  Copyright 2015 Daqri, LLC.
  *  Copyright 2010-2015 ARToolworks, Inc.
  *
- *  Author(s): Philip Lamb, Julian Looser
+ *  Author(s): Philip Lamb, Julian Looser, Wally Young
  *
  */
 
 using System;
-using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using System.Text;
 using UnityEngine;
 
 /// <summary>
 /// A class which directly associates an ARMarker with a Unity Camera object.
-/// 
-/// To get a list of foreground Camera objects, do:
-///
-///     List<Camera> foregroundCameras = new List<Camera>();
-///     ARCamera[] arCameras = FindObjectsOfType<ARCamera>(); // (or FindObjectsOfType(typeof(ARCamera)) as ARCamera[])
-///     foreach (ARCamera arc in arCameras) {
-///         foregroundCameras.Add(arc.gameObject.camera);
-///     }
+/// This class responds to AAREventReciever, and can be set as an Event Reciever on an ARMarker object.
+/// This will take the inverse of that marker's pose, and set this object (the camera) to it.
 /// </summary>
-/// 
-[RequireComponent(typeof(Transform))]   // A Transform is required to update the position and orientation from tracking
-[ExecuteInEditMode]                     // Run in the editor so we can keep the scale at 1
-public class ARTrackedCamera : ARCamera {
-	private const string LOG_TAG = "ARTrackedCamera: ";
-
-	public float secondsToRemainVisible = 0.0f;		// How long to remain visible after tracking is lost (to reduce LOG_TAGr)
-
-	[NonSerialized]
-	protected int cullingMask = -1;					// Correct culling mask for content (set to 0 when not visible)
-
-	private bool lastArVisible = false;
-	
-	// Private fields with accessors.
-	[SerializeField]
-	private string _markerTag = "";					// Unique tag for the marker to get tracking from
-	
-	public string MarkerTag
-	{
-		get
-		{
-			return _markerTag;
+public class ARTrackedCamera : ARTrackedObject {
+	private Coroutine timer                  = null;
+	public  float     secondsToRemainVisible = 0.0f;	// After tracking is lost (to reduce flicker).
+	// TODO: Handle the association of the marker on Start which disables the child components.
+	public override void OnMarkerFound(ARTrackedMarker marker) {
+		if (null != timer) {
+			StopCoroutine(timer);
+			timer = null;
+			return;
 		}
-		
-		set
-		{
-			_markerTag = value;
-			_marker = null;
+		for (int i = 0; i < marker.transform.childCount; ++i) {
+			marker.transform.GetChild(i).gameObject.SetActive(true);
 		}
 	}
 	
-	// Return the marker associated with this component.
-	// Uses cached value if available, otherwise performs a find operation.
-	public override ARMarker GetMarker()
-	{
-		if (_marker == null) {
-			// Locate the marker identified by the tag
-			ARMarker[] ms = FindObjectsOfType<ARMarker>();
-			foreach (ARMarker m in ms) {
-				if (m.Tag == _markerTag) {
-					_marker = m;
-					break;
-				}
-			}
+	public override void OnMarkerLost(ARTrackedMarker marker) {
+		if (null != timer) {
+			return;
 		}
-		return _marker;
+		timer = StartCoroutine(MarkerLostTimer(marker));
 	}
-
-	public virtual void Start()
-	{
-		// Store the camera's initial culling mask. When the marker is tracked, this mask will be used
-		// so that the virtual objects are rendered. When tracking is lost, 0 will be used, so that no 
-		// objects are displayed.
-		if (cullingMask == -1) {
-			cullingMask = this.gameObject.GetComponent<Camera>().cullingMask;
+	
+	public override void OnMarkerTracked(ARTrackedMarker marker) {
+		// 4 - If visible, set marker pose.
+		Vector3 storedScale = transform.localScale;
+		Matrix4x4 pose;
+		pose = marker.transform.localToWorldMatrix * marker.TransformationMatrix.inverse;
+		transform.position   = ARUtilityFunctions.PositionFromMatrix(pose);
+		transform.rotation   = ARUtilityFunctions.RotationFromMatrix(pose);
+		transform.localScale = storedScale;
+	}
+	
+	private IEnumerator MarkerLostTimer(ARTrackedMarker marker) {
+		yield return new WaitForSeconds(secondsToRemainVisible);
+		for (int i = 0; i < marker.transform.childCount; ++i) {
+			marker.transform.GetChild(i).gameObject.SetActive(false);
 		}
+		timer = null;
 	}
-
-	protected override void ApplyTracking()
-	{
-		if (arVisible || (timeLastUpdate - timeTrackingLost < secondsToRemainVisible)) {
-			if (arVisible != lastArVisible) {
-				this.gameObject.GetComponent<Camera>().cullingMask = cullingMask;
-				if (eventReceiver != null) eventReceiver.BroadcastMessage("OnMarkerFound", GetMarker(), SendMessageOptions.DontRequireReceiver);
-			}
-			transform.localPosition = arPosition; // TODO: Change to transform.position = PositionFromMatrix(origin.transform.localToWorldMatrix * pose) etc;
-			transform.localRotation = arRotation;
-			if (eventReceiver != null) eventReceiver.BroadcastMessage("OnMarkerTracked", GetMarker(), SendMessageOptions.DontRequireReceiver);
-		} else {
-			if (arVisible != lastArVisible) {
-				this.gameObject.GetComponent<Camera>().cullingMask = 0;
-				if (eventReceiver != null) eventReceiver.BroadcastMessage("OnMarkerLost", GetMarker(), SendMessageOptions.DontRequireReceiver);
-			}
-		}
-		lastArVisible = arVisible;
-	}
-
 }

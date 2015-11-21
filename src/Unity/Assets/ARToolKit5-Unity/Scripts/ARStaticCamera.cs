@@ -38,6 +38,9 @@ using UnityEngine;
 using System.Collections;
 using System.Linq;
 public class ARStaticCamera : MonoBehaviour {
+	public  enum  ViewEye {
+		Left, Right
+	};
 	private const string LOG_TAG           = "ARStaticCamera: ";
 	private const string OPTICAL_LOG       = LOG_TAG + "Optical parameters: fovy={0}, aspect={1}, camera position (m)={{2}, {3}, {4}}";
 	private const string LEFT_EYE_NAME     = "ARCamera Left Eye";

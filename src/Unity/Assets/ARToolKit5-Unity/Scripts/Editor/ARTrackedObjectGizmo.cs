@@ -64,6 +64,9 @@ class ARTrackedObjectGizmo
 	{
 		var markers = from marker in GameObject.FindObjectsOfType<ARMarker>()
 			where marker.eventRecievers.Contains(to) select marker;
+		if (markers == null || markers.Count() <= 0) {
+			return;
+		}
 		ARMarker m = markers.First();
         if (m == null) {
 			return;
