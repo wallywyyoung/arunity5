@@ -57,6 +57,11 @@ public class ARStaticCameraEditor : Editor {
 		if (null == arStaticCamera) {
 			return;
 		}
+		
+		arStaticCamera.ContentLayer = EditorGUILayout.LayerField("AR Content Layer", arStaticCamera.ContentLayer);
+		arStaticCamera.NearPlane   = EditorGUILayout.FloatField("Near Plane",       arStaticCamera.NearPlane);
+		arStaticCamera.FarPlane    = EditorGUILayout.FloatField("Far Plane",        arStaticCamera.FarPlane);
+		EditorGUILayout.Separator();
 
 		arStaticCamera.Stereo  = EditorGUILayout.Toggle("Stereo Rendering",            arStaticCamera.Stereo);
 		arStaticCamera.Optical = EditorGUILayout.Toggle("Optical See-Through Display", arStaticCamera.Optical);
@@ -98,7 +103,7 @@ public class ARStaticCameraEditor : Editor {
 			EditorGUILayout.HelpBox("If you are using the same optical configuration for both the left and right eyes, you must supply an IPD (inter-pupular" +
 			                        "distance) value. This is the spacing from one pupil to the other, in milimeters.", MessageType.Warning);
 		}
-		
+
 		EditorGUILayout.Separator();
 		EditorGUILayout.HelpBox("Do not create a second camera object for the right eye! ARToolKit will do this for you.", MessageType.Info);
 	}

@@ -147,7 +147,7 @@ MonoBehaviour:
   currentTemplateSize: 16
   currentTemplateCountMax: 25
   currentBorderSize: .25
-  currentPatternDetectionMode: 2
+  currentPatternDetectionMode: 1
   currentMatrixCodeType: 3
   currentImageProcMode: 0
   currentUseVideoBackground: 1
@@ -192,14 +192,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e23a6917916245b093cb4c7a4b3c3db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EditorMarkerIndex: 7
-  EditorMarkerName: 'Barcode 3x3: ID 0'
+  EditorMarkerIndex: 2
+  EditorMarkerName: hiro
   eventRecievers: []
-  markerType: 1
+  markerType: 0
   currentFiltered: 0
   currentFilterSampleRate: 30
   currentFilterCutoffFreq: 15
-  nftDataName: Harlech_Castle_plan_colour
+  nftDataName: 
   currentNFTScale: 1
   patternWidth: .0799999982
   currentUseContPoseEstimation: 0
@@ -366,7 +366,7 @@ MonoBehaviour:
     240 240 240\n 175 153 163 186  53 226 240 240 240 240 240 240 240 240 240 240\n
     209 155  72  85 216 240 240 240 240 240 240 240 240 240 239 233\n\n"
   barcodeID: 0
-  multiConfigFile: cubeMarkerConfig
+  multiConfigFile: 
 --- !u!4 &293451646
 Transform:
   m_ObjectHideFlags: 0
@@ -471,6 +471,9 @@ MonoBehaviour:
   EditorOpticalNameL: 
   EditorOpticalIndexR: 0
   EditorOpticalNameR: 
+  ContentLayer: 0
+  NearPlane: .00999999978
+  FarPlane: 10
   Stereo: 0
   Optical: 0
   OpticalParametersL: 

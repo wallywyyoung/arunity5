@@ -41,6 +41,9 @@ public class ARStaticCamera : MonoBehaviour {
 	public  enum  ViewEye {
 		Left, Right
 	};
+	
+	private const float  NEAR_PLANE = 0.01f; // Default as defined in ARController.cpp
+	private const float  FAR_PLANE  = 10.0f; // Default as defined in ARController.cpp
 	private const string LOG_TAG           = "ARStaticCamera: ";
 	private const string OPTICAL_LOG       = LOG_TAG + "Optical parameters: fovy={0}, aspect={1}, camera position (m)={{2}, {3}, {4}}";
 	private const string LEFT_EYE_NAME     = "ARCamera Left Eye";
@@ -69,6 +72,9 @@ public class ARStaticCamera : MonoBehaviour {
 	public  int       EditorOpticalIndexR    = 0;
 	public  string    EditorOpticalNameR     = null;
 	#endregion
+	public  int       ContentLayer             = 0;
+	public  float     NearPlane               = NEAR_PLANE;
+	public  float     FarPlane                = FAR_PLANE;
 
 	public  bool      Stereo				  = false;
 	public  bool      Optical                 = false;
@@ -173,11 +179,9 @@ public class ARStaticCamera : MonoBehaviour {
 		referencedCamera.depth = ARController.BACKGROUND_CAMERA_DEPTH + 1;
 		
 		// Ensure background camera isn't rendered in ARCamera.
-		if ((referencedCamera.cullingMask & ARController.Instance.BackgroundLayer0) == ARController.Instance.BackgroundLayer0) {
-			referencedCamera.cullingMask &= ARController.Instance.BackgroundLayer0;
-		}
-		if (ARController.Instance.VideoIsStereo && (referencedCamera.cullingMask & ARController.Instance.BackgroundLayer1) == ARController.Instance.BackgroundLayer1) {
-			referencedCamera.cullingMask &= ARController.Instance.BackgroundLayer1;
+		referencedCamera.cullingMask = 1 << ContentLayer;
+		if (ARController.Instance.VideoIsStereo) {
+			referencedCamera.cullingMask = 1 << ContentLayer;
 		}
 		return true;
 	}

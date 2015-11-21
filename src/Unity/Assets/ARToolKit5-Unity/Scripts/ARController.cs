@@ -72,8 +72,6 @@ public enum ContentAlign
 [ExecuteInEditMode]
 public class ARController : MonoBehaviour {
 	public const  int   BACKGROUND_CAMERA_DEPTH = 1;
-	private const float NEAR_PLANE = 0.01f; // Default as defined in ARController.cpp
-	private const float FAR_PLANE  = 10.0f; // Default as defined in ARController.cpp
 	//
     // Logging.
 	//
@@ -606,11 +604,11 @@ public class ARController : MonoBehaviour {
 		if (!VideoIsStereo) {
 			Log(LogTag + "Starting ARToolKit video with vconf '" + videoConfiguration0 + "'.");
 			//_running = PluginFunctions.arwStartRunning(videoConfiguration, cparaName, nearPlane, farPlane);
-			_running = PluginFunctions.arwStartRunningB(videoConfiguration0, cparam0, cparam0.Length, NEAR_PLANE, FAR_PLANE);
+			_running = PluginFunctions.arwStartRunningB(videoConfiguration0, cparam0, cparam0.Length, ARStaticCamera.Instance.NearPlane, ARStaticCamera.Instance.FarPlane);
 		} else {
 			Log(LogTag + "Starting ARToolKit video with vconfL '" + videoConfiguration0 + "', vconfR '" + videoConfiguration1 + "'.");
 			//_running = PluginFunctions.arwStartRunningStereo(vconfL, cparaNameL, vconfR, cparaNameR, transL2RName, nearPlane, farPlane);
-			_running = PluginFunctions.arwStartRunningStereoB(videoConfiguration0, cparam0, cparam0.Length, videoConfiguration1, cparam1, cparam1.Length, transL2R, transL2R.Length, NEAR_PLANE, FAR_PLANE);
+			_running = PluginFunctions.arwStartRunningStereoB(videoConfiguration0, cparam0, cparam0.Length, videoConfiguration1, cparam1, cparam1.Length, transL2R, transL2R.Length, ARStaticCamera.Instance.NearPlane, ARStaticCamera.Instance.FarPlane);
 
 		}
         
