@@ -51,6 +51,9 @@ public static class ARNativePlugin
 	public static extern void arwRegisterLogCallback(PluginFunctions.LogCallback callback);
 
 	[DllImport(LIBRARY_NAME, CallingConvention=CallingConvention.Cdecl)]
+	public static extern void arwSetLogLevel(int logLevel);
+
+	[DllImport(LIBRARY_NAME, CallingConvention=CallingConvention.Cdecl)]
 	[return: MarshalAsAttribute(UnmanagedType.I1)]
 	public static extern bool arwInitialiseAR();
 	

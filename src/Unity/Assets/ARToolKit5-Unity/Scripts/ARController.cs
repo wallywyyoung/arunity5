@@ -272,6 +272,14 @@ public class ARController : MonoBehaviour
 		ARW_ERROR_DEVICE_UNAVAILABLE    =   -13
 	};
 
+	public enum AR_LOG_LEVEL {
+		AR_LOG_LEVEL_DEBUG = 0,
+		AR_LOG_LEVEL_INFO,
+		AR_LOG_LEVEL_WARN,
+		AR_LOG_LEVEL_ERROR,
+		AR_LOG_LEVEL_REL_INFO
+	}
+
 	// Private fields with accessors.
 	[SerializeField]
 	private ContentMode currentContentMode = ContentMode.Fit;
@@ -297,7 +305,8 @@ public class ARController : MonoBehaviour
 	private bool currentUseVideoBackground = true;
 	[SerializeField]
 	private bool currentNFTMultiMode = false;
-
+	[SerializeField]
+	private AR_LOG_LEVEL currentLogLevel = AR_LOG_LEVEL.AR_LOG_LEVEL_INFO;
 
 	//
 	// MonoBehavior methods.
@@ -332,7 +341,7 @@ public class ARController : MonoBehaviour
 			case RuntimePlatform.WindowsPlayer:					// Unity Player on Windows.
 			//case RuntimePlatform.LinuxEditor:
 			case RuntimePlatform.LinuxPlayer:
-		PluginFunctions.arwRegisterLogCallback(Log);
+				PluginFunctions.arwRegisterLogCallback(Log);
                 break;
 			case RuntimePlatform.Android:						// Unity Player on Android.
 				break;
@@ -1013,6 +1022,20 @@ public class ARController : MonoBehaviour
 		}
 	}
 
+	public AR_LOG_LEVEL LogLevel
+	{
+		get
+		{
+			return currentLogLevel;
+		}
+		
+		set
+		{
+			currentLogLevel = value;
+			PluginFunctions.arwSetLogLevel((int)currentLogLevel);
+		}
+	}
+	
 	public ContentMode ContentMode
 	{
 		get
