@@ -68,6 +68,12 @@ public static class PluginFunctions
 		}
 	}
 
+	public static void arwSetLogLevel(int logLevel)
+	{
+		if (Application.platform == RuntimePlatform.IPhonePlayer) ARNativePluginStatic.arwSetLogLevel(logLevel);
+		else ARNativePlugin.arwSetLogLevel(logLevel);
+	}
+
 	public static bool arwInitialiseAR(int pattSize = 16, int pattCountMax = 25)
 	{
 		bool ok;

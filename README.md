@@ -1,4 +1,5 @@
-#Read Me for ARToolKit for Unity.
+#ARToolKit for Unity
+
 ---
 
 ##Index
@@ -68,17 +69,19 @@ Export the Unity project as "Type: XAML C# Solution", and then open the exported
 Unity needs a little help to deal with ARWrapper. Although Unity creates a pre-build task which copies this DLLs to the root of the Visual Studio project (and thus overwrites the Win32 ARWrapper.dll with the correct WinRT ARWrapper.dll), it misses one important step: telling Visual Studio to include this file in the project and to copy it into the built app.
 
 Each time you recreate the Visual Studio project file, you must do these steps in order:
-1. Open the exported .sln file in Visual Studio 2013.
-2. Select the desired target architecture, and then choose menu "Project->Build".
-3. Choose menu "Project->Show All Files"
-4. Select ARWrapper.dll, right click on it, and choose "Include in build" from the popup menu.
-5. Right-click on ARWrapper.dll, and choose "Properties" from the popup menu.
-6. Ensure that property "Copy to Output Directory" is set to "Copy if newer" or "Copy always".
+
+1. Open the exported .sln file in Visual Studio 2013.  
+2. Select the desired target architecture, and then choose menu  
+    "Project->Build".  
+3. Choose menu "Project->Show All Files"  
+4. Select ARWrapper.dll, right click on it, and choose "Include in build" from the popup menu.  
+5. Right-click on ARWrapper.dll, and choose "Properties" from the popup menu.  
+6. Ensure that property "Copy to Output Directory" is set to "Copy if newer" or "Copy always".  
 7. Choose menu "Project->Build" again.
 
 Now you can deploy to the phone etc. and test etc. ARToolKit's log output will go to the Unity log and will also be displayed in the Visual Studio debug console.
 
---
+---
 
 This archive was assembled by:
     Philip Lamb and Wally Young
