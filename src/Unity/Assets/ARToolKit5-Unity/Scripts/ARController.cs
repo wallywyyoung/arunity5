@@ -1698,12 +1698,12 @@ public class ARController : MonoBehaviour {
 				DebugVideo = !DebugVideo;
 			}
 		
-			ARToolKitThresholdMode currentThresholdMode = VideoThresholdMode;
-	        GUI.Label(new Rect(400, 460, 320, 25), "Threshold Mode: " + currentThresholdMode);
-			if (currentThresholdMode == ARToolKitThresholdMode.Manual) {
-		        float currentThreshold = VideoThreshold;
-		        float newThreshold = GUI.HorizontalSlider(new Rect(400, 495, 270, 25), currentThreshold, 0, 255);
-		        if (newThreshold != currentThreshold) {
+			ARToolKitThresholdMode videoThresholdModeCurrent = VideoThresholdMode;
+	        GUI.Label(new Rect(400, 460, 320, 25), "Threshold Mode: " + videoThresholdModeCurrent);
+			if (videoThresholdModeCurrent == ARToolKitThresholdMode.Manual) {
+		        float videoThresholdCurrent = VideoThreshold;
+		        float newThreshold = GUI.HorizontalSlider(new Rect(400, 495, 270, 25), videoThresholdCurrent, 0, 255);
+		        if (newThreshold != videoThresholdCurrent) {
 		            VideoThreshold = (int)newThreshold;
 		        }
 				GUI.Label(new Rect(680, 495, 50, 25), VideoThreshold.ToString());
