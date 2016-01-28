@@ -1293,10 +1293,10 @@ public class ARController : MonoBehaviour {
 		return vbmgo;
 	}
 
-	// Creates a GameObject holding a camera with name 'name', which will render layer 'layer'.
-	private GameObject CreateVideoBackgroundCamera(String name, int layer, out Camera vbc) {
+	// Creates a GameObject holding a camera with name 'cameraName', which will render layer 'layer'.
+	private GameObject CreateVideoBackgroundCamera(String cameraName, int layer, out Camera vbc) {
 		// Create new GameObject to hold camera.
-		GameObject vbcgo = new GameObject(name);
+		GameObject vbcgo = new GameObject(cameraName);
 		if (vbcgo == null) {
 			Log(LogTag + "Error: CreateVideoBackgroundCamera cannot create GameObject.");
 			vbc = null;
