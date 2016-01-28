@@ -1513,7 +1513,7 @@ public class ARController : MonoBehaviour {
 		bool optical = false;
 		ARStaticCamera arStaticCamera = ARStaticCamera.Instance;
 		if (null != arStaticCamera) {
-		    bool ok = arStaticCamera.SetupCamera(_videoProjectionMatrix0, (VideoIsStereo ? _videoProjectionMatrix1 : _videoProjectionMatrix0), ref optical);
+		    bool ok = arStaticCamera.SetupCamera(_videoProjectionMatrix0, (VideoIsStereo ? _videoProjectionMatrix1 : _videoProjectionMatrix0), out optical);
 			if (!ok) {
 				Log(LogTag + "Error setting up ARCamera.");
 			}

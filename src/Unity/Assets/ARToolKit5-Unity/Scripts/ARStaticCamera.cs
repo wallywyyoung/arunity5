@@ -128,7 +128,7 @@ public class ARStaticCamera : MonoBehaviour {
 		}
 	}
 
-	public bool SetupCamera(Matrix4x4 projectionMatrixL, Matrix4x4 projectionMatrixR, ref bool opticalOut) {
+	public bool SetupCamera(Matrix4x4 projectionMatrixL, Matrix4x4 projectionMatrixR, out bool opticalOut) {
 		opticalOut = Optical;
 
 		bool success = SetupCamera(projectionMatrixL, LeftCamera, Optical ? OpticalParametersL : null, NO_LATERAL_OFFSET, ref opticalViewMatrixL);
