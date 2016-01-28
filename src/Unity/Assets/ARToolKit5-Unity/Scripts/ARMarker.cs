@@ -62,7 +62,7 @@ public enum ARWMarkerOption : int {
 
 /// <summary>
 /// ARMarker objects represent an ARToolKit marker, even when ARToolKit is not
-/// initialised.
+/// initialized.
 /// To find markers from elsewhere in the Unity environment:
 ///   ARMarker[] markers = FindObjectsOfType<ARMarker>(); // (or FindObjectsOfType(typeof(ARMarker)) as ARMarker[]);
 /// 
