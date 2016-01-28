@@ -40,7 +40,7 @@ using System.Linq;
 public class ARStaticCamera : MonoBehaviour {
 	public  enum  ViewEye {
 		Left, Right
-	};
+	}
 	
 	private const float  NEAR_PLANE = 0.01f; // Default as defined in ARController.cpp
 	private const float  FAR_PLANE  = 10.0f; // Default as defined in ARController.cpp

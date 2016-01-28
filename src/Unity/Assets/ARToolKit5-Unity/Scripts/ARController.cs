@@ -234,7 +234,7 @@ public class ARController : MonoBehaviour {
 		AR_MATRIX_CODE_DETECTION = 2,
 		AR_TEMPLATE_MATCHING_COLOR_AND_MATRIX = 3,
 		AR_TEMPLATE_MATCHING_MONO_AND_MATRIX = 4
-	};
+	}
 
 	public enum ARToolKitMatrixCodeType {
 	    AR_MATRIX_CODE_3x3 = 3,
@@ -246,18 +246,18 @@ public class ARController : MonoBehaviour {
 //    	AR_MATRIX_CODE_5x5 = 5,
 //    	AR_MATRIX_CODE_6x6 = 6,
 //    	AR_MATRIX_CODE_GLOBAL_ID = 2830
-	};
+	}
 	
 	public enum ARToolKitImageProcMode {
 		AR_IMAGE_PROC_FRAME_IMAGE = 0,
 		AR_IMAGE_PROC_FIELD_IMAGE = 1
-	};
+	}
 
 	public enum ARW_UNITY_RENDER_EVENTID {
         NOP = 0, // No operation (does nothing).
         UPDATE_TEXTURE_GL = 1,
 		UPDATE_TEXTURE_GL_STEREO = 2,
-	};
+	}
 
 	public enum ARW_ERROR {
 		ARW_ERROR_NONE                  =    0,
@@ -274,7 +274,7 @@ public class ARController : MonoBehaviour {
 		ARW_ERROR_FILE_NOT_FOUND		=   -11,
 		ARW_ERROR_LENGTH_UNAVAILABLE	=	-12,
 		ARW_ERROR_DEVICE_UNAVAILABLE    =   -13
-	};
+	}
 
 	public enum AR_LOG_LEVEL {
 		AR_LOG_LEVEL_DEBUG = 0,
