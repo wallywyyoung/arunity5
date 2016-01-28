@@ -66,8 +66,7 @@ public class ARTrackedObject : AAREventReciever {
 	public override void OnMarkerTracked(ARTrackedMarker marker) {
 		// 4 - If visible, set marker pose.
 		Vector3 storedScale = transform.localScale;
-		Matrix4x4 pose;
-		pose = ARStaticCamera.Instance.transform.localToWorldMatrix * marker.TransformationMatrix;
+		Matrix4x4 pose = ARStaticCamera.Instance.transform.localToWorldMatrix * marker.TransformationMatrix;
 		transform.position   = ARUtilityFunctions.PositionFromMatrix(pose);
 		transform.rotation   = ARUtilityFunctions.RotationFromMatrix(pose);
 		transform.localScale = storedScale;

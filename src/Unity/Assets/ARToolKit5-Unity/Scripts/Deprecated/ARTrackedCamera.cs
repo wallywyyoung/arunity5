@@ -68,8 +68,7 @@ public class ARTrackedCamera : ARTrackedObject {
 	public override void OnMarkerTracked(ARTrackedMarker marker) {
 		// 4 - If visible, set marker pose.
 		Vector3 storedScale = transform.localScale;
-		Matrix4x4 pose;
-		pose = marker.transform.localToWorldMatrix * marker.TransformationMatrix.inverse;
+		Matrix4x4 pose = marker.transform.localToWorldMatrix * marker.TransformationMatrix.inverse;
 		transform.position   = ARUtilityFunctions.PositionFromMatrix(pose);
 		transform.rotation   = ARUtilityFunctions.RotationFromMatrix(pose);
 		transform.localScale = storedScale;
