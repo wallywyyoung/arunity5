@@ -45,7 +45,7 @@ public class ARStaticCamera : MonoBehaviour {
 	private const float  NEAR_PLANE = 0.01f; // Default as defined in ARController.cpp
 	private const float  FAR_PLANE  = 10.0f; // Default as defined in ARController.cpp
 	private const string LOG_TAG           = "ARStaticCamera: ";
-	private const string OPTICAL_LOG       = LOG_TAG + "Optical parameters: fovy={0}, aspect={1}, camera position (m)={{2}, {3}, {4}}";
+	private const string OPTICAL_LOG       = LOG_TAG + "Optical parameters: fovy={0}, aspect={1}, camera position (m)=({2}, {3}, {4})";
 	private const string LEFT_EYE_NAME     = "ARCamera Left Eye";
 	private const string RIGHT_EYE_NAME    = "ARCamera Right Eye";
 	private const float  NO_LATERAL_OFFSET = 0.0f;
