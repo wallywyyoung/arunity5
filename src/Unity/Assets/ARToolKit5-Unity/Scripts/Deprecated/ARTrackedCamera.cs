@@ -45,7 +45,7 @@ using UnityEngine;
 /// </summary>
 public class ARTrackedCamera : ARTrackedObject {
 	private Coroutine timer                  = null;
-	public  float     secondsToRemainVisible = 0.0f;	// After tracking is lost (to reduce flicker).
+
 	// TODO: Handle the association of the marker on Start which disables the child components.
 	public override void OnMarkerFound(ARTrackedMarker marker) {
 		if (null != timer) {
