@@ -45,7 +45,7 @@ using UnityEngine;
 /// </summary>
 public class ARTrackedCamera : ARTrackedObject {
 	private Coroutine timer                  = null;
-	public  float     secondsToRemainVisible = 0.0f;	// After tracking is lost (to reduce flicker).
+
 	// TODO: Handle the association of the marker on Start which disables the child components.
 	public override void OnMarkerFound(ARTrackedMarker marker) {
 		if (null != timer) {
@@ -68,8 +68,7 @@ public class ARTrackedCamera : ARTrackedObject {
 	public override void OnMarkerTracked(ARTrackedMarker marker) {
 		// 4 - If visible, set marker pose.
 		Vector3 storedScale = transform.localScale;
-		Matrix4x4 pose;
-		pose = marker.transform.localToWorldMatrix * marker.TransformationMatrix.inverse;
+		Matrix4x4 pose = marker.transform.localToWorldMatrix * marker.TransformationMatrix.inverse;
 		transform.position   = ARUtilityFunctions.PositionFromMatrix(pose);
 		transform.rotation   = ARUtilityFunctions.RotationFromMatrix(pose);
 		transform.localScale = storedScale;

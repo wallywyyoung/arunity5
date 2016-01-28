@@ -97,7 +97,7 @@ public static class ARUtilityFunctions
 	// This is equivalent to negating row 2, and then negating column 2.
 	public static Matrix4x4 LHMatrixFromRHMatrix(Matrix4x4 rhm)
 	{
-		Matrix4x4 lhm = new Matrix4x4();;
+		Matrix4x4 lhm = new Matrix4x4();
 
 		// Column 0.
 		lhm[0, 0] =  rhm[0, 0];

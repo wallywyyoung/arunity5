@@ -45,7 +45,7 @@ using UnityEngine;
 /// ARMarker objects represent an ARToolKit marker, even when ARToolKit is not
 /// initialised.
 /// To find markers from elsewhere in the Unity environment:
-///   ARMarker[] markers = FindObjectsOfType<ARMarker>(); // (or FindObjectsOfType(typeof(ARMarker)) as ARMarker[]);
+///   ARMarker[] markers = FindObjectsOfType{ARMarker}(); // (or FindObjectsOfType(typeof(ARMarker)) as ARMarker[]);
 /// </summary>
 /// 
 [ExecuteInEditMode]
@@ -523,8 +523,7 @@ public class ARTrackedMarker : MonoBehaviour {
 				transformationMatrix = ARUtilityFunctions.LHMatrixFromRHMatrix(matrixRaw);
 				
 				// 4 - If visible, set marker pose.
-				Matrix4x4 pose;
-				pose = ARStaticCamera.Instance.transform.localToWorldMatrix * transformationMatrix;
+				Matrix4x4 pose = ARStaticCamera.Instance.transform.localToWorldMatrix * transformationMatrix;
 				transform.position   = ARUtilityFunctions.PositionFromMatrix(pose);
 				transform.rotation   = ARUtilityFunctions.RotationFromMatrix(pose);
 				transform.localScale = storedScale;

@@ -40,12 +40,12 @@ using System.Linq;
 public class ARStaticCamera : MonoBehaviour {
 	public  enum  ViewEye {
 		Left, Right
-	};
+	}
 	
 	private const float  NEAR_PLANE = 0.01f; // Default as defined in ARController.cpp
 	private const float  FAR_PLANE  = 10.0f; // Default as defined in ARController.cpp
 	private const string LOG_TAG           = "ARStaticCamera: ";
-	private const string OPTICAL_LOG       = LOG_TAG + "Optical parameters: fovy={0}, aspect={1}, camera position (m)={{2}, {3}, {4}}";
+	private const string OPTICAL_LOG       = LOG_TAG + "Optical parameters: fovy={0}, aspect={1}, camera position (m)=({2}, {3}, {4})";
 	private const string LEFT_EYE_NAME     = "ARCamera Left Eye";
 	private const string RIGHT_EYE_NAME    = "ARCamera Right Eye";
 	private const float  NO_LATERAL_OFFSET = 0.0f;
@@ -128,7 +128,7 @@ public class ARStaticCamera : MonoBehaviour {
 		}
 	}
 
-	public bool SetupCamera(Matrix4x4 projectionMatrixL, Matrix4x4 projectionMatrixR, ref bool opticalOut) {
+	public bool SetupCamera(Matrix4x4 projectionMatrixL, Matrix4x4 projectionMatrixR, out bool opticalOut) {
 		opticalOut = Optical;
 
 		bool success = SetupCamera(projectionMatrixL, LeftCamera, Optical ? OpticalParametersL : null, NO_LATERAL_OFFSET, ref opticalViewMatrixL);

@@ -234,7 +234,7 @@ public class ARController : MonoBehaviour {
 		AR_MATRIX_CODE_DETECTION = 2,
 		AR_TEMPLATE_MATCHING_COLOR_AND_MATRIX = 3,
 		AR_TEMPLATE_MATCHING_MONO_AND_MATRIX = 4
-	};
+	}
 
 	public enum ARToolKitMatrixCodeType {
 	    AR_MATRIX_CODE_3x3 = 3,
@@ -246,18 +246,18 @@ public class ARController : MonoBehaviour {
 //    	AR_MATRIX_CODE_5x5 = 5,
 //    	AR_MATRIX_CODE_6x6 = 6,
 //    	AR_MATRIX_CODE_GLOBAL_ID = 2830
-	};
+	}
 	
 	public enum ARToolKitImageProcMode {
 		AR_IMAGE_PROC_FRAME_IMAGE = 0,
 		AR_IMAGE_PROC_FIELD_IMAGE = 1
-	};
+	}
 
 	public enum ARW_UNITY_RENDER_EVENTID {
         NOP = 0, // No operation (does nothing).
         UPDATE_TEXTURE_GL = 1,
 		UPDATE_TEXTURE_GL_STEREO = 2,
-	};
+	}
 
 	public enum ARW_ERROR {
 		ARW_ERROR_NONE                  =    0,
@@ -274,7 +274,7 @@ public class ARController : MonoBehaviour {
 		ARW_ERROR_FILE_NOT_FOUND		=   -11,
 		ARW_ERROR_LENGTH_UNAVAILABLE	=	-12,
 		ARW_ERROR_DEVICE_UNAVAILABLE    =   -13
-	};
+	}
 
 	public enum AR_LOG_LEVEL {
 		AR_LOG_LEVEL_DEBUG = 0,
@@ -391,11 +391,11 @@ public class ARController : MonoBehaviour {
 		//Log(LogTag + "ARController.Start()");
         
 		// Ensure ARMarker objects that were instantiated/deserialized before the native interface came up are all loaded.
-		ARMarker[] markers = FindObjectsOfType(typeof(ARMarker)) as ARMarker[];
+	    ARMarker[] markers = FindObjectsOfType<ARMarker>();
 		foreach (ARMarker m in markers) {
 			m.Load();
 		}
-		ARTrackedMarker[] tmarkers = FindObjectsOfType(typeof(ARTrackedMarker)) as ARTrackedMarker[];
+	    ARTrackedMarker[] tmarkers = FindObjectsOfType<ARTrackedMarker>();
 		foreach (ARTrackedMarker m in tmarkers) {
 			m.Load();
 		}
@@ -581,7 +581,7 @@ public class ARController : MonoBehaviour {
 
 		string basePath = Path.Combine(Application.streamingAssetsPath, "ARToolKit/Cameras");
 		string source = Path.Combine(basePath, videoCParamName0 + ".dat");
-		string dest = source;
+		string dest;
 
 		ARUtilityFunctions.GetFileFromStreamingAssets(source, out dest);
 		if (string.IsNullOrEmpty(dest)) {		
@@ -1293,10 +1293,10 @@ public class ARController : MonoBehaviour {
 		return vbmgo;
 	}
 
-	// Creates a GameObject holding a camera with name 'name', which will render layer 'layer'.
-	private GameObject CreateVideoBackgroundCamera(String name, int layer, out Camera vbc) {
+	// Creates a GameObject holding a camera with name 'cameraName', which will render layer 'layer'.
+	private GameObject CreateVideoBackgroundCamera(String cameraName, int layer, out Camera vbc) {
 		// Create new GameObject to hold camera.
-		GameObject vbcgo = new GameObject(name);
+		GameObject vbcgo = new GameObject(cameraName);
 		if (vbcgo == null) {
 			Log(LogTag + "Error: CreateVideoBackgroundCamera cannot create GameObject.");
 			vbc = null;
@@ -1513,7 +1513,7 @@ public class ARController : MonoBehaviour {
 		bool optical = false;
 		ARStaticCamera arStaticCamera = ARStaticCamera.Instance;
 		if (null != arStaticCamera) {
-		    bool ok = arStaticCamera.SetupCamera(_videoProjectionMatrix0, (VideoIsStereo ? _videoProjectionMatrix1 : _videoProjectionMatrix0), ref optical);
+		    bool ok = arStaticCamera.SetupCamera(_videoProjectionMatrix0, (VideoIsStereo ? _videoProjectionMatrix1 : _videoProjectionMatrix0), out optical);
 			if (!ok) {
 				Log(LogTag + "Error setting up ARCamera.");
 			}
@@ -1698,12 +1698,12 @@ public class ARController : MonoBehaviour {
 				DebugVideo = !DebugVideo;
 			}
 		
-			ARToolKitThresholdMode currentThresholdMode = VideoThresholdMode;
-	        GUI.Label(new Rect(400, 460, 320, 25), "Threshold Mode: " + currentThresholdMode);
-			if (currentThresholdMode == ARToolKitThresholdMode.Manual) {
-		        float currentThreshold = VideoThreshold;
-		        float newThreshold = GUI.HorizontalSlider(new Rect(400, 495, 270, 25), currentThreshold, 0, 255);
-		        if (newThreshold != currentThreshold) {
+			ARToolKitThresholdMode videoThresholdModeCurrent = VideoThresholdMode;
+	        GUI.Label(new Rect(400, 460, 320, 25), "Threshold Mode: " + videoThresholdModeCurrent);
+			if (videoThresholdModeCurrent == ARToolKitThresholdMode.Manual) {
+		        float videoThresholdCurrent = VideoThreshold;
+		        float newThreshold = GUI.HorizontalSlider(new Rect(400, 495, 270, 25), videoThresholdCurrent, 0, 255);
+		        if (newThreshold != videoThresholdCurrent) {
 		            VideoThreshold = (int)newThreshold;
 		        }
 				GUI.Label(new Rect(680, 495, 50, 25), VideoThreshold.ToString());
@@ -1741,7 +1741,7 @@ public class ARController : MonoBehaviour {
 
         int y = 350;
 
-		ARMarker[] markers = Component.FindObjectsOfType(typeof(ARMarker)) as ARMarker[];
+        ARMarker[] markers = FindObjectsOfType<ARMarker>();
 		foreach (ARMarker m in markers) {
             GUI.Label(new Rect(10, y, 500, 25), "Marker: " + m.UID + ", " + m.Visible);
             y += 25;

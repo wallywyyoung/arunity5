@@ -42,8 +42,6 @@ using UnityEngine;
 [CustomEditor(typeof(ARTrackedObject))] 
 public class ARTrackedObjectEditor : Editor {
 
-	private ARTrackedMarker marker = null;
-
     public override void OnInspectorGUI() {
 		ARTrackedObject arto = (ARTrackedObject)target;
 		if (null == arto) {
