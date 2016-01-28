@@ -581,7 +581,7 @@ public class ARController : MonoBehaviour {
 
 		string basePath = Path.Combine(Application.streamingAssetsPath, "ARToolKit/Cameras");
 		string source = Path.Combine(basePath, videoCParamName0 + ".dat");
-		string dest = source;
+		string dest;
 
 		ARUtilityFunctions.GetFileFromStreamingAssets(source, out dest);
 		if (string.IsNullOrEmpty(dest)) {		
