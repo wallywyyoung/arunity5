@@ -391,11 +391,11 @@ public class ARController : MonoBehaviour {
 		//Log(LogTag + "ARController.Start()");
         
 		// Ensure ARMarker objects that were instantiated/deserialized before the native interface came up are all loaded.
-		ARMarker[] markers = FindObjectsOfType(typeof(ARMarker)) as ARMarker[];
+	    ARMarker[] markers = FindObjectsOfType<ARMarker>();
 		foreach (ARMarker m in markers) {
 			m.Load();
 		}
-		ARTrackedMarker[] tmarkers = FindObjectsOfType(typeof(ARTrackedMarker)) as ARTrackedMarker[];
+	    ARTrackedMarker[] tmarkers = FindObjectsOfType<ARTrackedMarker>();
 		foreach (ARTrackedMarker m in tmarkers) {
 			m.Load();
 		}
@@ -1741,7 +1741,7 @@ public class ARController : MonoBehaviour {
 
         int y = 350;
 
-		ARMarker[] markers = Component.FindObjectsOfType(typeof(ARMarker)) as ARMarker[];
+        ARMarker[] markers = FindObjectsOfType<ARMarker>();
 		foreach (ARMarker m in markers) {
             GUI.Label(new Rect(10, y, 500, 25), "Marker: " + m.UID + ", " + m.Visible);
             y += 25;
