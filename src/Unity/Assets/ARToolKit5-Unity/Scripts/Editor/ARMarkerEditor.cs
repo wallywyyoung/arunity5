@@ -1,4 +1,4 @@
-﻿/*
+/*
  *  ARMarkerEditor.cs
  *  ARToolKit for Unity
  *
@@ -48,14 +48,14 @@ public class ARMarkerEditor : Editor {
 	public bool showGlobalSquareOptions = false;
 
     public override void OnInspectorGUI() {
-		// Get the ARMarker that this panel will edit.
+        // Get the ARMarker that this panel will edit.
         ARMarker arMarker = (ARMarker)target;
 
         EditorGUILayout.BeginVertical();
 
-		// Attempt to load. Might not work out if e.g. for a single marker, pattern hasn't been
-		// assigned yet, or for an NFT marker, dataset hasn't been specified.
-		if (arMarker.UID == ARMarker.NO_ID) {
+        // Attempt to load. Might not work out if e.g. for a single marker, pattern hasn't been
+        // assigned yet, or for an NFT marker, dataset hasn't been specified.
+        if (arMarker.UID == ARMarker.NO_ID) {
 			arMarker.Load(); 
 		}
 		
@@ -97,7 +97,7 @@ public class ARMarkerEditor : Editor {
 				arMarker.PatternContents   = GetPatternContents(ARToolKitAssetManager.AllMarkers[arMarker.EditorMarkerIndex]);
 			}
 			arMarker.PatternWidth          = EditorGUILayout.FloatField("Pattern Width (m)",         arMarker.PatternWidth);
-			arMarker.UseContPoseEstimation = EditorGUILayout.Toggle(    "Contstant Pose Estimation", arMarker.UseContPoseEstimation);
+			arMarker.UseContPoseEstimation = EditorGUILayout.Toggle(    "Continuous Pose Estimation", arMarker.UseContPoseEstimation);
 			break;
 		case MarkerType.SquareBarcode:
 			if (newSelection) {
@@ -105,7 +105,7 @@ public class ARMarkerEditor : Editor {
 				arMarker.BarcodeID             = int.Parse(idArray[idArray.Length - 1]);
 			}
 			arMarker.PatternWidth          = EditorGUILayout.FloatField("Pattern Width (m)",         arMarker.PatternWidth);
-			arMarker.UseContPoseEstimation = EditorGUILayout.Toggle(    "Contstant Pose Estimation", arMarker.UseContPoseEstimation);
+			arMarker.UseContPoseEstimation = EditorGUILayout.Toggle(    "Continuous Pose Estimation", arMarker.UseContPoseEstimation);
 			break;
 		case MarkerType.Multimarker:
 			if (newSelection) {
