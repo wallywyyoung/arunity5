@@ -1604,20 +1604,41 @@ public class ARController : MonoBehaviour {
 		return m;
     }
 
-    public static void Log(String msg) {
+    public static void Log(String msg)
+    {
         // Add the new log message to the collection. If the collection has grown too large
         // then remove the oldest messages.
         logMessages.Add(msg);
-        while (logMessages.Count > MaximumLogMessages) {
-			logMessages.RemoveAt(0);
-		}
+        while (logMessages.Count > MaximumLogMessages)
+        {
+            logMessages.RemoveAt(0);
+        }
+
         // If there is a logCallback then use that to handle the log message. Otherwise simply
         // print out on the debug console.
-        if (logCallback != null) {
-			logCallback(msg);
-		} else {
-			Debug.Log(msg);
-		}
+        if (logCallback != null)
+        {
+            logCallback(msg);
+        }
+        else {
+#if UNITY_EDITOR
+            if(!string.IsNullOrEmpty(msg))
+            {
+                if (msg.IndexOf("[warning]", StringComparison.OrdinalIgnoreCase) != -1)
+                {
+                    Debug.LogWarning(msg);
+                    return;
+                }
+
+                if (msg.IndexOf("[error]", StringComparison.OrdinalIgnoreCase) != -1)
+                {
+                    Debug.LogError(msg);
+                    return;
+                }
+            }
+#endif
+            Debug.Log(msg);
+        }
     }
 
     private void CalculateFPS() {
