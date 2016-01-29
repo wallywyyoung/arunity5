@@ -1,4 +1,4 @@
-﻿/*
+/*
  *  ARMarkerEditor.cs
  *  ARToolKit for Unity
  *
@@ -35,10 +35,6 @@
  *
  */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UnityEditor;
 using UnityEngine;
 using System.IO;
@@ -48,17 +44,14 @@ public class ARMarkerEditor : Editor {
 	public bool showGlobalSquareOptions = false;
 
     public override void OnInspectorGUI() {
-        EditorGUILayout.BeginVertical();
-		
-		// Get the ARMarker that this panel will edit.
+        // Get the ARMarker that this panel will edit.
         ARMarker arMarker = (ARMarker)target;
-        if (null == arMarker) {
-			return;
-		}
-		
-		// Attempt to load. Might not work out if e.g. for a single marker, pattern hasn't been
-		// assigned yet, or for an NFT marker, dataset hasn't been specified.
-		if (arMarker.UID == ARMarker.NO_ID) {
+
+        EditorGUILayout.BeginVertical();
+
+        // Attempt to load. Might not work out if e.g. for a single marker, pattern hasn't been
+        // assigned yet, or for an NFT marker, dataset hasn't been specified.
+        if (arMarker.UID == ARMarker.NO_ID) {
 			arMarker.Load(); 
 		}
 		
@@ -100,7 +93,7 @@ public class ARMarkerEditor : Editor {
 				arMarker.PatternContents   = GetPatternContents(ARToolKitAssetManager.AllMarkers[arMarker.EditorMarkerIndex]);
 			}
 			arMarker.PatternWidth          = EditorGUILayout.FloatField("Pattern Width (m)",         arMarker.PatternWidth);
-			arMarker.UseContPoseEstimation = EditorGUILayout.Toggle(    "Contstant Pose Estimation", arMarker.UseContPoseEstimation);
+			arMarker.UseContPoseEstimation = EditorGUILayout.Toggle(    "Continuous Pose Estimation", arMarker.UseContPoseEstimation);
 			break;
 		case MarkerType.SquareBarcode:
 			if (newSelection) {
@@ -108,7 +101,7 @@ public class ARMarkerEditor : Editor {
 				arMarker.BarcodeID             = int.Parse(idArray[idArray.Length - 1]);
 			}
 			arMarker.PatternWidth          = EditorGUILayout.FloatField("Pattern Width (m)",         arMarker.PatternWidth);
-			arMarker.UseContPoseEstimation = EditorGUILayout.Toggle(    "Contstant Pose Estimation", arMarker.UseContPoseEstimation);
+			arMarker.UseContPoseEstimation = EditorGUILayout.Toggle(    "Continuous Pose Estimation", arMarker.UseContPoseEstimation);
 			break;
 		case MarkerType.Multimarker:
 			if (newSelection) {
@@ -160,8 +153,11 @@ public class ARMarkerEditor : Editor {
 		
 		var obj = new SerializedObject(arMarker);
 		var prop = obj.FindProperty("eventRecievers");
-		EditorGUILayout.PropertyField(prop, new GUIContent("Event Recievers"), true);
-		obj.ApplyModifiedProperties();
+		EditorGUILayout.PropertyField(prop, new GUIContent("Event Receivers"), true);
+
+        EditorGUILayout.EndVertical();
+
+        obj.ApplyModifiedProperties();
 	}
 	
 	private static void UpdatePatternDetectionMode() {
