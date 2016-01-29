@@ -153,7 +153,7 @@ public class ARMarkerEditor : Editor {
 		
 		var obj = new SerializedObject(arMarker);
 		var prop = obj.FindProperty("eventRecievers");
-		EditorGUILayout.PropertyField(prop, new GUIContent("Event Recievers"), true);
+		EditorGUILayout.PropertyField(prop, new GUIContent("Event Receivers"), true);
 
         EditorGUILayout.EndVertical();
 
