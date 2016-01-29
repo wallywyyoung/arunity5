@@ -48,10 +48,10 @@ public class ARMarkerEditor : Editor {
 	public bool showGlobalSquareOptions = false;
 
     public override void OnInspectorGUI() {
-        EditorGUILayout.BeginVertical();
-		
 		// Get the ARMarker that this panel will edit.
         ARMarker arMarker = (ARMarker)target;
+
+        EditorGUILayout.BeginVertical();
 
 		// Attempt to load. Might not work out if e.g. for a single marker, pattern hasn't been
 		// assigned yet, or for an NFT marker, dataset hasn't been specified.
