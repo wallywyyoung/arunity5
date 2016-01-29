@@ -52,10 +52,7 @@ public class ARMarkerEditor : Editor {
 		
 		// Get the ARMarker that this panel will edit.
         ARMarker arMarker = (ARMarker)target;
-        if (null == arMarker) {
-			return;
-		}
-		
+
 		// Attempt to load. Might not work out if e.g. for a single marker, pattern hasn't been
 		// assigned yet, or for an NFT marker, dataset hasn't been specified.
 		if (arMarker.UID == ARMarker.NO_ID) {
