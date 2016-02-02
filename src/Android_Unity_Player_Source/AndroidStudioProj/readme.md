@@ -24,11 +24,11 @@ Place any updated dependencies of the following in the following paths:
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BT200Ctrl/BT200Ctrl.jar  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;classes/classes.jar
 
-To see the descriptions of these dependencies and where they can be retrieved, see the DAQRI ARToolKit Jira Space Pages for "Creating UnityARPlayer.jar from source using Eclipse or Android Studio."  
+To see the descriptions of these dependencies and where they can be retrieved, see the DAQRI Confluence ARToolKit Space Page for "Creating UnityARPlayer.jar from Source Using Eclipse or Android Studio."  
 
 Build the Java source files to class files by doing: "Build"/"Make Project"
 
-Export the class files as a ".jar" file named "UnityARPlayer.jar": in the right margin of the Android Studio main windows, click and open: "Gradle". This results in a window to open on the right side of the Android Studio IDE labeled "Gradle project". Twirl open "AndroidStudioProj" followed by twirling open "AndroidStudioProj." Then twirl open "Tasks" followed by "other." Scroll to "jarRelease." Double click "jarRelease" from the "Gradle projects" windows.  This collects the built class files and packages them into:
+Export the class files as a ".jar" file named "UnityARPlayer.jar": in the right margin of the Android Studio main windows, click and open: "Gradle". This results in a window openning on the right side of the Android Studio IDE labeled "Gradle project". Twirl open "AndroidStudioProj" followed by twirling open another "AndroidStudioProj" icon. Then twirl open "Tasks" followed by "other." Scroll to "jarRelease." Double click "jarRelease" from the "Gradle projects" windows.  This collects the built class files and packages them into:
 
 &nbsp;&nbsp;&nbsp;&nbsp;\[ARToolKit for Unity Repo\]/src/Android_Unity_Player_Source/   
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AndroidStudioProj/UnityARPlayer/build/libs/UnityARPlayer.jar
