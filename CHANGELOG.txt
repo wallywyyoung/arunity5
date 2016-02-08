@@ -1,6 +1,11 @@
 Release Notes
 -------------
 
+== ARToolKit for Unity v5.3.1r2 ==
+- Fixed import on latest Unity (5.3.2).
+- Corrected ARWrapper for SSL support on Android.
+- Runtime control of native log level.
+
 == ARToolKit for Unity v5.3.1 ==
 - Updated to ARToolKit v5.3.1, including addition of new threshold mode, "Bracketing".
 - Inclusion of new demo "Fisticuffs"
