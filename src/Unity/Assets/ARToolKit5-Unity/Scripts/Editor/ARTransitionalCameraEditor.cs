@@ -43,7 +43,7 @@ using UnityEditor;
 using UnityEngine;
 
 [CustomEditor(typeof(ARTransitionalCamera))] 
-public class ARTransitionalCameraEditor : ARCameraEditor 
+public class ARTransitionalCameraEditor : ARTrackedCameraEditor 
 {
     public override void OnInspectorGUI()
     {
