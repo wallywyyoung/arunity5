@@ -97,7 +97,7 @@ public class ARMarkerEditor : Editor
 		if (m.UID == ARMarker.NO_ID) m.Load(); 
 		
 		// Marker tag
-        m.Tag = EditorGUILayout.TextField("Tag", m.Tag);
+        m.Tag = EditorGUILayout.TextField("Marker tag", m.Tag);
         EditorGUILayout.LabelField("UID", (m.UID == ARMarker.NO_ID ? "Not loaded": m.UID.ToString()));
 		
         EditorGUILayout.Separator();
