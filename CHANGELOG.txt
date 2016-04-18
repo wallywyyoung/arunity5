@@ -1,6 +1,14 @@
 Release Notes
 -------------
 
+== ARToolKit for Unity v5.3.2 ==
+- Updated to ARToolKit v5.3.2, including many enhancements and bug fixes. 
+- Linux support is now included.
+- The bug affecting multi-NFT mode has been corrected.
+- ARWrapper video initialization on iOS now uses ar2VideoOpenAsync. This should fix errors when switching scenes in ARToolKit for Unity on iOS.
+- See https://github.com/artoolkit/artoolkit5/blob/ff220716feb14d8e48d565b114493dd6b2d41198/ChangeLog.txt for more details.
+- Dropped support for Android versions prior to 4.0.3 (ICS_MR1, API level 15), iOS versions prior to 7.0, OS X versions prior to 7.0.
+
 == ARToolKit for Unity v5.3.1r2 ==
 - Fixed import on latest Unity (5.3.2).
 - Corrected ARWrapper for SSL support on Android.

@@ -10,25 +10,26 @@
 -   [Windows Phone 8.1 and Windows Store 8.1 Notes](#WinRT)
 
 ###About this Archive
-This archive contains the ARToolKit for Unity project, plugins, utilities and examples, version 5.3.1r2.
+This archive contains the ARToolKit for Unity project, plugins, utilities and examples, version 5.3.2.
 
-ARToolKit for Unity version 5.3.1r2 is released under the GNU Lesser General Public License version 3, with some additional permissions. Example code is generally released under a more permissive disclaimer; please read the file LICENSE.txt for more information.
+ARToolKit for Unity version 5.3.2 is released under the GNU Lesser General Public License version 3, with some additional permissions. Example code is generally released under a more permissive disclaimer; please read the file LICENSE.txt for more information.
 
 ARToolKit for Unity is designed to build on Windows, Macintosh OS X, iOS and Android platforms.
 
 ###System Requirements:
 In addition to any base requirements for Unity, the ARToolKit for Unity plugin(s) have the following requirements:
 
--   ARToolKit for Unity 5.3.1 requires Unity Pro v4.5.5f1 or later.
--   If targeting Android, Android v2.3 and later is supported.
--   If targeting iOS, Xcode tools v5.0.1 or later is required. iOS v5.1.1 and later is supported.
--   If targeting Windows Phone 8.1 or Windows Store 8.1, Visual Studio 2013 SP2 running on Windows 8.1 is required.
+-   ARToolKit for Unity 5.3.2 requires Unity Pro v4.5.5f1 or later.
+-   If targeting Android, Android v4.0.3 and later is supported.
+-   If targeting iOS, Xcode tools v5.0.1 or later is required. iOS v7.0 and later is supported.
+-   If targeting OS X, Xcode tools v5.0.1 or later is required. OS X v10.7 and later is supported.
+-   If targeting Windows Phone 8.1 or Windows Store 8.1, Visual Studio 2013 SP2 running on Windows 8.1 or later is required.
 
 ###Support
 Please check out [documentation][documentation] for more information on [getting started][starting] and how to use ARToolKit for Unity. Specifically have a look at our [Unity documentation][unity], and our platform-specific documentation for [iOS][ios] and [Android][android], if using those platforms. If you have a specific question that the documentation doesn't address, please post on our [forums][forums], and a member of the community with help you. If you find a bug, please note it on our [bug tracker], and / or, fix it yourself and submit a [pull request][pull]!
 
 ###Notes
-ARToolKit v5.2 is the first major release under an open source license in several years, and represents several years of commercial development of ARToolKit by ARToolworks during this time. It will appear to be a significant change to previous users of ARToolKit v2.x. See the [feature comparison][features] for more information. Also, see the CHANGELOG.txt for details of changes in this and earlier releases.
+ARToolKit v5.2 was the first major release under an open source license in several years, and represented several years of commercial development of ARToolKit by ARToolworks during this time. See the [feature comparison][features] for more information. Also, see the CHANGELOG.txt for details of changes in this and earlier releases.
 
 ###WinRT
 ARToolKit for Unity for Windows Phone 8.1 and Windows Store 8.1.
@@ -86,9 +87,9 @@ Now you can deploy to the phone etc. and test etc. ARToolKit's log output will g
 This archive was assembled by:
     Philip Lamb and Wally Young
     [http://www.artoolkit.org][website]
-    2015-08-31
+    2016-04-18
 
-Copyright 2015 DAQRI LLC
+Copyright 2015-2016 DAQRI LLC
 Copyright 2011-2015 ARToolworks, Inc.
 
 [website]: http://www.artoolkit.org

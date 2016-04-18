@@ -134,7 +134,6 @@ mv ./src/Unity/ARUnity5.unitypackage .
 
 tar czvf "../ARUnity5-${VERSION}-tools-osx.tar.gz" \
     -T share/packaging/ARUnity5-tools-osx-bom \
-    --exclude "*/.svn" \
     --exclude "*.o" \
     --exclude "Makefile" \
     --exclude "build" \
@@ -142,6 +141,18 @@ tar czvf "../ARUnity5-${VERSION}-tools-osx.tar.gz" \
     --exclude "*.pbxuser" \
     --exclude ".DS_Store" \
     --exclude "desktop.ini" \
+    --exclude "local.properties" \
+    --exclude "*/.gradle" \
+    --exclude "*/.idea" \
+    --exclude "*.iml" \
 
-cat share/packaging/ARUnity5-tools-win-bom | zip "../ARUnity5-${VERSION}-tools-win.zip" -@
+rm -f "../ARUnity5-${VERSION}-tools-win.zip"
+zip -r -MM "../ARUnity5-${VERSION}-tools-win.zip" . \
+    -i@share/packaging/ARUnity5-tools-win-bom \
+    --exclude "*/build/*" \
+    --exclude "*/.DS_Store" \
+    --exclude "*/local.properties" \
+    --exclude "*/.gradle/*" \
+    --exclude "*/.idea/*" \
+    --exclude "*/*.iml" \
 
