@@ -114,6 +114,7 @@ class ARTrackedObjectGizmo
 
 	private static void DrawMultiMarker(ARMarker m, Matrix4x4 mat, bool selected) 
     {
+		if (m.Patterns == null) return; // If marker is unloaded, patterns will be empty.
 		for (int i = 0; i < m.Patterns.Length; i++) {
 
 			Matrix4x4 mat1 = mat * m.Patterns[i].matrix;
