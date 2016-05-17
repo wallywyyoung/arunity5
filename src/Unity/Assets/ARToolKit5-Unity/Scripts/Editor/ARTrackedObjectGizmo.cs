@@ -1,4 +1,4 @@
-﻿/*
+/*
  *  ARTrackedObjectGizmo.cs
  *  ARToolKit for Unity
  *
@@ -63,7 +63,7 @@ class ARTrackedObjectGizmo
     private static void DrawMarker(ARTrackedObject to, bool selected)
 	{
         ARMarker m = to.GetMarker();
-        if (m == null) return;
+		if (m == null || m.enabled == false) return;
 		if (!m.gameObject.activeInHierarchy) return; // Don't attempt to load inactive ARMarkers.
 		
 		// Attempt to load. Might not work out if e.g. for a single marker, pattern hasn't been
@@ -114,7 +114,11 @@ class ARTrackedObjectGizmo
 
 	private static void DrawMultiMarker(ARMarker m, Matrix4x4 mat, bool selected) 
     {
-		if (m.Patterns == null) return; // If marker is unloaded, patterns will be empty.
+        //Sanity check if Patterns are loaded or Marker-UID != -1
+		if (m.Patterns == null || m.UID == ARMarker.NO_ID) {
+			return;
+		}
+
 		for (int i = 0; i < m.Patterns.Length; i++) {
 
 			Matrix4x4 mat1 = mat * m.Patterns[i].matrix;

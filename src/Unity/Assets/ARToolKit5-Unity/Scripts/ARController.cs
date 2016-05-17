@@ -319,13 +319,8 @@ public class ARController : MonoBehaviour
 		ARNativePluginStatic.aruRequestCamera();
 		Thread.Sleep(2000);
 		#endif
-        if (PluginFunctions.arwInitialiseAR(TemplateSize, TemplateCountMax)) {
-			// ARToolKit version number
-			_version = PluginFunctions.arwGetARToolKitVersion();
-			Log(LogTag + "ARToolKit version " + _version + " initialised.");
-		} else {
-            Log(LogTag + "Error initialising ARToolKit");
-        }
+
+		InitializeAR ();
 	}
 
 	void OnEnable()
@@ -355,6 +350,25 @@ public class ARController : MonoBehaviour
 			default:
                 break;
         }
+
+		//After switching the Player from Unity to Android or Android to Unity PluginFunctions is not inited anymore
+		//So we need to initialize it again
+		if (PluginFunctions.inited == false) {
+			InitializeAR ();
+		}
+		Log(LogTag + "PluginFunctions initialized: " + PluginFunctions.inited);
+
+	}
+
+	private void InitializeAR(){
+       if (PluginFunctions.arwInitialiseAR(TemplateSize, TemplateCountMax)) {
+			// ARToolKit version number
+			_version = PluginFunctions.arwGetARToolKitVersion();
+			Log(LogTag + "ARToolKit version " + _version + " initialised.");
+		} 
+		else {
+			Log(LogTag + "Error initialising ARToolKit");
+		}
 	}
 	
 	void Start()
