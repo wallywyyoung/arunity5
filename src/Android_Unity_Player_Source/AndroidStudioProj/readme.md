@@ -15,16 +15,25 @@ With a 1.5.1 or greater version of the Android Studio IDE, open the Android Stud
 
 After the project and the Android Studio IDE is open, check that the SDK and NDK paths are set correctly. (It's a requirement to have the latest Android SDK and NDK downloaded on your devbox.) In the Android Studio IDE, go to "File"/"Project Structure...". In the resulting dialog box, click "SDK Location" in the section along the left margin. In the main window on the right, check the paths on under "Android SDK location:" and "Android NDK location:".
 
-Place any updated dependencies of the following in the following paths:
+Place any updated dependencies of the following in the following path:
 
 &nbsp;&nbsp;&nbsp;&nbsp;\[ARToolKit for Unity Repo\]/    
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/src/Android_Unity_Player_Source/AndroidStudioProj/
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;arBaseLib-release/aRBaseLib-release.aar   
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;arBaseLib-release/aRBaseLib-release.aar  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BT200Ctrl/BT200Ctrl.jar  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;classes/classes.jar
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;classes/classes.jar  
 
-To see the descriptions of these dependencies and where they can be retrieved, see the DAQRI Confluence ARToolKit Space Page for "Creating UnityARPlayer.jar from Source Using Eclipse or Android Studio."  
+The classes.jar file ships with Unity and can be located here:
+
+- On Unity 5.3 for Mac OS X:  
+    */Applications/Unity/Contents/PlaybackEngines/AndroidPlayer/Variations/["mono" | "il2cpp"]/Release/Classes/classes.jar*
+- For Unity 5.3 on Windows 10:  
+  *C:\Program Files\Unity5.3\Editor\Data\PlaybackEngines\AndroidPlayer\Variations\["mono" | "il2cpp"]\Release\Classes\classes.jar*
+  
+>Currently, the ARToolKit was tested only using the "mono" subdirectory path classes.jar file. 
+
+>The sources of BT200Ctrl.jar are not published jet so just keep the one that ships with this project.
 
 Build the Java source files to class files by doing: "Build"/"Make Project"
 

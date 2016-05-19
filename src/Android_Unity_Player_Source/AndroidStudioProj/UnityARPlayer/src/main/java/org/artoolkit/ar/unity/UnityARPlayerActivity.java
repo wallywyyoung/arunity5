@@ -60,11 +60,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.FrameLayout;
-
 import com.unity3d.player.UnityPlayerNativeActivity;
-
 import org.artoolkit.ar.base.camera.CameraPreferencesActivity;
-
 import jp.epson.moverio.bt200.DisplayControl;
 
 //For Epson Moverio BT-200. BT200Ctrl.jar must be in libs/ folder.

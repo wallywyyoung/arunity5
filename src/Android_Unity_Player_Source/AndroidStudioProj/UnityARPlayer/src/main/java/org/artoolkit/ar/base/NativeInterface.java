@@ -50,6 +50,7 @@ public class NativeInterface {
      * Android logging tag for this class.
      */
     private static final String TAG = "NativeInterface";
+
     /**
      * The name of the native ARToolKit library.
      */
@@ -108,7 +109,7 @@ public class NativeInterface {
      *                     <p/>
      *                     Pass AR_PATT_NUM_MAX for the same behaviour as arwInitialiseAR().
      * @return true if successful, false if an error occurred
-     * @see                arwShutdownAR()
+     * @see arwShutdownAR()
      */
     public static native boolean arwInitialiseARWithOptions(int pattSize, int pattCountMax);
 

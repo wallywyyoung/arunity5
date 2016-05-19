@@ -57,9 +57,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-
 import org.artoolkit.ar.base.NativeInterface;
-
 import java.io.IOException;
 
 public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback, Camera.PreviewCallback {
@@ -160,12 +158,11 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
             PixelFormat.getPixelFormatInfo(pixelformat, pixelinfo);
             int cameraIndex = 0;
             boolean frontFacing = false;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-                Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
-                cameraIndex = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(getContext()).getString("pref_cameraIndex", "0"));
-                Camera.getCameraInfo(cameraIndex, cameraInfo);
-                if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) frontFacing = true;
-            }
+
+            Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
+            cameraIndex = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(getContext()).getString("pref_cameraIndex", "0"));
+            Camera.getCameraInfo(cameraIndex, cameraInfo);
+            if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) frontFacing = true;
 
             int bufSize = capWidth * capHeight * pixelinfo.bitsPerPixel / 8; // For the default NV21 format, bitsPerPixel = 12.
             Log.i(TAG, "Camera buffers will be " + capWidth + "x" + capHeight + "@" + pixelinfo.bitsPerPixel + "bpp, " + bufSize + "bytes.");
