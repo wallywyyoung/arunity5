@@ -49,11 +49,6 @@
 
 package org.artoolkit.ar.unity;
 
-//import org.artoolkit.ar.base.R;
-import org.artoolkit.ar.base.camera.CameraPreferencesActivity;
-
-//import com.unity3d.player.UnityPlayerActivity;
-import com.unity3d.player.UnityPlayerNativeActivity;
 
 import android.content.Intent;
 import android.os.Build;
@@ -66,140 +61,141 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.FrameLayout;
 
-//For Epson Moverio BT-200. BT200Ctrl.jar must be in libs/ folder.
+import com.unity3d.player.UnityPlayerNativeActivity;
+
+import org.artoolkit.ar.base.camera.CameraPreferencesActivity;
+
 import jp.epson.moverio.bt200.DisplayControl;
+
+//For Epson Moverio BT-200. BT200Ctrl.jar must be in libs/ folder.
 
 public class UnityARPlayerActivity extends UnityPlayerNativeActivity {
 
-	protected final static String TAG = "UnityARPlayerActivity";
+    protected final static String TAG = "UnityARPlayerActivity";
 
-	private FrameLayout previewInserter = null;
-	private ViewGroup unityView = null;
-	private CameraSurface previewView = null;
-	
-	// For Epson Moverio BT-200.
-	private DisplayControl mDisplayControl = null;
-	
+    private FrameLayout previewInserter = null;
+    private ViewGroup unityView = null;
+    private CameraSurface previewView = null;
 
-	/** Walk a view hierarchy looking for the first SurfaceView.
-	 * Search is depth first.
-	 * @param v View hierarchy root.
-	 * @return The first SurfaceView in the hierarchy, or null if none could be found.
-	 */
-	private SurfaceView findSurfaceView(View v)
-	{
-		if (v == null) return null;
-		else if (v instanceof SurfaceView) return (SurfaceView)v;
-		else if (v instanceof ViewGroup) {
-			int childCount = ((ViewGroup)v).getChildCount();
-			for (int i = 0; i < childCount; i++) {
-				SurfaceView ret = findSurfaceView(((ViewGroup)v).getChildAt(i));
-				if (ret != null) return ret;
-			}
-		}
-		return null;
-	}
-	
-	@Override
-	protected void onCreate (Bundle savedInstanceState)
-	{
+    // For Epson Moverio BT-200.
+    private DisplayControl mDisplayControl = null;
+
+
+    /**
+     * Walk a view hierarchy looking for the first SurfaceView.
+     * Search is depth first.
+     *
+     * @param v View hierarchy root.
+     * @return The first SurfaceView in the hierarchy, or null if none could be found.
+     */
+    private SurfaceView findSurfaceView(View v) {
+        if (v == null) return null;
+        else if (v instanceof SurfaceView) return (SurfaceView) v;
+        else if (v instanceof ViewGroup) {
+            int childCount = ((ViewGroup) v).getChildCount();
+            for (int i = 0; i < childCount; i++) {
+                SurfaceView ret = findSurfaceView(((ViewGroup) v).getChildAt(i));
+                if (ret != null) return ret;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         // For Epson Moverio BT-200.
         if (Build.MANUFACTURER.equals("EPSON") && Build.MODEL.equals("embt2")) {
-        	mDisplayControl = new DisplayControl(this);
+            mDisplayControl = new DisplayControl(this);
             //private static final int FLAG_SMARTFULLSCREEN = 0x80000000; // For Epson Moverio BT-200.
-        	getWindow().addFlags(0x80000000);
+            getWindow().addFlags(0x80000000);
         }
 
         super.onCreate(savedInstanceState);
-		
+
         // This needs to be done just only the very first time the application is run,
         // or whenever a new preference is added (e.g. after an application upgrade).
-		int resID = getResources().getIdentifier("preferences", "xml", getPackageName());
+        int resID = getResources().getIdentifier("preferences", "xml", getPackageName());
         PreferenceManager.setDefaultValues(this, resID, false);
-        
-	}
-	
-	@Override
-	protected void onResume() 
-	{
-		Log.i(TAG, "onResume()");
-		
-		super.onResume();
-	    
-		//
-		// Wrap the Unity application's view and the camera preview in a FrameLayout;
-		//
-		
-		//View focusView = getCurrentFocus(); // Save the focus, in case we inadvertently change it.
-		//Log.i(TAG, "Focus view is " + focusView.toString() + ".");
 
-		ViewGroup decorView = (ViewGroup)getWindow().getDecorView();
-		unityView = (ViewGroup)decorView.getChildAt(0);
-		if (unityView == null) {
-			Log.e(TAG, "Error: Could not find top view.");
-			return;
-		}
-		//Log.i(TAG, "Top view is " + unityView.toString() + ".");
+    }
 
-		// Create a placeholder for us to insert the camera preview capture object to the
-		// view hierarchy.
-		previewInserter = new FrameLayout(this);
-		decorView.removeView(unityView); // We must remove the root view from its parent before we can add it somewhere else.
-		decorView.addView(previewInserter);
-		
-		//focusView.requestFocus(); // Restore focus.
-	    
-		// Create the camera preview.
-		previewView = new CameraSurface(this);
-		previewInserter.addView(previewView, new LayoutParams(128, 128));
+    @Override
+    protected void onResume() {
+        Log.i(TAG, "onResume()");
 
-		// Now add Unity view back in.
-		// In order to ensure that Unity's view covers the camera preview each time onResume
-		// is called, find the SurfaceView inside the Unity view hierachy, and
-	    // set the media overlay mode on it. Add the Unity view AFTER adding the previewView.
-	    SurfaceView sv = findSurfaceView(unityView);
-	    if (sv == null) {
-	    	Log.w(TAG, "No SurfaceView found in Unity view hierarchy.");
-	    } else {
-	    	Log.i(TAG, "Found SurfaceView " + sv.toString() + ".");
-	    	sv.setZOrderMediaOverlay(true);
-	    }
-		previewInserter.addView(unityView);
-	}
-	
-	@Override
-	protected void onPause()
-	{
-		Log.i(TAG, "onPause()");
-		
-		super.onPause();
+        super.onResume();
 
-		// Restore the original view hierarchy.
-	    previewInserter.removeAllViews();
-	    previewView = null; // Make sure camera is released in onPause().
+        //
+        // Wrap the Unity application's view and the camera preview in a FrameLayout;
+        //
 
-		ViewGroup decorView = (ViewGroup)getWindow().getDecorView();
-		decorView.removeView(previewInserter);
-		decorView.addView(unityView);
+        //View focusView = getCurrentFocus(); // Save the focus, in case we inadvertently change it.
+        //Log.i(TAG, "Focus view is " + focusView.toString() + ".");
 
-	    previewInserter = null;
-	    unityView = null;
-	}
+        ViewGroup decorView = (ViewGroup) getWindow().getDecorView();
+        unityView = (ViewGroup) decorView.getChildAt(0);
+        if (unityView == null) {
+            Log.e(TAG, "Error: Could not find top view.");
+            return;
+        }
+        //Log.i(TAG, "Top view is " + unityView.toString() + ".");
 
-	void launchPreferencesActivity()
-	{
-		startActivity(new Intent(this, CameraPreferencesActivity.class));
-	}
-	
-	void setStereo(boolean stereo)
-	{
-   	    // For Epson Moverio BT-200, enable stereo mode. 
-   	    if (Build.MANUFACTURER.equals("EPSON") && Build.MODEL.equals("embt2")) {
-  	    	//int dimension = (stereo ? DIMENSION_3D : DIMENSION_2D);
-   	    	//set2d3d(dimension);
-   	    	mDisplayControl.setMode(stereo ? DisplayControl.DISPLAY_MODE_3D : DisplayControl.DISPLAY_MODE_2D, stereo); // Last parameter is 'toast'.
-   	    }
-	}
+        // Create a placeholder for us to insert the camera preview capture object to the
+        // view hierarchy.
+        previewInserter = new FrameLayout(this);
+        decorView.removeView(unityView); // We must remove the root view from its parent before we can add it somewhere else.
+        decorView.addView(previewInserter);
+
+        //focusView.requestFocus(); // Restore focus.
+
+        // Create the camera preview.
+        previewView = new CameraSurface(this);
+        previewInserter.addView(previewView, new LayoutParams(128, 128));
+
+        // Now add Unity view back in.
+        // In order to ensure that Unity's view covers the camera preview each time onResume
+        // is called, find the SurfaceView inside the Unity view hierachy, and
+        // set the media overlay mode on it. Add the Unity view AFTER adding the previewView.
+        SurfaceView sv = findSurfaceView(unityView);
+        if (sv == null) {
+            Log.w(TAG, "No SurfaceView found in Unity view hierarchy.");
+        } else {
+            Log.i(TAG, "Found SurfaceView " + sv.toString() + ".");
+            sv.setZOrderMediaOverlay(true);
+        }
+        previewInserter.addView(unityView);
+    }
+
+    @Override
+    protected void onPause() {
+        Log.i(TAG, "onPause()");
+
+        super.onPause();
+
+        // Restore the original view hierarchy.
+        previewInserter.removeAllViews();
+        previewView = null; // Make sure camera is released in onPause().
+
+        ViewGroup decorView = (ViewGroup) getWindow().getDecorView();
+        decorView.removeView(previewInserter);
+        decorView.addView(unityView);
+
+        previewInserter = null;
+        unityView = null;
+    }
+
+    void launchPreferencesActivity() {
+        startActivity(new Intent(this, CameraPreferencesActivity.class));
+    }
+
+    void setStereo(boolean stereo) {
+        // For Epson Moverio BT-200, enable stereo mode.
+        if (Build.MANUFACTURER.equals("EPSON") && Build.MODEL.equals("embt2")) {
+            //int dimension = (stereo ? DIMENSION_3D : DIMENSION_2D);
+            //set2d3d(dimension);
+            mDisplayControl.setMode(stereo ? DisplayControl.DISPLAY_MODE_3D : DisplayControl.DISPLAY_MODE_2D, stereo); // Last parameter is 'toast'.
+        }
+    }
 }
 
 /*
