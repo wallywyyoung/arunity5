@@ -103,7 +103,7 @@ public class ARController : MonoBehaviour
     //
 
     // Config. in.
-    public string videoCParamName0 = "camera_para";
+    public string videoCParamName0 = "";
     public string videoConfigurationWindows0 = "-showDialog -flipV";
     public string videoConfigurationMacOSX0 = "-width=640 -height=480";
     public string videoConfigurationiOS0 = "";
@@ -135,7 +135,7 @@ public class ARController : MonoBehaviour
     //
     
     // Config. in.
-    public string videoCParamName1 = "camera_paraR";
+    public string videoCParamName1 = "";
     public string videoConfigurationWindows1 = "-devNum=2 -showDialog -flipV";
     public string videoConfigurationMacOSX1 = "-source=1 -width=640 -height=480";
     public string videoConfigurationiOS1 = "";
@@ -262,13 +262,13 @@ public class ARController : MonoBehaviour
         ARW_ERROR_OVERFLOW              =   -3,
         ARW_ERROR_NODATA                =   -4,
         ARW_ERROR_IOERROR               =   -5,
-        ARW_ERROR_EOF                   =    -6,
+        ARW_ERROR_EOF                   =   -6,
         ARW_ERROR_TIMEOUT               =   -7,
         ARW_ERROR_INVALID_COMMAND       =   -8,
         ARW_ERROR_INVALID_ENUM          =   -9,
         ARW_ERROR_THREADS               =   -10,
         ARW_ERROR_FILE_NOT_FOUND        =   -11,
-        ARW_ERROR_LENGTH_UNAVAILABLE    =    -12,
+        ARW_ERROR_LENGTH_UNAVAILABLE    =   -12,
         ARW_ERROR_DEVICE_UNAVAILABLE    =   -13
     };
 
@@ -564,43 +564,46 @@ public class ARController : MonoBehaviour
         }    
 
         // Load the default camera parameters.
-        TextAsset ta;
         byte[] cparam0 = null;
         byte[] cparam1 = null;
         byte[] transL2R = null;
-        ta = Resources.Load("ardata/" + videoCParamName0, typeof(TextAsset)) as TextAsset;
-        if (ta == null) {        
-            // Error - the camera_para.dat file isn't in the right place            
-            Log(LogTag + "StartAR(): Error: Camera parameters file not found at Resources/ardata/" + videoCParamName0 + ".bytes");
-            return (false);
-        }
-        cparam0 = ta.bytes;
+		if (!string.IsNullOrEmpty(videoCParamName0)) {
+			TextAsset ta = Resources.Load("ardata/" + videoCParamName0, typeof(TextAsset)) as TextAsset;
+			if (ta == null) {        
+					// Error - the camera_para.dat file isn't in the right place            
+					Log(LogTag + "StartAR(): Error: Camera parameters file not found at Resources/ardata/" + videoCParamName0 + ".bytes");
+					return (false);
+			}
+			cparam0 = ta.bytes;
+		}
         if (VideoIsStereo) {
-            ta = Resources.Load("ardata/" + videoCParamName1, typeof(TextAsset)) as TextAsset;
-            if (ta == null) {        
-                // Error - the camera_para.dat file isn't in the right place            
-                Log(LogTag + "StartAR(): Error: Camera parameters file not found at Resources/ardata/" + videoCParamName1 + ".bytes");
-                return (false);
-            }
-            cparam1 = ta.bytes;
-            ta = Resources.Load("ardata/" + transL2RName, typeof(TextAsset)) as TextAsset;
-            if (ta == null) {        
+			if (!string.IsNullOrEmpty(videoCParamName1)) {
+				TextAsset ta = Resources.Load("ardata/" + videoCParamName1, typeof(TextAsset)) as TextAsset;
+				if (ta == null) {        
+					// Error - the camera_para.dat file isn't in the right place            
+					Log(LogTag + "StartAR(): Error: Camera parameters file not found at Resources/ardata/" + videoCParamName1 + ".bytes");
+					return (false);
+				}
+				cparam1 = ta.bytes;
+			}
+			TextAsset ta1 = Resources.Load("ardata/" + transL2RName, typeof(TextAsset)) as TextAsset;
+            if (ta1 == null) {        
                 // Error - the transL2R.dat file isn't in the right place            
                 Log(LogTag + "StartAR(): Error: The stereo calibration file not found at Resources/ardata/" + transL2RName + ".bytes");
                 return (false);
             }
-            transL2R = ta.bytes;
+            transL2R = ta1.bytes;
         }
         
         // Begin video capture and marker detection.
         if (!VideoIsStereo) {
             Log(LogTag + "Starting ARToolKit video with vconf '" + videoConfiguration0 + "'.");
             //_running = PluginFunctions.arwStartRunning(videoConfiguration, cparaName, nearPlane, farPlane);
-            _running = PluginFunctions.arwStartRunningB(videoConfiguration0, cparam0, cparam0.Length, NearPlane, FarPlane);
+            _running = PluginFunctions.arwStartRunningB(videoConfiguration0, cparam0, (cparam0 != null ? cparam0.Length : 0), NearPlane, FarPlane);
         } else {
             Log(LogTag + "Starting ARToolKit video with vconfL '" + videoConfiguration0 + "', vconfR '" + videoConfiguration1 + "'.");
             //_running = PluginFunctions.arwStartRunningStereo(vconfL, cparaNameL, vconfR, cparaNameR, transL2RName, nearPlane, farPlane);
-            _running = PluginFunctions.arwStartRunningStereoB(videoConfiguration0, cparam0, cparam0.Length, videoConfiguration1, cparam1, cparam1.Length, transL2R, transL2R.Length, NearPlane, FarPlane);
+            _running = PluginFunctions.arwStartRunningStereoB(videoConfiguration0, cparam0, (cparam0 != null ? cparam0.Length : 0), videoConfiguration1, cparam1, (cparam1 != null ? cparam1.Length : 0), transL2R, (transL2R != null ? transL2R.Length : 0), NearPlane, FarPlane);
 
         }
         

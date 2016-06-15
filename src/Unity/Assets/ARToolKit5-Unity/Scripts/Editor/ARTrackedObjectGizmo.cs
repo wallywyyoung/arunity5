@@ -87,7 +87,7 @@ class ARTrackedObjectGizmo
                 break;
             
             case MarkerType.NFT:
-                DrawNFTMarker(m, pose, selected);
+                DrawNFTMarker(m, pose, selected, false);
                 break;
 
         }
@@ -142,7 +142,7 @@ class ARTrackedObjectGizmo
         //Gizmos.DrawGUITexture(new Rect(origin.x, origin.y, 20, 20), m.MarkerImage);
     }
 
-    private static void DrawNFTMarker(ARMarker m, Matrix4x4 mat, bool selected) 
+    private static void DrawNFTMarker(ARMarker m, Matrix4x4 mat, bool selected, bool originAtCentre) 
     {
         float pattWidth = m.NFTWidth;
         float pattHeight = m.NFTHeight;
@@ -153,7 +153,9 @@ class ARTrackedObjectGizmo
             Vector3 origin = mat.GetColumn(3);
             Vector3 right = mat.GetColumn(0);
             Vector3 up = mat.GetColumn(1);
-            Vector3 centre = origin + right*0.5f*pattWidth + up*0.5f*pattHeight;
+            Vector3 centre;
+			if (originAtCentre) centre = origin;
+			else centre = origin + right*0.5f*pattWidth + up*0.5f*pattHeight;
 
             //float d = selected ? 1.0f : 0.0f;
      
