@@ -86,6 +86,9 @@ public class ARController : MonoBehaviour
     public bool QuitOnEscOrBack = true;
     public bool AutoStartAR = true;
 
+	[HideInInspector]
+	public bool IsRunning { get { return _running; } }
+	
     //
     // State.
     //
