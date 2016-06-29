@@ -86,6 +86,8 @@ public class ARController : MonoBehaviour
     public bool QuitOnEscOrBack = true;
     public bool AutoStartAR = true;
 
+	//API Addition - Users can check this value to see if the camera is initialised running.
+	//Usage: Used to show 'Please Wait' UIs while the camera is still initialising or markers are being loaded.
 	[HideInInspector]
 	public bool IsRunning { get { return _running; } }
 	

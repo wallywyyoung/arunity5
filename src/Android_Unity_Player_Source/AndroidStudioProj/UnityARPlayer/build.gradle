@@ -26,7 +26,7 @@ dependencies {
     compile project(':aRBaseLib-release')
     compile project(':classes')
     compile project(':BT200Ctrl')
-    compile 'com.android.support:support-v4:23.0.0'
+    compile 'com.android.support:support-v4:23.3.0'
 }
 
 task jarRelease(type: Jar, dependsOn: 'assembleRelease') {

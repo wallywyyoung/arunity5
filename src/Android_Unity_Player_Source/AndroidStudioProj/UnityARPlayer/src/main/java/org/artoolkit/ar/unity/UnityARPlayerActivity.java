@@ -69,6 +69,7 @@ import jp.epson.moverio.bt200.DisplayControl;
 //NOTE: The support library aar file MUST be included in the Unity plugins folder.
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.widget.Toast;
 
 //For Epson Moverio BT-200. BT200Ctrl.jar must be in libs/ folder.
 
@@ -82,6 +83,8 @@ public class UnityARPlayerActivity extends UnityPlayerNativeActivity {
 
     // For Epson Moverio BT-200.
     private DisplayControl mDisplayControl = null;
+
+    protected final static int PERMISSION_REQUEST_CAMERA = 77;
 
 
     /**
@@ -124,9 +127,8 @@ public class UnityARPlayerActivity extends UnityPlayerNativeActivity {
         int permissionCheck = ContextCompat.checkSelfPermission(this.getApplicationContext(), Manifest.permission.CAMERA);
         if (permissionCheck != PackageManager.PERMISSION_GRANTED)
         {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 77);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, PERMISSION_REQUEST_CAMERA);
         }
-
     }
 
 	//Handle the result of asking the user for camera permission.
@@ -134,15 +136,17 @@ public class UnityARPlayerActivity extends UnityPlayerNativeActivity {
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
         switch (requestCode) {
-            case 77: {
+            case PERMISSION_REQUEST_CAMERA: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                    //Camera permission granted!
+                    //Camera permission granted. If you NEED to show a toast, uncomment the line below.
+                    //Toast.makeText(this, "Camera Access Granted", Toast.LENGTH_SHORT).show();
 
                 } else {
 
                     // TODO: Fail gracefully here.
+                    Toast.makeText(this, "Camera permissions are required for Augmented Reality", Toast.LENGTH_LONG).show();
                 }
                 return;
             }
