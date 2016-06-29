@@ -97,7 +97,7 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
                 camera = Camera.open();
             }
         } catch (RuntimeException exception) {
-			Log.e(TAG, "Cannot Open Camera - " + exception.getMessage());
+            Log.e(TAG, "Cannot Open Camera - " + exception.getMessage());
         }
         if (camera != null) {
             try {
