@@ -738,8 +738,8 @@ public class ARController : MonoBehaviour
                 // tell the native plugin the texture ID in advance, so do that now.
                 if (_useNativeGLTexturing) {
                     if (Application.platform != RuntimePlatform.IPhonePlayer && Application.platform != RuntimePlatform.Android) {
-                        if (!VideoIsStereo) PluginFunctions.arwSetUnityRenderEventUpdateTextureGLTextureID(_videoTexture0.GetNativeTextureID());
-                        else PluginFunctions.arwSetUnityRenderEventUpdateTextureGLStereoTextureIDs(_videoTexture0.GetNativeTextureID(), _videoTexture1.GetNativeTextureID());
+                        if (!VideoIsStereo) PluginFunctions.arwSetUnityRenderEventUpdateTextureGLTextureID((int)_videoTexture0.GetNativeTexturePtr());
+                        else PluginFunctions.arwSetUnityRenderEventUpdateTextureGLStereoTextureIDs((int)_videoTexture0.GetNativeTexturePtr(), (int)_videoTexture1.GetNativeTexturePtr());
                     }
                 }
 
@@ -1109,7 +1109,7 @@ public class ARController : MonoBehaviour
                     // As of 2013-09-23, mobile platforms don't support GL.IssuePluginEvent().
                     // See http://docs.unity3d.com/Documentation/Manual/NativePluginInterface.html.
                     if (Application.platform == RuntimePlatform.IPhonePlayer || Application.platform == RuntimePlatform.Android) {
-                        PluginFunctions.arwUpdateTextureGL(_videoTexture0.GetNativeTextureID());
+                        PluginFunctions.arwUpdateTextureGL((int)_videoTexture0.GetNativeTexturePtr());
                     } else {
                         //Log(LogTag + "Calling GL.IssuePluginEvent");
                         GL.IssuePluginEvent((int)ARW_UNITY_RENDER_EVENTID.UPDATE_TEXTURE_GL);
@@ -1180,7 +1180,7 @@ public class ARController : MonoBehaviour
                     // As of 2013-09-23, mobile platforms don't support GL.IssuePluginEvent().
                     // See http://docs.unity3d.com/Documentation/Manual/NativePluginInterface.html.
                     if (Application.platform == RuntimePlatform.IPhonePlayer || Application.platform == RuntimePlatform.Android) {
-                        PluginFunctions.arwUpdateTextureGLStereo(_videoTexture0.GetNativeTextureID(), _videoTexture1.GetNativeTextureID());
+                        PluginFunctions.arwUpdateTextureGLStereo((int)_videoTexture0.GetNativeTexturePtr(), (int)_videoTexture1.GetNativeTexturePtr());
                     } else {
                         //Log(LogTag + "Calling GL.IssuePluginEvent");
                         GL.IssuePluginEvent((int)ARW_UNITY_RENDER_EVENTID.UPDATE_TEXTURE_GL_STEREO);
