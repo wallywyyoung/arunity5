@@ -1322,7 +1322,7 @@ public class ARController : MonoBehaviour
         MeshFilter filter = vbmgo.AddComponent<MeshFilter>();
         filter.mesh = newVideoMesh(ContentFlipH, !ContentFlipV, textureScaleU, textureScaleV); // Invert flipV because ARToolKit video frame is top-down, Unity's is bottom-up.
         MeshRenderer meshRenderer = vbmgo.AddComponent<MeshRenderer>();
-        meshRenderer.castShadows = false;
+        meshRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
         meshRenderer.receiveShadows = false;
         vbmgo.GetComponent<Renderer>().material = vbm;
         
