@@ -111,7 +111,9 @@ public class ARToolKitPostProcessor {
         new IosFramework("libstdc++.6.dylib",    "E0005ED91B047A0C00FEB577", "E0005ED81B047A0C00FEB577", "\"compiled.mach-o.dylib\"",
                          "\"libstdc++.6.dylib\"", "\"usr/lib/libstdc++.6.dylib\"",                  "SDKROOT"),
         new IosFramework("Accelerate.framework", "E0005ED51B04798800FEB577", "E0005ED41B04798800FEB577", "wrapper.framework",
-                         "Accelerate.framework",  "System/Library/Frameworks/Accelerate.framework", "SDKROOT")
+                         "Accelerate.framework",  "System/Library/Frameworks/Accelerate.framework", "SDKROOT"),
+        new IosFramework("libsqlite3.dylib",     "E0005ED91B047FF800FEB577", "E0005ED81B047FF800FEB577", "\"compiled.mach-o.dylib\"",
+                         "\"libsqlite3.dylib\"", "\"usr/lib/libsqlite3.dylib\"", "SDKROOT")
     };
 
     private static StreamWriter streamWriter = null;
