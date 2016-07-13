@@ -49,8 +49,9 @@
 
 package org.artoolkit.ar.unity;
 
-
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -64,6 +65,12 @@ import com.unity3d.player.UnityPlayerNativeActivity;
 import org.artoolkit.ar.base.camera.CameraPreferencesActivity;
 import jp.epson.moverio.bt200.DisplayControl;
 
+//Imports below required to ask for permission to use the camera.
+//NOTE: The support library aar file MUST be included in the Unity plugins folder.
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.widget.Toast;
+
 //For Epson Moverio BT-200. BT200Ctrl.jar must be in libs/ folder.
 
 public class UnityARPlayerActivity extends UnityPlayerNativeActivity {
@@ -76,6 +83,8 @@ public class UnityARPlayerActivity extends UnityPlayerNativeActivity {
 
     // For Epson Moverio BT-200.
     private DisplayControl mDisplayControl = null;
+
+    protected final static int PERMISSION_REQUEST_CAMERA = 77;
 
 
     /**
@@ -114,6 +123,34 @@ public class UnityARPlayerActivity extends UnityPlayerNativeActivity {
         int resID = getResources().getIdentifier("preferences", "xml", getPackageName());
         PreferenceManager.setDefaultValues(this, resID, false);
 
+		//Request permission to use the camera on android 23+
+        int permissionCheck = ContextCompat.checkSelfPermission(this.getApplicationContext(), Manifest.permission.CAMERA);
+        if (permissionCheck != PackageManager.PERMISSION_GRANTED)
+        {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, PERMISSION_REQUEST_CAMERA);
+        }
+    }
+
+	//Handle the result of asking the user for camera permission.
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSION_REQUEST_CAMERA: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    //Camera permission granted. If you NEED to show a toast, uncomment the line below.
+                    //Toast.makeText(this, "Camera Access Granted", Toast.LENGTH_SHORT).show();
+
+                } else {
+
+                    // TODO: Fail gracefully here.
+                    Toast.makeText(this, "Camera permissions are required for Augmented Reality", Toast.LENGTH_LONG).show();
+                }
+                return;
+            }
+        }
     }
 
     @Override
