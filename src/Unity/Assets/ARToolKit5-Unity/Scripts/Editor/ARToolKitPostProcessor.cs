@@ -104,6 +104,9 @@ public class ARToolKitPostProcessor {
     private const string PBXGROUP_SUBSET_2                     = "children = (";
     private const string PBXGROUP_STRING_FORMAT                = "\n\t\t\t\t{0} /* {1} */,";
 
+    private const string ENABLE_BITCODE                        = "ENABLE_BITCODE = YES";
+    private const string DISABLE_BITCODE                       = "ENABLE_BITCODE = NO";
+
     private static IosFramework[] iosFrameworks = {
         new IosFramework("libstdc++.6.dylib",    "E0005ED91B047A0C00FEB577", "E0005ED81B047A0C00FEB577", "\"compiled.mach-o.dylib\"",
                          "\"libstdc++.6.dylib\"", "\"usr/lib/libstdc++.6.dylib\"",                  "SDKROOT"),
@@ -176,6 +179,9 @@ public class ARToolKitPostProcessor {
                     index = pbxproj.IndexOf(PBXGROUP_SUBSET_2, index) + PBXGROUP_SUBSET_2.Length;
                     pbxproj = pbxproj.Insert(index, pbxGroup);
                     streamWriter.WriteLine("OnPostProcessBuild - Injected PBXGROUP");
+
+                    pbxproj = pbxproj.Replace(ENABLE_BITCODE, DISABLE_BITCODE);
+                    streamWriter.WriteLine("OnPostProcessBuild - Disabled Bitcode");
 
                     File.Delete(pbxprojPath);
                     File.WriteAllText(pbxprojPath, pbxproj);
