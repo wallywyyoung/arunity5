@@ -77,8 +77,6 @@ public class UnityARPlayerActivity extends UnityPlayerNativeActivity {
 
     protected final static String TAG = "UnityARPlayerActivity";
 
-    private FrameLayout previewInserter = null;
-    private ViewGroup unityView = null;
     private CameraSurface previewView = null;
 
     // For Epson Moverio BT-200.
@@ -159,45 +157,15 @@ public class UnityARPlayerActivity extends UnityPlayerNativeActivity {
 
         super.onResume();
 
-        //
-        // Wrap the Unity application's view and the camera preview in a FrameLayout;
-        //
-
-        //View focusView = getCurrentFocus(); // Save the focus, in case we inadvertently change it.
-        //Log.i(TAG, "Focus view is " + focusView.toString() + ".");
+        // Add camera preview as a new view.
 
         ViewGroup decorView = (ViewGroup) getWindow().getDecorView();
-        unityView = (ViewGroup) decorView.getChildAt(0);
-        if (unityView == null) {
-            Log.e(TAG, "Error: Could not find top view.");
-            return;
-        }
-        //Log.i(TAG, "Top view is " + unityView.toString() + ".");
-
-        // Create a placeholder for us to insert the camera preview capture object to the
-        // view hierarchy.
-        previewInserter = new FrameLayout(this);
-        decorView.removeView(unityView); // We must remove the root view from its parent before we can add it somewhere else.
-        decorView.addView(previewInserter);
-
-        //focusView.requestFocus(); // Restore focus.
 
         // Create the camera preview.
         previewView = new CameraSurface(this);
-        previewInserter.addView(previewView, new LayoutParams(128, 128));
+        decorView.addView(previewView, new LayoutParams(128, 128));
 
-        // Now add Unity view back in.
-        // In order to ensure that Unity's view covers the camera preview each time onResume
-        // is called, find the SurfaceView inside the Unity view hierachy, and
-        // set the media overlay mode on it. Add the Unity view AFTER adding the previewView.
-        SurfaceView sv = findSurfaceView(unityView);
-        if (sv == null) {
-            Log.w(TAG, "No SurfaceView found in Unity view hierarchy.");
-        } else {
-            Log.i(TAG, "Found SurfaceView " + sv.toString() + ".");
-            sv.setZOrderMediaOverlay(true);
-        }
-        previewInserter.addView(unityView);
+        Log.i(TAG, "onResume() - All done!");
     }
 
     @Override
@@ -206,16 +174,14 @@ public class UnityARPlayerActivity extends UnityPlayerNativeActivity {
 
         super.onPause();
 
-        // Restore the original view hierarchy.
-        previewInserter.removeAllViews();
-        previewView = null; // Make sure camera is released in onPause().
-
+        // Remove camera preview view.
         ViewGroup decorView = (ViewGroup) getWindow().getDecorView();
-        decorView.removeView(previewInserter);
-        decorView.addView(unityView);
-
-        previewInserter = null;
-        unityView = null;
+        
+        // Simply remove the camera preview from the view hierarchy.
+        if (previewView != null) {
+            decorView.removeView(previewView);
+            previewView = null; // Make sure camera is released in onPause().
+        }
     }
 
     void launchPreferencesActivity() {
