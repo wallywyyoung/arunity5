@@ -238,15 +238,15 @@ public class ARController : MonoBehaviour
     };
 
     public enum ARToolKitMatrixCodeType {
-        AR_MATRIX_CODE_3x3 = 3,
-        AR_MATRIX_CODE_3x3_PARITY65 = 257,
-        AR_MATRIX_CODE_3x3_HAMMING63 = 515,
-        AR_MATRIX_CODE_4x4 = 4,
-        AR_MATRIX_CODE_4x4_BCH_13_9_3 = 772,
-        AR_MATRIX_CODE_4x4_BCH_13_5_5 = 1028//,
-//        AR_MATRIX_CODE_5x5 = 5,
-//        AR_MATRIX_CODE_6x6 = 6,
-//        AR_MATRIX_CODE_GLOBAL_ID = 2830
+        AR_MATRIX_CODE_3x3 = 0x03,
+        AR_MATRIX_CODE_3x3_PARITY65 = 0x03 | 0x100,
+        AR_MATRIX_CODE_3x3_HAMMING63 = 0x03 | 0x200,
+        AR_MATRIX_CODE_4x4 = 0x04,
+        AR_MATRIX_CODE_4x4_BCH_13_9_3 = 0x04 | 0x300,
+        AR_MATRIX_CODE_4x4_BCH_13_5_5 = 0x04 | 0x400//,
+//        AR_MATRIX_CODE_5x5 = 0x05,
+//        AR_MATRIX_CODE_6x6 = 0x06,
+//        AR_MATRIX_CODE_GLOBAL_ID = 0x0e | 0xb00
     };
     
     public enum ARToolKitImageProcMode {
