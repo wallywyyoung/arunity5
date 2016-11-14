@@ -10,7 +10,7 @@ As of Unity 5, when building a Unity app for the Android platform, the Unity IDE
 - /R.txt (mandatory)
 - /assets/ (optional)
 - /libs/*.jar (optional)
-- /jni/<abi>/*.so (optional)
+- /jni/\<abi\>/*.so (optional)
 - /proguard.txt (optional)
 - /lint.jar (optional)
 
