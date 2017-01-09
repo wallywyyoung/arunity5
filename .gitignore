@@ -32,6 +32,7 @@ src/Android_Unity_Player_Source/EclipseProj/**/.settings
 *.booproj
 ExportedObj/
 *.svd
+/**/ProjectVersion.txt
 
 # Unity3D generated meta files
 *.pidb.meta
