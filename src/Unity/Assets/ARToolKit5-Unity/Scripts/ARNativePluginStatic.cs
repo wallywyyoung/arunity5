@@ -97,7 +97,7 @@ public static class ARNativePluginStatic
 
 	[DllImport("__Internal")]
 	[return: MarshalAsAttribute(UnmanagedType.I1)]
-	public static extern bool arwGetProjectionMatrixStereo([In][Out][MarshalAs(UnmanagedType.LPArray, SizeConst=16)] float[] matrixL, [MarshalAs(UnmanagedType.LPArray, SizeConst=16)] float[] matrixR);
+	public static extern bool arwGetProjectionMatrixStereo([In][Out][MarshalAs(UnmanagedType.LPArray, SizeConst=16)] float[] matrixL, [In][Out][MarshalAs(UnmanagedType.LPArray, SizeConst=16)] float[] matrixR);
 	
 	[DllImport("__Internal")]
 	[return: MarshalAsAttribute(UnmanagedType.I1)]
@@ -257,7 +257,7 @@ public static class ARNativePluginStatic
 	
 	[DllImport("__Internal")]
 	[return: MarshalAsAttribute(UnmanagedType.I1)]
-	public static extern bool arwQueryMarkerTransformationStereo(int markerID, [In][Out][MarshalAs(UnmanagedType.LPArray, SizeConst=16)] float[] matrixL, [MarshalAs(UnmanagedType.LPArray, SizeConst=16)] float[] matrixR);
+	public static extern bool arwQueryMarkerTransformationStereo(int markerID, [In][Out][MarshalAs(UnmanagedType.LPArray, SizeConst=16)] float[] matrixL, [In][Out][MarshalAs(UnmanagedType.LPArray, SizeConst=16)] float[] matrixR);
 	
 	[DllImport("__Internal", CharSet = CharSet.Ansi)]
 	[return: MarshalAsAttribute(UnmanagedType.I1)]
