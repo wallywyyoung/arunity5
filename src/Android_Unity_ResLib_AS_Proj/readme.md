@@ -1,5 +1,5 @@
-#Generating the Android Resource Library File for Unity 5 Android Platform Build Process
-####Written by John Wolf
+# Generating the Android Resource Library File for Unity 5 Android Platform Build Process
+#### Written by John Wolf
 ***
 
 As of Unity 5, when building a Unity app for the Android platform, the Unity IDE build process no longer supports having an Android resources laid out in directories under the "res" directory in the Unity "Assets/Plugins/Android/" directory. Instead, the Android resources are required to be built into a ".aar" file; a binary distribution of an Android Library Project. A ".aar" file can contain the following entries:
@@ -16,7 +16,7 @@ As of Unity 5, when building a Unity app for the Android platform, the Unity IDE
 
 A Unity forum question somewhat explains the requirement [here](http://forum.unity3d.com/threads/obsolete-providing-android-resources-in-assets-plugins-android-res-is-deprecated.315889/).
 
-###Edit and Build the ".aar" Android Resource Library File
+### Edit and Build the ".aar" Android Resource Library File
 
 To edit and build the Android resource library, first open the Android Studio project of \[ARTK_for_Unity5 repo\]/src/Android_Unity_ResLib_AS_Proj with the latest available version of the Android Studio IDE. As of this writing, version 1.5.1 was used. In the IDE, in the "Project" tab, "Android" view, twirl open the "ResLib" folder icon. Under this icon are the AndroidManifest.xml file and "res" Android resource folder. Update the .xml files under the "ResLib" folder icon as required.
 
@@ -31,7 +31,7 @@ The full path of the generated Android resource library file is:
     ResLib/build/outputs/aar/ResLib-release.aar
 </pre>
 
-###Deploy the .aar Android Resource Library File
+### Deploy the .aar Android Resource Library File
 
 After generating the ".aar" file, copy the just generated "ResLib-release.aar" file from the path specified above and paste the file in the following directory and overwrite the previous version of the file:
 

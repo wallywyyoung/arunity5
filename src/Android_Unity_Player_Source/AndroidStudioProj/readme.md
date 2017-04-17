@@ -1,10 +1,10 @@
-#Android Studio 1.5.+ project To Build UnityARPlayer.jar
-###Written By: John Wolf
-####Last Updated: 2016-11-07
+# Android Studio 1.5.+ project To Build UnityARPlayer.jar
+### Written By: John Wolf
+#### Last Updated: 2016-11-07
 
 ----
 
-###The "UnityARPlayer.jar" File Build Process
+### The "UnityARPlayer.jar" File Build Process
 
 This process has only been tested using Android Studio 1.5.1  installed on Mac OS X.
 
@@ -54,7 +54,7 @@ In the right margin of the Android Studio main windows, click and open: "Gradle"
 &nbsp;&nbsp;&nbsp;&nbsp;\[ARToolKit for Unity Repo\]/src/Android_Unity_Player_Source/   
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AndroidStudioProj/UnityARPlayer/build/libs/UnityARPlayer.jar
 
-###Placing the "UnityARPlayer.jar" File
+### Placing the "UnityARPlayer.jar" File
 
 Copy the updated "UnityARPlayer.jar" file:
 
