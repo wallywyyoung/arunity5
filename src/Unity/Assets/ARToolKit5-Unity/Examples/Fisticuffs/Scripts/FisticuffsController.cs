@@ -116,11 +116,11 @@ public class FisticuffsController : MonoBehaviour {
 	// lock onto opponents target point as a place where all future target colliders will be
 	// instantiated during this fight
 	void TakeAim() {
-		if (char1behaviors.opponentTargetPoint != character2.FindChild("TargetPoint")) {
-			char1behaviors.opponentTargetPoint = character2.FindChild("TargetPoint"); 
+		if (char1behaviors.opponentTargetPoint != character2.Find("TargetPoint")) {
+			char1behaviors.opponentTargetPoint = character2.Find("TargetPoint"); 
 		}
-		if (char2behaviors.opponentTargetPoint != character1.FindChild("TargetPoint")) {
-			char2behaviors.opponentTargetPoint = character1.FindChild("TargetPoint"); 
+		if (char2behaviors.opponentTargetPoint != character1.Find("TargetPoint")) {
+			char2behaviors.opponentTargetPoint = character1.Find("TargetPoint"); 
 		}
 	}
 	

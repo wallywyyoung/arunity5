@@ -85,7 +85,7 @@ public class CharacterBehaviors : MonoBehaviour {
 			CharacterBehaviors.arCamera = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
 		}
 
-		Transform myFaceTransform = transform.FindChild("Face");
+		Transform myFaceTransform = transform.Find("Face");
 		myFace = myFaceTransform.gameObject;
 
 		faceAnimation = myFace.GetComponent<Animation>();
